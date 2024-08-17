@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c84ueug5rt3su"]
+
+[ext_resource type="Script" path="res://autoload/const.gd" id="1_qaurm"]
+
+[node name="CONST" type="Node"]
+script = ExtResource("1_qaurm")

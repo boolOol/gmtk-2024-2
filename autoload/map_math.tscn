@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d20lc26es0tse"]
+
+[ext_resource type="Script" path="res://autoload/map_math.gd" id="1_ulhd2"]
+
+[node name="MapMath" type="Node"]
+script = ExtResource("1_ulhd2")

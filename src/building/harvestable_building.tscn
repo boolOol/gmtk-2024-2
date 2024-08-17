@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dk1v0umuvbrtu"]
+
+[ext_resource type="Script" path="res://src/building/harvestable_building.gd" id="1_4r3d7"]
+
+[node name="HarvestableBuilding" type="Node2D"]
+position = Vector2(281, 185)
+script = ExtResource("1_4r3d7")
+
+[node name="Floors" type="Node2D" parent="."]

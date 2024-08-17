@@ -1,0 +1,53 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dbhbgncidxea5"]
+
+[sub_resource type="GDScript" id="GDScript_ey6k7"]
+script/source = "extends Resource
+
+enum Inhabitant{Adult,Child}
+
+@export var household_name: String
+@export var archetype: CONST.HouseholdArchetype
+@export var popularity: int
+@export var max_rent_range:Vector2
+@export var inhabitants:Array[Inhabitant]
+@export var happy_rooms:Array[CONST.RoomType]
+@export var sad_rooms:Array[CONST.RoomType]
+@export var happy_neighbors:Array[CONST.HouseholdArchetype]
+@export var sad_neighbors:Array[CONST.HouseholdArchetype]
+
+# Make sure that every parameter has a default value.
+# Otherwise, there will be problems with creating and editing
+# your resource via the inspector.
+func _init(
+	p_household_name=\"\",
+	p_archetype = 1,
+	p_popularity = 1,
+	p_max_rent_range = Vector2.ZERO,
+	p_inhabitants = [],
+	p_happy_rooms = [],
+	p_sad_rooms = [],
+	p_happy_neighbors = [],
+	p_sad_neighbors = [],
+	):
+	household_name = p_household_name
+	archetype = p_archetype
+	popularity = p_popularity
+	max_rent_range = p_max_rent_range
+	inhabitants = p_inhabitants
+	happy_rooms = p_happy_rooms
+	sad_rooms = p_sad_rooms
+	happy_neighbors = p_happy_neighbors
+	sad_neighbors = p_sad_neighbors
+"
+
+[resource]
+script = SubResource("GDScript_ey6k7")
+household_name = "Student Flat Share"
+archetype = 0
+popularity = 3
+max_rent_range = Vector2(800, 1200)
+inhabitants = Array[int]([0, 0, 0])
+happy_rooms = Array[int]([3, 0, 1])
+sad_rooms = Array[int]([6, 8])
+happy_neighbors = Array[int]([0, 13])
+sad_neighbors = Array[int]([10])

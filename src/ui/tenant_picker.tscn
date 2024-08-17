@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://ct4mnxgtkxsbr"]
+
+[ext_resource type="Script" path="res://src/ui/tenant_picker.gd" id="1_ne83v"]
+
+[sub_resource type="Gradient" id="Gradient_3enqa"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_te2pm"]
+gradient = SubResource("Gradient_3enqa")
+
+[node name="TenantPicker" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_ne83v")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 2
+mouse_filter = 2
+
+[node name="VisibilityHover" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = SubResource("GradientTexture2D_te2pm")
+
+[connection signal="mouse_entered" from="VisibilityHover" to="." method="_on_visibility_hover_mouse_entered"]
+[connection signal="mouse_exited" from="VisibilityHover" to="." method="_on_visibility_hover_mouse_exited"]

@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6qs0eolhnulb"]
+
+[ext_resource type="Script" path="res://src/floor/floor.gd" id="1_ipi7l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h864d"]
+size = Vector2(121, 49)
+
+[node name="Floor" type="Area2D"]
+script = ExtResource("1_ipi7l")
+
+[node name="Units" type="Node2D" parent="."]
+
+[node name="Rooms" type="Node2D" parent="."]
+
+[node name="FrontWall" type="Node2D" parent="."]
+
+[node name="HoverArea" type="CollisionShape2D" parent="."]
+position = Vector2(60, 25)
+shape = SubResource("RectangleShape2D_h864d")

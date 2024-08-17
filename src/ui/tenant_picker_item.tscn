@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://vsn3mublrlkw"]
+
+[ext_resource type="Script" path="res://src/ui/tenant_picker_item.gd" id="1_kfeyl"]
+
+[node name="PanelContainer" type="PanelContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_kfeyl")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+text = "hjmkhjkhj"
+fit_content = true
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "PICK ME!!"
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]

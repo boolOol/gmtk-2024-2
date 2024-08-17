@@ -1,0 +1,239 @@
+[gd_scene load_steps=20 format=3 uid="uid://dq2meide5oo8r"]
+
+[ext_resource type="Script" path="res://src/building/building.gd" id="1_ilp16"]
+[ext_resource type="PackedScene" uid="uid://c6qs0eolhnulb" path="res://src/floor/floor.tscn" id="2_bx7en"]
+[ext_resource type="PackedScene" uid="uid://cfmp8yur4aiar" path="res://src/floor/add_unit_button.tscn" id="3_jd121"]
+
+[sub_resource type="GDScript" id="GDScript_ey6k7"]
+script/source = "extends Resource
+
+enum Inhabitant{Adult,Child}
+
+@export var household_name: String
+@export var popularity: int
+@export var max_rent_range:Vector2
+@export var inhabitants:Array[Inhabitant]
+@export var happy_rooms:Array[CONST.RoomType]
+@export var sad_rooms:Array[CONST.RoomType]
+@export var happy_neighbors:Array[CONST.HouseholdArchetype]
+@export var sad_neighbors:Array[CONST.HouseholdArchetype]
+
+# Make sure that every parameter has a default value.
+# Otherwise, there will be problems with creating and editing
+# your resource via the inspector.
+func _init(
+	p_household_name=\"\",
+	p_popularity = 1,
+	p_max_rent_range = Vector2.ZERO,
+	p_inhabitants : Array[Inhabitant] = [],
+	p_happy_rooms : Array[CONST.RoomType] = [],
+	p_sad_rooms : Array[CONST.RoomType] = [],
+	p_happy_neighbors : Array[CONST.HouseholdArchetype] = [],
+	p_sad_neighbors : Array[CONST.HouseholdArchetype] = [],
+	):
+	household_name = p_household_name
+	popularity = p_popularity
+	max_rent_range = p_max_rent_range
+	inhabitants = p_inhabitants
+	happy_rooms = p_happy_rooms
+	sad_rooms = p_sad_rooms
+	happy_neighbors = p_happy_neighbors
+	sad_neighbors = p_sad_neighbors
+"
+
+[sub_resource type="Resource" id="Resource_0tylp"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Student Flat Share"
+popularity = 3
+max_rent_range = Vector2(800, 1200)
+inhabitants = Array[int]([0, 0, 0])
+happy_rooms = Array[int]([3, 0, 1])
+sad_rooms = Array[int]([6, 8])
+happy_neighbors = Array[int]([0, 13])
+sad_neighbors = Array[int]([10])
+
+[sub_resource type="Resource" id="Resource_e8dsh"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Apprentice"
+popularity = 3
+max_rent_range = Vector2(400, 500)
+inhabitants = Array[int]([0])
+happy_rooms = Array[int]([])
+sad_rooms = Array[int]([])
+happy_neighbors = Array[int]([13])
+sad_neighbors = Array[int]([2, 8])
+
+[sub_resource type="Resource" id="Resource_2drhq"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Ordinary Family"
+popularity = 3
+max_rent_range = Vector2(1000, 1500)
+inhabitants = Array[int]([0, 0, 1, 1])
+happy_rooms = Array[int]([2, 9])
+sad_rooms = Array[int]([11, 12])
+happy_neighbors = Array[int]([3, 2, 8])
+sad_neighbors = Array[int]([0, 13])
+
+[sub_resource type="Resource" id="Resource_gy2wf"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Single Parent"
+popularity = 2
+max_rent_range = Vector2(700, 800)
+inhabitants = Array[int]([0, 1])
+happy_rooms = Array[int]([6, 9])
+sad_rooms = Array[int]([0])
+happy_neighbors = Array[int]([9, 13])
+sad_neighbors = Array[int]([14, 0])
+
+[sub_resource type="Resource" id="Resource_cqokf"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Young Couple"
+popularity = 3
+max_rent_range = Vector2(700, 1300)
+inhabitants = Array[int]([0, 0])
+happy_rooms = Array[int]([3, 12])
+sad_rooms = Array[int]([5])
+happy_neighbors = Array[int]([0, 6])
+sad_neighbors = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_1t1iy"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Workaholic"
+popularity = 2
+max_rent_range = Vector2(2000, 3000)
+inhabitants = Array[int]([0])
+happy_rooms = Array[int]([6, 10])
+sad_rooms = Array[int]([2, 3])
+happy_neighbors = Array[int]([10])
+sad_neighbors = Array[int]([0, 2, 8])
+
+[sub_resource type="Resource" id="Resource_yjw07"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Polycule"
+popularity = 2
+max_rent_range = Vector2(800, 1200)
+inhabitants = Array[int]([0, 0, 0])
+happy_rooms = Array[int]([3, 12])
+sad_rooms = Array[int]([6])
+happy_neighbors = Array[int]([6])
+sad_neighbors = Array[int]([10, 5])
+
+[sub_resource type="Resource" id="Resource_1gmx3"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Elderly Couple"
+popularity = 2
+max_rent_range = Vector2(1100, 1200)
+inhabitants = Array[int]([0, 0])
+happy_rooms = Array[int]([1, 5])
+sad_rooms = Array[int]([7, 9])
+happy_neighbors = Array[int]([8, 2, 7])
+sad_neighbors = Array[int]([0, 13])
+
+[sub_resource type="Resource" id="Resource_qtrnu"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Big Family"
+popularity = 2
+max_rent_range = Vector2(900, 1700)
+inhabitants = Array[int]([0, 0, 1, 1, 1, 1])
+happy_rooms = Array[int]([9, 1])
+sad_rooms = Array[int]([6])
+happy_neighbors = Array[int]([8, 2])
+sad_neighbors = Array[int]([13, 0])
+
+[sub_resource type="Resource" id="Resource_ty3g2"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Widow"
+popularity = 1
+max_rent_range = Vector2(800, 900)
+inhabitants = Array[int]([0])
+happy_rooms = Array[int]([8, 10])
+sad_rooms = Array[int]([9])
+happy_neighbors = Array[int]([12, 6])
+sad_neighbors = Array[int]([4])
+
+[sub_resource type="Resource" id="Resource_uftym"]
+script = SubResource("GDScript_ey6k7")
+household_name = "CEO"
+popularity = 1
+max_rent_range = Vector2(5000, 10000)
+inhabitants = Array[int]([0])
+happy_rooms = Array[int]([6, 7])
+sad_rooms = Array[int]([9])
+happy_neighbors = Array[int]([5, 13])
+sad_neighbors = Array[int]([0])
+
+[sub_resource type="Resource" id="Resource_44ynh"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Influencer Couple"
+popularity = 1
+max_rent_range = Vector2(3500, 4000)
+inhabitants = Array[int]([0, 0])
+happy_rooms = Array[int]([7, 11])
+sad_rooms = Array[int]([10])
+happy_neighbors = Array[int]([10, 14])
+sad_neighbors = Array[int]([12])
+
+[sub_resource type="Resource" id="Resource_q8igv"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Kevin"
+popularity = 1
+max_rent_range = Vector2(1000, 1100)
+inhabitants = Array[int]([1])
+happy_rooms = Array[int]([9, 11])
+sad_rooms = Array[int]([0])
+happy_neighbors = Array[int]([13])
+sad_neighbors = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_atxko"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Student Flat Share"
+popularity = 2
+max_rent_range = Vector2(1500, 2000)
+inhabitants = Array[int]([0])
+happy_rooms = Array[int]([6, 5])
+sad_rooms = Array[int]([9])
+happy_neighbors = Array[int]([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
+sad_neighbors = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_c45pl"]
+script = SubResource("GDScript_ey6k7")
+household_name = "Marathon Couple"
+popularity = 1
+max_rent_range = Vector2(1300, 1700)
+inhabitants = Array[int]([0, 0])
+happy_rooms = Array[int]([4, 7])
+sad_rooms = Array[int]([6])
+happy_neighbors = Array[int]([4])
+sad_neighbors = Array[int]([0, 2, 8])
+
+[node name="Building" type="Node2D"]
+script = ExtResource("1_ilp16")
+student_flat_share = SubResource("Resource_0tylp")
+apprentice = SubResource("Resource_e8dsh")
+ordinary_family = SubResource("Resource_2drhq")
+single_parent = SubResource("Resource_gy2wf")
+young_couple = SubResource("Resource_cqokf")
+workaholic = SubResource("Resource_1t1iy")
+polycule = SubResource("Resource_yjw07")
+elderly_couple = SubResource("Resource_1gmx3")
+big_family = SubResource("Resource_qtrnu")
+widow = SubResource("Resource_ty3g2")
+ceo = SubResource("Resource_uftym")
+influencer_couple = SubResource("Resource_44ynh")
+kevin = SubResource("Resource_q8igv")
+drug_dealer = SubResource("Resource_atxko")
+marathon_couple = SubResource("Resource_c45pl")
+
+[node name="Floors" type="Node2D" parent="."]
+
+[node name="GroundFloor" parent="Floors" instance=ExtResource("2_bx7en")]
+
+[node name="Tenants" type="Node2D" parent="."]
+
+[node name="AddUnitButton" parent="." instance=ExtResource("3_jd121")]
+offset_left = -40.0
+offset_top = 37.0
+offset_right = 0.0
+offset_bottom = 77.0
+
+[connection signal="place_room_at" from="AddUnitButton" to="." method="_on_add_unit_button_place_room_at"]
