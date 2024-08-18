@@ -217,6 +217,8 @@ func set_happiness_affectors(
 	happy_neighbor_presences : Array,
 	sad_neighbor_presences : Array,
 ):
+	room_bonus = 0
+	neighbour_bonus = 0
 	# CALCULATE HAPPINESS MODIFIERS
 	for room in happy_room_presences:
 		room_bonus += 3

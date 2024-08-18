@@ -10,6 +10,8 @@ var floor := 0
 var coord := Vector2.ZERO
 var room_size := 0
 
+#@onready var rip_effect:PackedScene = load("res://vfx/ripout_particles.tscn")
+
 var mouse_in = false
 @onready var last_position := global_position
 
@@ -110,6 +112,8 @@ func _on_texture_button_button_down() -> void:
 	selected = true
 	drag_start_position = global_position
 	drag_offset = get_local_mouse_position()
+	var fx = preload("res://vfx/ripout_particles.tscn").instantiate()
+	add_child(fx)
 	
 	if room_size == 1:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorSmallRed.png")

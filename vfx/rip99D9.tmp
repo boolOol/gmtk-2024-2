@@ -41,7 +41,6 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 colors = PackedColorArray(0.454524, 0.454524, 0.454524, 1, 1, 1, 1, 1)
 
 [node name="RipoutParticles" type="Node2D"]
-position = Vector2(16.355, 32)
 script = ExtResource("1_chn4f")
 
 [node name="Cloud" type="CPUParticles2D" parent="."]
@@ -83,11 +82,14 @@ scale_amount_curve = SubResource("Curve_vhomo")
 color_initial_ramp = SubResource("Gradient_vxjoa")
 
 [node name="Sand" type="CPUParticles2D" parent="."]
+emitting = false
 amount = 32
 lifetime = 1.3
+one_shot = true
+explosiveness = 0.5
 texture = SubResource("GradientTexture2D_dxnxo")
 emission_shape = 3
-emission_rect_extents = Vector2(18, 1)
+emission_rect_extents = Vector2(40, 1)
 direction = Vector2(0, 1)
 spread = 0.0
 gravity = Vector2(0, 100)
@@ -96,8 +98,3 @@ angle_max = 180.0
 color = Color(0.804651, 0.734422, 0.645244, 1)
 color_ramp = SubResource("Gradient_kr50g")
 color_initial_ramp = SubResource("Gradient_2ojfa")
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 3.0
-one_shot = true
-autostart = true
