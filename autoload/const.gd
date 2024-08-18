@@ -142,3 +142,13 @@ const ZOOM_MIN := 0.25
 const ZOOM_MAX := 4.0
 const ZOOM_STEP := 0.025
 const CAMERA_MOVE_STEP := 300
+
+
+const PRICE_PER_HEIGHT := {
+	0: 50,
+	1: 100,
+	2: 200,
+	3: 250,
+	4: 250,
+	5: 275,
+}

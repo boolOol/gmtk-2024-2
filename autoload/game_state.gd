@@ -26,6 +26,7 @@ func set_drag_target(target: FloorUnit):
 
 var indicator_debounce := false
 
+
 func can_drag_target_fit_room(room:Room) -> bool:
 	if not drag_target:
 		return false

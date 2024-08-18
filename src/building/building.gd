@@ -267,6 +267,16 @@ func get_flat_index(coord:Vector2) -> Vector2:
 	
 	return Vector2(flats_on_floor, abs(coord.y))
 
+func evict(id: int):
+	household_node_by_id.get(id).queue_free()
+	household_node_by_id.erase(id)
+	household_data_by_id.erase(id)
+	var flat = occupation_by_household_id.get(id)
+	occupation_by_flat.erase(flat)
+	occupation_by_household_id.erase(id)
+	
+	
+
 func is_in_flat(coord:Vector2):
 	return not get_flat(coord).is_empty()
 

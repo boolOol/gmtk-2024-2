@@ -21,7 +21,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
 script = ExtResource("1_nm4dv")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
@@ -195,6 +194,11 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
+[node name="EvictButton" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer/Household"]
+self_modulate = Color(0.978428, 1.34766e-06, 0.515483, 1)
+layout_mode = 2
+text = "EVICT"
+
 [node name="MarginContainerDetails" type="MarginContainer" parent="HBoxContainer"]
 layout_mode = 2
 
@@ -288,3 +292,6 @@ scroll_active = false
 [node name="HeightHolder2" type="Control" parent="HBoxContainer/MarginContainerDetails/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(180, 7)
 layout_mode = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="pressed" from="HBoxContainer/MarginContainer/VBoxContainer/Household/EvictButton" to="." method="_on_evict_button_pressed"]

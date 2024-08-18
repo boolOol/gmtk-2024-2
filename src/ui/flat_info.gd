@@ -241,3 +241,13 @@ func set_happiness_preferences(
 	for tenant in sad_neighbors:
 		neighbour_prefs += "[color=orangered]- " + CONST.HOUSEHOLD_NAMES.get(tenant) + "[/color]\n"
 	tenant_neighbour_pref_details.text = neighbour_prefs
+
+
+func _on_evict_button_pressed() -> void:
+	GameState.building.evict(id)
+
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			visible = false

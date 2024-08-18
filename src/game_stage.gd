@@ -5,7 +5,10 @@ extends Node2D
 
 var notification_tween:Tween
 
+var is_broke := false
+
 func _ready() -> void:
+	is_broke = false
 	notification.modulate.a = 0.0
 	GameState.state_changed.connect(on_state_changed)
 	GameState.set_state(GameState.State.Building)
@@ -13,18 +16,60 @@ func _ready() -> void:
 	GameState.game_stage = self
 	Data.property_changed.connect(on_property_changed)
 	Data.apply("cash", 50000)
+	
+	find_child("SummaryContainer").visible = false
 
 func on_state_changed(new_state:int):
 	var button = find_child("FinishStageButton")
 	match new_state:
 		GameState.State.Building:
-			button.text = "Next: Manage Building"
+			button.text = "Next: Collect Rent"
 		GameState.State.PickingTenants:
 			button.text = "Next: Fill Empty Flats"
 		GameState.State.Managing:
 			button.text = "Next: Absorb Rival Building"
-		
+			show_month_summary()
 
+func show_month_summary():
+	find_child("SummaryContainer").visible = true
+	var building : Building = GameState.building
+	
+	var items : PackedStringArray = []
+	var income := 0
+	var expenditures := 0
+	for id in building.occupation_by_household_id:
+		var hh : Household = building.get_household_from_id(id)
+		var flat = building.occupation_by_household_id.get(id)
+		if not hh:
+			continue
+		income += hh.rentToPay
+		var flat_index = building.get_flat_index(flat.front())
+		var flat_str = str("Floor ", flat_index.y, " - Flat ", flat_index.x)
+		items.append(str(hh.household_name, " ", flat_str, " \t+$", hh.rentToPay))
+	
+	items.append("--------")
+	var height_cost := 0
+	for i in abs(GameState.highest_coord):
+		if i >= CONST.PRICE_PER_HEIGHT.size():
+			height_cost += CONST.PRICE_PER_HEIGHT.get(CONST.PRICE_PER_HEIGHT.size()-1)
+		else:
+			height_cost += CONST.PRICE_PER_HEIGHT.get(i)
+	expenditures += height_cost
+	items.append(str("Height: ", abs(GameState.highest_coord) + 1, " - $", height_cost))
+	
+	items.append("========")
+	items.append(str("Total Income: ", income - expenditures))
+	
+	Data.change_by_int("cash", income - expenditures)
+	
+	items.append(str("Total Funds: ", Data.of("cash")))
+	
+	if Data.of("cash") < 0:
+		items.append("YOU ARE BROKE. CLICK TO RESTART.")
+		is_broke = true
+	
+	find_child("Summary").text = str("[center]", "\n".join(items))
+	
 func on_property_changed(property_name:String, old_value, new_value):
 	match property_name:
 		"cash":
@@ -189,3 +234,11 @@ func _on_tenant_picker_tenant_picked_for_apartment(apartment_coords: Array, tena
 
 func _on_permanent_reveal_check_box_toggled(toggled_on: bool) -> void:
 	Data.apply("global.permanent_reveal", not toggled_on)
+
+
+func _on_summary_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			find_child("SummaryContainer").visible = false
+			if is_broke:
+				get_tree().reload_current_scene()

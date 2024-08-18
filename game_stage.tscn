@@ -217,8 +217,31 @@ offset_top = -197.0
 offset_bottom = -174.0
 grow_horizontal = 1
 
+[node name="SummaryContainer" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/SummaryContainer"]
+layout_mode = 2
+
+[node name="Summary" type="RichTextLabel" parent="CanvasLayer/SummaryContainer/ScrollContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "fghfghfghfg
+fghfg"
+fit_content = true
+
 [connection signal="query_add_floor" from="Building" to="." method="_on_building_query_add_floor"]
 [connection signal="tenant_picked_for_apartment" from="CanvasLayer/Control/TenantPicker" to="." method="_on_tenant_picker_tenant_picked_for_apartment"]
 [connection signal="confirm_add_floor" from="CanvasLayer/Control/AddFloorContainer" to="Building" method="add_floor_by_coord"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/FinishStageButton" to="." method="_on_finish_stage_button_pressed"]
 [connection signal="toggled" from="CanvasLayer/Control/VBoxContainer/PermanentRevealCheckBox" to="." method="_on_permanent_reveal_check_box_toggled"]
+[connection signal="gui_input" from="CanvasLayer/SummaryContainer/ScrollContainer/Summary" to="." method="_on_summary_gui_input"]

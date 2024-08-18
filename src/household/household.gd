@@ -30,6 +30,12 @@ func build_from_resource(res:Resource):
 		person.scale.x = -1 if randf() <= 0.5 else 1
 		person.position.y += offset
 	stats = res
+	
+	var value := 0
+	for coord in GameState.building.occupation_by_household_id.get(id):
+		var room_type = GameState.building.get_room_type(coord)
+		value += CONST.get_rent(room_type)
+	rentToPay = value
 
 func set_global_move_range(x_min:float, x_max:float):
 	for person in $People.get_children():
