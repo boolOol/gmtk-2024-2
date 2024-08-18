@@ -107,7 +107,6 @@ func get_flats() -> Array:
 	
 	for floor : Floor in $Floors.get_children():
 		var coords := floor.get_sorted_coords()
-		prints("floor", floor.get_index(), "has coords", coords)
 		var handled_rooms := [] # track separately bc of multi-slot rooms
 		var flats_on_floor := []
 		
@@ -220,31 +219,51 @@ func get_physical_flat_extents(flat:Array) -> Vector2:
 			max_x = coord.x
 	return Vector2(min_x, max_x)
 
+func is_coord_in_flat_index_occupied(index:Vector2) -> bool:
+	pass
+	return false
+
+
+
 func get_empty_flats() -> Array:
 	var flats = get_flats()
 	var result := []
-	
+	prints("emoty got flats", flats)
+	prints("occupy", occupation_by_flat)
+	var occupations_with_indices := []
 	for flat in flats:
+		var occupied := false
+		for coord in flat:
+			if get_household(coord):
+				occupied = true
+				break
+		if occupied:
+			continue
 		if occupation_by_flat.has(flat):
 			continue
 		result.append(flat)
+	
+	prints("returning empty flats", result)
 	return result
 
 func get_adjacent_coords_to_flat(flat:Array):
 	var coords := []
-	prints("checking flat", flat)
 	for cell in flat:
 		for neighbor in CONST.NEIGHBOR_OFFSETS:
 			var offset = cell + neighbor
-			prints(offset, " does exist?", does_coord_exist(offset))
 			if (not coords.has(offset)) and does_coord_exist(offset):
 				coords.append(offset)
 	return coords
 
 func get_household_id_of(coord:Vector2) -> int:
 	var a = occupation_by_flat
-	for flat : Array in occupation_by_flat:
+	
+	prints("looking for occupation in ", coord, ":", occupation_by_flat)
+	for flat : Array in occupation_by_flat.keys():
+		prints("checking if", flat, " has ", coord)
 		if flat.has(coord):
+			if not occupation_by_flat.get(flat):
+				continue
 			return occupation_by_flat.get(flat)
 	return -1
 

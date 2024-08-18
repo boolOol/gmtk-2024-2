@@ -6,6 +6,8 @@ extends Node
 var eviction := "res://sounds/sfx/sfx_tenantKickedOut.ogg"
 var income = "res://sounds/sfx/sfx_incomeNotice.ogg"
 var room_rip = "res://sounds/sfx/sfx_roomRippedOut.ogg"
+var place = "res://sounds/sfx/sfx_roomConnectedToSelf.ogg"
+var explosion = "res://src/building/explosion.png"
 
 func _ready() -> void:
 	add_child(bgm_player)
@@ -21,5 +23,6 @@ func sound(sfx:String):
 	add_child(player)
 	player.bus = "SFX"
 	player.stream = load(get(sfx))
+	player.pitch_scale = randf_range(0.8, 1.1)
 	player.play()
 	player.finished.connect(player.queue_free)

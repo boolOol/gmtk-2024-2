@@ -57,10 +57,10 @@ func can_drag_target_fit_room(room:Room) -> bool:
 	
 	# squished between
 	if (
-		building.get_household(Vector2(drag_target.h_index -1, -level)) and
+		building.get_household(Vector2(drag_target.h_index -1, -level)) or
 		building.get_household(Vector2(drag_target.h_index +1, -level))):
 			GameState.build_indicator(
-				str("Tile is between occupied apartments.\nEvict either to merge."),
+				str("Next-door construction work is rude.\nEvict either to expand.\n"),
 				drag_target.global_position
 			)
 			return false
@@ -94,6 +94,7 @@ func transfer_to_drag_target():
 	
 	dragged_room.set_player_owned(true)
 	camera.apply_shake()
+	Sound.sound("place")
 	
 	var adjacent_household
 	if building.get_household(coord + Vector2.LEFT):
@@ -103,7 +104,7 @@ func transfer_to_drag_target():
 	if adjacent_household:
 		var previous_flat:Array
 		var new_flat:Array
-		var hh 
+		var hh
 		for household in building.occupation_by_household_id:
 			if household == adjacent_household:
 				previous_flat = building.occupation_by_household_id[household]
@@ -116,8 +117,22 @@ func transfer_to_drag_target():
 		for flat in building.occupation_by_flat:
 			if flat == previous_flat:
 				building.occupation_by_flat[new_flat] = hh#building.occupation_by_flat.get(flat)
-				#building.occupation_by_flat.erase(previous_flat)
+				building.occupation_by_flat.erase(previous_flat)
+				
 			#building.occupation_by_flat.has(adjacent_household)
+		#if hh:
+			#building.occupation_by_household_id[hh] = new_flat
+			#building.occupation_by_flat[new_flat] = hh
+			#var household = building.get_household_from_id(hh)
+			#var value := 0
+			#for flat_coord in new_flat:
+				#value += CONST.get_rent(building.get_room_type(flat_coord))
+			#household.rentToPay = household.rentMod * value
+		#
+	#for o in building.occupation_by_flat:
+		#if building.occupation_by_flat.get(o) == null or not is_instance_valid(o):
+			#building.occupation_by_flat.erase(o)
+	#
 	var price : int = CONST.get_price(dragged_room.room_type)
 	build_indicator(
 		str("-",price),

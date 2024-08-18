@@ -18,8 +18,16 @@ func reset():
 	$AnimatedSprite2D.stop()
 	$AnimatedSprite2D.frame = 0
 	$AnimatedSprite2D.play("default")
-	generate(randi_range(3, 14), randi_range(6, 12))
+	var width := randi_range(6, 12)
+	generate(randi_range(3, 14), width)
 	lifetime = 3
+	Sound.sound("explosion")
+	
+	GameState.build_indicator(
+		"A new building appears!",
+		global_position + Vector2((width * 0.5) * CONST.FLOOR_UNIT_WIDTH, 0),
+		0.0, Color.AQUAMARINE, 50
+	)
 
 func get_fitting_room(size:int) -> CONST.RoomType:
 	var room = randi_range(0, CONST.RoomType.size() - 1)

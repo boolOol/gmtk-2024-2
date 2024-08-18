@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/floor/floor_unit.gd" id="1_ahtxq"]
 [ext_resource type="Texture2D" uid="uid://cn1whm7slhjw6" path="res://src/building/sprites/spr_building-emptySlot01.png" id="2_bxr1i"]
-[ext_resource type="Texture2D" uid="uid://d0ptgf8kmbvg8" path="res://src/floor/construction.png" id="3_x45qx"]
+[ext_resource type="Texture2D" uid="uid://che07e0snoheu" path="res://src/rooms/spr_UI-BuildingIndicator.png" id="3_pux55"]
 [ext_resource type="Texture2D" uid="uid://cdi1wjh43vsnm" path="res://src/floor/selector.png" id="4_k3app"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yy0ef"]
@@ -21,7 +21,7 @@ shape = SubResource("CircleShape2D_yy0ef")
 
 [node name="Construction" type="Sprite2D" parent="."]
 position = Vector2(16, 16)
-texture = ExtResource("3_x45qx")
+texture = ExtResource("3_pux55")
 
 [node name="Selector" type="Sprite2D" parent="."]
 visible = false
