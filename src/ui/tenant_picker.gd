@@ -20,6 +20,9 @@ func present_tenants(tenants:Dictionary, apartment_amalgam:Array):
 		apartment_summary += CONST.ROOM_NAMES.get(GameState.building.get_room_type(coord))
 		apartment_summary += ", "
 	apartment_summary = apartment_summary.trim_suffix(", ")
+	var index = GameState.building.get_flat_index(apartment_amalgam.front())
+	apartment_summary += str("\n", "It is located on floor ", index.y)
+	
 	find_child("FlatSummary").text = apartment_summary
 	
 	visible = true

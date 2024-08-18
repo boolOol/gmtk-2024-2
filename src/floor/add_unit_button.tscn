@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cfmp8yur4aiar"]
 
-[ext_resource type="Texture2D" uid="uid://b1npqhkpmrso3" path="res://src/floor/add_unit.png" id="1_v83u4"]
+[ext_resource type="Texture2D" uid="uid://djop0evuylu0o" path="res://src/ui/add_unit.png" id="1_3jxrt"]
 [ext_resource type="Script" path="res://src/floor/add_unit_button.gd" id="2_ct0m6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1f52c"]
@@ -9,7 +9,7 @@
 offset_right = 24.0
 offset_bottom = 24.0
 focus_mode = 0
-texture_normal = ExtResource("1_v83u4")
+texture_normal = ExtResource("1_3jxrt")
 script = ExtResource("2_ct0m6")
 
 [node name="Area2D" type="Area2D" parent="." groups=["hover_button"]]

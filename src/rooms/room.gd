@@ -158,7 +158,10 @@ func _on_texture_button_mouse_entered() -> void:
 	texture_modulate_tween.tween_property($TextureButton, "modulate:a", 1.0, 0.4).set_ease(Tween.EASE_OUT)
 	texture_modulate_tween.tween_property(label, "modulate:a", 1.0, 1.0)
 	
-	find_child("HoverInfoLabel").text = CONST.ROOM_NAMES.get(room_type)
+	find_child("HoverInfoLabel").text = str(
+		CONST.ROOM_NAMES.get(room_type), "\n",
+		"$", CONST.get_price(room_type)
+		)
 
 func _on_texture_button_mouse_exited() -> void:
 	if texture_modulate_tween:

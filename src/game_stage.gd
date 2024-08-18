@@ -18,6 +18,23 @@ func _ready() -> void:
 	Data.apply("cash", 50000)
 	
 	find_child("SummaryContainer").visible = false
+	
+	var t0 = get_tree().create_timer(2)
+	t0.timeout.connect(notify.bind(
+		"Hiiiiii!", 3.0, 2.0
+	))
+	var t1 = get_tree().create_timer(8)
+	t1.timeout.connect(notify.bind(
+		"Welcome to GAMENAME", 3.0, 2.5
+	))
+	var t2 = get_tree().create_timer(16)
+	t2.timeout.connect(notify.bind(
+		"Tear the other building apart\nto accomodate your residents :3", 6.0
+	))
+	var t3 = get_tree().create_timer(28)
+	t3.timeout.connect(notify.bind(
+		"When you're done assimilating the other apartment complex,\npress the button on the bottom right!", 8.0
+	))
 
 func on_state_changed(new_state:int):
 	var button = find_child("FinishStageButton")
