@@ -28,11 +28,17 @@ func start_month():
 func _on_building_query_add_floor(coord: Vector2) -> void:
 	add_floor_container.show_menu(coord)
 
-func get_random_tenants(count:int):
-	var result :Array[Resource]= []
+func get_random_tenants(count:int) -> Dictionary:
+	var res :Array[Resource]= []
+	
+	var hh = []
 	for i in count:
-		result.append(GameState.building.get_household_res_from_enum(GameState.building.get_random_household()))
-	return result
+		hh.append(GameState.building.get_random_household())
+	for h in hh:
+		res.append(GameState.building.get_household_res_from_enum(h))
+	return {"res":res, "archetypes":hh}
+
+
 func _on_finish_stage_button_pressed() -> void:
 	if GameState.state == GameState.State.Managing:
 		GameState.set_state(GameState.State.Building)
@@ -50,17 +56,14 @@ func handle_empty_apartments():
 		GameState.set_state(GameState.State.Managing)
 		find_child("FinishStageButton").visible = true
 		return
-	find_child("TenantPicker").present_tenants(get_random_tenants(3), flats_to_handle.pop_back())
-
+	var flat_to_handle = flats_to_handle.pop_back()
+	prints("handling", flat_to_handle)
+	prints("handled flat has room types", GameState.building.get_room_types_of_flat(flat_to_handle))
+	find_child("TenantPicker").present_tenants(get_random_tenants(3), flat_to_handle)
+	
 
 func _on_tenant_picker_tenant_picked_for_apartment(apartment_coords: Array, tenant: Dictionary) -> void:
 	# building.occupy_flat race conditions are a funny thing (occupy_flat
 	GameState.building.occupy_flat(apartment_coords, tenant)
 	await get_tree().process_frame
-	flats_to_handle = GameState.building.get_empty_flats()
-	prints("handled tenant for apartment", apartment_coords, " remaining", flats_to_handle)
-	if flats_to_handle.is_empty():
-		GameState.set_state(GameState.State.Managing)
-		find_child("FinishStageButton").visible = true
-		return
-	find_child("TenantPicker").present_tenants(get_random_tenants(3), flats_to_handle.pop_back())
+	handle_empty_apartments()

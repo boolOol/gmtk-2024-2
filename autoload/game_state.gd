@@ -45,7 +45,6 @@ func can_drag_target_fit_room(room:Room) -> bool:
 	var size = CONST.ROOM_SIZES.get(room.room_type)
 	var level = floor.get_index()
 	
-	print(size)
 	for i in size:
 		if floor.is_coord_occupied(Vector2(drag_target.h_index + i, -level)):
 			return false

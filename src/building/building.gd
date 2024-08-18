@@ -25,7 +25,7 @@ class_name Building
 signal query_add_floor(coord:Vector2)
 var occupation_by_flat := {}
 var occupation_by_household_id := {}
-var households_by_id := {}
+var household_data_by_id := {} # filled with tenant data
 
 func _ready() -> void:
 	GameState.building = self
@@ -35,6 +35,9 @@ func _ready() -> void:
 	add_floor(0)
 	for i in 5:
 		get_floor(1).add_unit_at(Vector2(i + 1, -1))
+	add_floor(0)
+	for i in 5:
+		get_floor(2).add_unit_at(Vector2(i + 1, -2))
 	
 
 
@@ -46,11 +49,6 @@ func _process(delta: float) -> void:
 	add_unit_button.visible = can_coord_be_added(button_coord)
 
 
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			print(get_flats())
 
 func get_household_res_from_enum(value:CONST.HouseholdArchetype):
 	match value:
@@ -120,7 +118,83 @@ func occupy_flat(flat_amalgam:Array, tenant_data:Dictionary):
 	var household_id = tenant_data.get("id")
 	occupation_by_flat[flat_amalgam] = household_id
 	occupation_by_household_id[household_id] = flat_amalgam
-	households_by_id[household_id] = tenant_data
+	household_data_by_id[household_id] = tenant_data
+	
+	var tenant_layer = $Tenants
+	var tenant = preload("res://src/household/household.tscn").instantiate()
+	tenant_layer.add_child(tenant)
+	tenant.global_position.y = flat_amalgam.front().y * CONST.FLOOR_UNIT_HEIGHT + (CONST.FLOOR_UNIT_HEIGHT * 0.5)
+	tenant.global_position.y -= 2
+	tenant.id = household_id
+	tenant.build_from_resource(tenant_data.get("resource"))
+	
+	update_flat_extents(tenant.id)
+
+func update_flat_extents(household_id:int):
+	var flat_amalgam = occupation_by_household_id.get(household_id)
+	var tenant = get_household_from_id(household_id)
+	var extents = get_physical_flat_extents(flat_amalgam)
+	tenant.set_global_move_range(extents.x, extents.y)
+
+func get_room_type(coord:Vector2):
+	var room = get_room(coord)
+	if not room:
+		return -1
+	return room.room_type
+
+
+
+func get_adjacent_household_ids(coord:Vector2) -> Array:
+	var adjacent_coords = get_adjacent_coords_to_flat(get_flat(coord))
+	print("coords adjacent to ", coord, ": ", adjacent_coords)
+	var ids := []
+	for acoord in adjacent_coords:
+		var id = get_household_id_of(acoord)
+		if not ids.has(id):
+			ids.append(id)
+	
+	return ids
+
+func get_adjacent_household_archetypes(coord:Vector2) -> Array:
+	var archetypes := []
+	
+	var adjacent_households = get_adjacent_household_ids(coord)
+	prints("adjacent hh", adjacent_households)
+	for ahh in adjacent_households:
+		if ahh == -1:
+			continue
+		var archetype = household_data_by_id.get(ahh).get("archetype")
+		archetypes.append(archetype)
+	
+	return archetypes
+
+func get_room_types_of_flat(flat:Array):
+	var rooms := []
+	for coord in flat:
+		rooms.append(get_room(coord).room_type)
+	return rooms
+
+func get_room(coord: Vector2):
+	if not get_floor(coord.y):
+		return null
+	return get_floor(coord.y).rooms_by_coord.get(coord)
+
+func get_household_from_id(id:int):
+	for h in $Tenants.get_children():
+		if h.id == id:
+			return h
+	return null
+
+func get_physical_flat_extents(flat:Array) -> Vector2:
+	var min_x = 99999
+	var max_x = -99999
+	
+	for coord : Vector2 in flat:
+		if coord.x < min_x:
+			min_x = coord.x
+		if coord.x > max_x:
+			max_x = coord.x
+	return Vector2(min_x, max_x)
 
 func get_empty_flats() -> Array:
 	var flats = get_flats()
@@ -130,15 +204,15 @@ func get_empty_flats() -> Array:
 		if occupation_by_flat.has(flat):
 			continue
 		result.append(flat)
-	prints("flats", flats)
-	prints("empty flats", result)
 	return result
 
 func get_adjacent_coords_to_flat(flat:Array):
 	var coords := []
+	prints("checking flat", flat)
 	for cell in flat:
 		for neighbor in CONST.NEIGHBOR_OFFSETS:
 			var offset = cell + neighbor
+			prints(offset, " does exist?", does_coord_exist(offset))
 			if (not coords.has(offset)) and does_coord_exist(offset):
 				coords.append(offset)
 	return coords
@@ -150,9 +224,15 @@ func get_household_id_of(coord:Vector2) -> int:
 	return -1
 
 func get_flat(coord:Vector2) -> Array:
-	for flat : Array in occupation_by_flat:
+	for flat in get_flats():
 		if flat.has(coord):
 			return flat
+	#for flat : Array in occupation_by_flat:
+		#if flat.has(coord):
+			#return flat
+	#
+	#var flat
+	
 	return []
 
 func get_adjacent_neighbors(coord_in_flat:Vector2):

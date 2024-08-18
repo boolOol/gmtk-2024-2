@@ -6,21 +6,28 @@ signal tenant_picked_for_apartment(apartment_coords:Array, tenant:Dictionary)
 
 
 # apartment_amalgam is an array of indicies that make up the apartment
-func present_tenants(tenants:Array[Resource], apartment_amalgam:Array):
+func present_tenants(tenants:Dictionary, apartment_amalgam:Array):
 	visible = true
 	apartment_in_question = apartment_amalgam
 	for child in $HBoxContainer.get_children():
 		child.queue_free()
 	var id:int
-	for i in tenants: 
+	
+	var archetypes = tenants.get("archetypes")
+	var res = tenants.get("res")
+	var i := 0
+	while i < tenants.keys().size():
+		
 		Data.change_by_int("household_counter", 1)
 		id = Data.of("household_counter")
 		var item = preload("res://src/ui/tenant_picker_item.tscn").instantiate()
 		$HBoxContainer.add_child(item)
-		
+		item.root_coord = apartment_amalgam.front()
 		item.tenant_picked.connect(on_tenant_picked)
 		item.id = id
-		item.present_tenant(i)
+		item.archetype = archetypes[i]
+		item.present_tenant(res[i])
+		i += 1
 	
 
 func on_tenant_picked(tenant_data:Dictionary):
