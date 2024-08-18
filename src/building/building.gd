@@ -23,12 +23,19 @@ class_name Building
 @export var marathon_couple :Resource
 
 signal query_add_floor(coord:Vector2)
+var occupation_by_flat := {}
+var occupation_by_household_id := {}
+var households_by_id := {}
 
 func _ready() -> void:
 	GameState.building = self
 	ground_floor.player_owned = true
 	for i in 6:
 		ground_floor.add_unit_at(Vector2(i, 0))
+	add_floor(0)
+	for i in 5:
+		get_floor(1).add_unit_at(Vector2(i + 1, -1))
+	
 
 
 func _process(delta: float) -> void:
@@ -108,12 +115,12 @@ func get_flats() -> Array:
 	
 	return flats
 
-var occupation_by_flat := {}
-var occupation_by_household_id := {}
 
-func occupy_flat(flat_amalgam:Array, household_id:int):
+func occupy_flat(flat_amalgam:Array, tenant_data:Dictionary):
+	var household_id = tenant_data.get("id")
 	occupation_by_flat[flat_amalgam] = household_id
 	occupation_by_household_id[household_id] = flat_amalgam
+	households_by_id[household_id] = tenant_data
 
 func get_empty_flats() -> Array:
 	var flats = get_flats()
@@ -123,8 +130,41 @@ func get_empty_flats() -> Array:
 		if occupation_by_flat.has(flat):
 			continue
 		result.append(flat)
-	
+	prints("flats", flats)
+	prints("empty flats", result)
 	return result
+
+func get_adjacent_coords_to_flat(flat:Array):
+	var coords := []
+	for cell in flat:
+		for neighbor in CONST.NEIGHBOR_OFFSETS:
+			var offset = cell + neighbor
+			if (not coords.has(offset)) and does_coord_exist(offset):
+				coords.append(offset)
+	return coords
+
+func get_household_id_of(coord:Vector2) -> int:
+	for flat : Array in occupation_by_flat:
+		if flat.has(coord):
+			return occupation_by_flat.get(flat)
+	return -1
+
+func get_flat(coord:Vector2) -> Array:
+	for flat : Array in occupation_by_flat:
+		if flat.has(coord):
+			return flat
+	return []
+
+func get_adjacent_neighbors(coord_in_flat:Vector2):
+	var adjacents := []
+	var neighboring_coords = get_adjacent_coords_to_flat(get_flat(coord_in_flat))
+	prints("HIII WORK HERE", coord_in_flat, neighboring_coords, get_flat(coord_in_flat))
+
+func does_coord_exist(coord:Vector2):
+	var floor := get_floor(coord.y)
+	if not floor:
+		return false
+	return floor.get_unit(coord.x) != null
 
 func has_floor(index: int) -> bool:
 	return get_floor(index) != null

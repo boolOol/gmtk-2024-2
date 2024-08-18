@@ -7,6 +7,7 @@ signal property_changed(property_name:String, old_value, new_value)
 signal room_added(at_coord:Vector2)
 
 func _ready() -> void:
+	apply("household_counter", 0)
 	for type in CONST.RoomType:
 		apply(str("inventory.", type), 0)
 
