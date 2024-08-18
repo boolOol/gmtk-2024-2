@@ -19,5 +19,10 @@ offset_right = 40.0
 offset_bottom = 40.0
 texture_normal = ExtResource("2_18x7e")
 
+[node name="InfoButton" type="TextureButton" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
 [connection signal="button_down" from="TextureButton" to="." method="_on_texture_button_button_down"]
 [connection signal="button_up" from="TextureButton" to="." method="_on_texture_button_button_up"]
+[connection signal="pressed" from="InfoButton" to="." method="_on_info_button_pressed"]

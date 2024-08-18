@@ -7,18 +7,24 @@ var drag_start_position:Vector2
 var drag_offset:Vector2
 
 var floor := 0
+var coord := Vector2.ZERO
+var room_size := 0
 
 const sprite_root := "res://src/rooms/room_sprites/spr_room-"
 
 @export var room_type: CONST.RoomType
 
+signal request_room_info(coord:Vector2)
+
 func _ready() -> void:
 	GameState.state_changed.connect(on_state_changed)
 	$TextureButton.visible = false
+	$InfoButton.visible = player_owned
 
 func on_state_changed(new_state:GameState.State):
 	$TextureButton.visible = (not player_owned) and new_state == GameState.State.Building
-
+	$InfoButton.visible = player_owned
+	
 
 func set_room_type(value):
 	room_type = value
@@ -50,11 +56,13 @@ func set_room_type(value):
 		CONST.RoomType.PleasureRoom:
 			$Sprite2D.texture = load("res://src/floor/pleasure.png")
 	
-	var size = get_room_size()
-	if size == 1:
+	room_size = get_room_size()
+	if room_size == 1:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorSmallWhite.png")
-	elif size == 2:
+		$InfoButton.texture_normal = load("res://src/rooms/spr_UI-selectorSmallWhite.png")
+	elif room_size == 2:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorMediumWhite.png")
+		$InfoButton.texture_normal = load("res://src/rooms/spr_UI-selectorMediumWhite.png")
 
 func set_dropability(do:bool):
 	var size = get_room_size()
@@ -74,34 +82,16 @@ func _physics_process(delta: float) -> void:
 	if selected:
 		global_position = lerp(global_position, get_global_mouse_position() - drag_offset, 20*delta)
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			var event_position : Vector2 = event.global_position
-			var top_left := position
-			var bottom_right : Vector2 = position + $Sprite2D.texture.get_size()
-			if event_position.x > top_left.x and event_position.x < bottom_right.x and event_position.y > top_left.y and event_position.y < bottom_right.y:
-				print(name)
-		#if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
-			#selected = false
-			#global_position = drag_start_position
-#func _input(event: InputEvent) -> void:
-	#if event is InputEventMouseButton:
-		#if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			#
-			#var event_position : Vector2 = event.global_position
-			##print(event_position)
-			#var top_left := global_position
-			#var bottom_right : Vector2 = global_position + $Sprite2D.texture.get_size()
-			#
-			#printt(event_position, top_left, bottom_right)
-			#if event_position.x > top_left.x and event_position.x < bottom_right.x and event_position.y > top_left.y and event_position.y < bottom_right.y:
-				#print(name)
-		##if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
-			##selected = false
-			##global_position = drag_start_position
-#
+var mouse_in = false
 
+func _process(delta: float) -> void:
+	var mouse_pos := get_local_mouse_position() 
+	if (mouse_pos.x > 0 and mouse_pos.x < room_size * CONST.FLOOR_UNIT_WIDTH
+	and mouse_pos.y > 0 and mouse_pos.y < room_size * CONST.FLOOR_UNIT_HEIGHT):
+		mouse_in = true
+	else:
+		mouse_in = false
+		
 
 func _on_texture_button_button_down() -> void:
 	GameState.dragged_room = self
@@ -109,21 +99,21 @@ func _on_texture_button_button_down() -> void:
 	drag_start_position = global_position
 	drag_offset = get_local_mouse_position()
 	
-	var size = get_room_size()
-	if size == 1:
+	if room_size == 1:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorSmallRed.png")
-	elif size == 2:
+	elif room_size == 2:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorMediumRed.png")
 	
 func set_player_owned(value:bool):
 	player_owned = value
 	$TextureButton.visible = (not player_owned) and GameState.is_state(GameState.State.Building)
+	$InfoButton.visible = player_owned
 
 func get_room_size() -> int:
 	return CONST.ROOM_SIZES.get(room_type)
 
 func get_center() -> Vector2:
-	return global_position + (Vector2(get_room_size() * CONST.FLOOR_UNIT_WIDTH, CONST.FLOOR_UNIT_HEIGHT) * 0.5)
+	return global_position + (Vector2(room_size * CONST.FLOOR_UNIT_WIDTH, CONST.FLOOR_UNIT_HEIGHT) * 0.5)
 
 func _on_texture_button_button_up() -> void:
 	selected = false
@@ -135,9 +125,14 @@ func _on_texture_button_button_up() -> void:
 	else:
 		global_position = drag_start_position
 	GameState.dragged_room = null
-	var size = get_room_size()
-	if size == 1:
+	
+	if room_size == 1:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorSmallWhite.png")
-	elif size == 2:
+	elif room_size == 2:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorMediumWhite.png")
 	
+
+
+func _on_info_button_pressed() -> void:
+	if player_owned:
+		emit_signal("request_room_info", coord)

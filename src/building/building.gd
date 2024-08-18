@@ -96,6 +96,7 @@ func get_flats() -> Array:
 	
 	for floor : Floor in $Floors.get_children():
 		var coords := floor.get_sorted_coords()
+		prints("floor", floor.get_index(), "has coords", coords)
 		var handled_rooms := [] # track separately bc of multi-slot rooms
 		var flats_on_floor := []
 		
@@ -110,7 +111,7 @@ func get_flats() -> Array:
 			flat_sequence.append(coord)
 		if not flat_sequence.is_empty():
 			flats.append(flat_sequence.duplicate())
-	
+	prints("returning flats", flats)
 	return flats
 
 

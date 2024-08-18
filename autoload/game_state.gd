@@ -10,7 +10,7 @@ signal state_changed(new_state:State)
 
 var state := State.Managing
 var building:Building
-
+var game_stage:Node2D
 var camera:GameCamera
 var drag_target : FloorUnit
 var dragged_room : Room
@@ -66,6 +66,8 @@ func transfer_to_drag_target():
 	var floor : Floor = drag_target.get_parent().get_parent()
 	var coord = Vector2(drag_target.h_index, -drag_target.floor)
 	dragged_room.reparent(floor.get_node("Rooms"))
+	dragged_room.floor = floor.get_index()
+	dragged_room.coord = coord
 	dragged_room.global_position = MapMath.coord_to_pos(coord) + floor.offset
 	
 	var size = CONST.ROOM_SIZES.get(dragged_room.room_type)

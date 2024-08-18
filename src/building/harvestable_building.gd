@@ -18,7 +18,7 @@ func get_fitting_room(size:int) -> CONST.RoomType:
 	return room
 
 func generate(rooms := 10, building_width := 6):
-	
+	await get_tree().process_frame
 	var floor := preload("res://src/floor/floor.tscn").instantiate()
 	floor.offset = global_position
 	floor.player_owned = false
