@@ -1,15 +1,29 @@
 extends Node2D
 
 @onready var add_floor_container : CenterContainer = find_child("AddFloorContainer")
+@onready var notification : PanelContainer = find_child("Notification")
 
-
+var notification_tween:Tween
 
 func _ready() -> void:
+	notification.modulate.a = 0.0
 	GameState.set_state(GameState.State.Building)
+	GameState.state_changed.connect(on_state_changed)
 	GameState.game_stage = self
 	Data.property_changed.connect(on_property_changed)
 	$FlatOverview.visible = false
 	Data.apply("cash", 50000)
+
+func on_state_changed(new_state:int):
+	var button = find_child("FinishStageButton")
+	match new_state:
+		GameState.State.Building:
+			button.text = "Next: Manage Building"
+		GameState.State.PickingTenants:
+			button.text = "Next: Fill Empty Flats"
+		GameState.State.Managing:
+			button.text = "Next: Absorb Rival Building"
+		
 
 func on_property_changed(property_name:String, old_value, new_value):
 	match property_name:
@@ -60,7 +74,7 @@ func display_room_info(coord:Vector2):
 		find_child("RentLabel").text = str(rent)
 		
 		var happy_rooms : Array[CONST.RoomType] = resource.happy_rooms
-		var sad_rooms : Array[CONST.RoomType] = resource.happy_rooms
+		var sad_rooms : Array[CONST.RoomType] = resource.sad_rooms
 		var happy_neighbors : Array[CONST.HouseholdArchetype] = resource.happy_neighbors
 		var sad_neighbors : Array[CONST.HouseholdArchetype] = resource.sad_neighbors
 		$FlatInfo.set_happiness_preferences(
@@ -162,13 +176,23 @@ func handle_empty_apartments():
 		find_child("FinishStageButton").visible = true
 		return
 	var flat_to_handle = flats_to_handle.pop_back()
-	prints("handling", flat_to_handle)
-	prints("handled flat has room types", GameState.building.get_room_types_of_flat(flat_to_handle))
 	find_child("TenantPicker").present_tenants(get_random_tenants(3), flat_to_handle)
-	
+
+func notify(message:String, duration:=5.0, fade_delay := 2.0):
+	notification.modulate.a = 1.0
+	if notification_tween:
+		notification_tween.kill()
+	notification.get_node("NotificationLabel").text = message
+	notification_tween = create_tween()
+	notification_tween.tween_property(notification, "modulate:a", 0.0, duration).set_delay(fade_delay).set_ease(Tween.EASE_OUT_IN)
 
 func _on_tenant_picker_tenant_picked_for_apartment(apartment_coords: Array, tenant: Dictionary) -> void:
 	# building.occupy_flat race conditions are a funny thing (occupy_flat
 	GameState.building.occupy_flat(apartment_coords, tenant)
 	await get_tree().process_frame
 	handle_empty_apartments()
+
+
+
+func _on_permanent_reveal_check_box_toggled(toggled_on: bool) -> void:
+	Data.apply("global.permanent_reveal", not toggled_on)

@@ -1,7 +1,25 @@
 extends Node2D
 
+var lifetime := 3
+
 func _ready() -> void:
 	generate()
+	GameState.state_changed.connect(on_state_changed)
+
+func on_state_changed(new_state:int):
+	if GameState.is_state(GameState.State.Managing):
+		lifetime -= 1
+		if lifetime <= 0:
+			reset()
+
+func reset():
+	for floor : Floor in $Floors.get_children():
+		floor.queue_free()
+	$AnimatedSprite2D.stop()
+	$AnimatedSprite2D.frame = 0
+	$AnimatedSprite2D.play("default")
+	generate(randi_range(3, 14), randi_range(6, 12))
+	lifetime = 3
 
 func get_fitting_room(size:int) -> CONST.RoomType:
 	var room = randi_range(0, CONST.RoomType.size() - 1)

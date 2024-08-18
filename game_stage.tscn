@@ -95,7 +95,7 @@ repeat_times = 7
 texture = ExtResource("6_57kyt")
 
 [node name="GameCamera" parent="." instance=ExtResource("2_8dd5b")]
-position = Vector2(215, 111)
+position = Vector2(276, -8)
 zoom = Vector2(0.49, 0.49)
 
 [node name="Building" parent="." instance=ExtResource("2_6ic3h")]
@@ -163,7 +163,7 @@ offset_top = -40.5
 offset_right = 132.5
 offset_bottom = 40.5
 
-[node name="FinishStageButton" type="Button" parent="CanvasLayer/Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -171,11 +171,18 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -85.0
-offset_top = -31.0
+offset_top = -66.0
 grow_horizontal = 0
 grow_vertical = 0
+
+[node name="FinishStageButton" type="Button" parent="CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
 focus_mode = 0
 text = "NEXT DAY"
+
+[node name="PermanentRevealCheckBox" type="CheckBox" parent="CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+text = "Reveal"
 
 [node name="CashLabel" type="Label" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -186,7 +193,7 @@ offset_left = -40.0
 offset_bottom = 23.0
 grow_horizontal = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control"]
+[node name="Notification" type="PanelContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -196,7 +203,7 @@ offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/PanelContainer"]
+[node name="NotificationLabel" type="Label" parent="CanvasLayer/Control/Notification"]
 layout_mode = 2
 text = "NOTIFICATION"
 horizontal_alignment = 1
@@ -209,6 +216,8 @@ offset_left = 705.0
 offset_top = 157.0
 offset_right = 705.0
 offset_bottom = 180.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="FlatOverview" type="PanelContainer" parent="."]
 visible = false
@@ -257,4 +266,5 @@ fit_content = true
 [connection signal="query_add_floor" from="Building" to="." method="_on_building_query_add_floor"]
 [connection signal="tenant_picked_for_apartment" from="CanvasLayer/Control/TenantPicker" to="." method="_on_tenant_picker_tenant_picked_for_apartment"]
 [connection signal="confirm_add_floor" from="CanvasLayer/Control/AddFloorContainer" to="Building" method="add_floor_by_coord"]
-[connection signal="pressed" from="CanvasLayer/Control/FinishStageButton" to="." method="_on_finish_stage_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/FinishStageButton" to="." method="_on_finish_stage_button_pressed"]
+[connection signal="toggled" from="CanvasLayer/Control/VBoxContainer/PermanentRevealCheckBox" to="." method="_on_permanent_reveal_check_box_toggled"]

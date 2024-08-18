@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/floor/floor.gd" id="1_ipi7l"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_h864d"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h7s22"]
 size = Vector2(121, 49)
 
 [node name="Floor" type="Area2D"]
@@ -13,7 +13,11 @@ script = ExtResource("1_ipi7l")
 [node name="Rooms" type="Node2D" parent="."]
 
 [node name="FrontWall" type="Node2D" parent="."]
+visible = false
 
 [node name="HoverArea" type="CollisionShape2D" parent="."]
 position = Vector2(60, 25)
-shape = SubResource("RectangleShape2D_h864d")
+shape = SubResource("RectangleShape2D_h7s22")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

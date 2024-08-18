@@ -63,7 +63,7 @@ const ROOM_NAMES := {
 }
 
 const ROOM_PRICE_FACTOR := 200
-const ROOM_RENT_FACTOR := 200
+const ROOM_RENT_FACTOR := 50
 func get_price(room_type:int):
 	return ROOM_VALUES.get(room_type) * ROOM_PRICE_FACTOR
 func get_rent(room_type:int):

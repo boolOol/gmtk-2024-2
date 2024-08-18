@@ -13,8 +13,46 @@ var player_owned : bool
 var rooms_by_coord := {}
 var units_by_coord := {}
 
+signal propagate_wall_update(originator:Floor)
+
 func update_walls():
-	pass
+	var highest_point_by_x := {}
+	var righest_point_by_y := {}
+	
+	for wall in $FrontWall.get_children():
+		wall.queue_free()
+	for coord in units_by_coord:
+		var highest = coord.y == GameState.highest_coord
+		var left = coord.x == GameState.left_most_coord
+		var right = coord.x == GameState.right_most_coord
+		var ground = coord.x == 0
+		
+		var tex_str := "res://src/building/sprites/spr_building-"
+		if ground:
+			tex_str += "ground"
+		elif highest:
+			tex_str += "top"
+		else:
+			tex_str += "middle"
+		tex_str += "Floor"
+		
+		if left:
+			tex_str += "Left"
+		elif right:
+			tex_str += "Right"
+		else:
+			tex_str += "Center"
+		tex_str += "01"
+		#tex_str += str(int(coord.x)%3+1)
+		tex_str += ".png"
+		
+		var wall = Sprite2D.new()
+		wall.texture = load(tex_str)
+		$FrontWall.add_child(wall)
+		wall.global_position.x = coord.x * CONST.FLOOR_UNIT_WIDTH
+		wall.global_position.y = coord.y * CONST.FLOOR_UNIT_HEIGHT
+		wall.centered = false
+	emit_signal("propagate_wall_update", self)
 
 func get_sorted_rooms() -> Array:
 	var keys := rooms_by_coord.keys().duplicate()
@@ -42,12 +80,18 @@ func sort_coords(coord_a: Vector2, coord_b: Vector2):
 	return coord_a.x < coord_b.x
 
 func _ready():
-	mouse_entered.connect(on_mouse_entered)
-	mouse_exited.connect(on_mouse_exited)
 	
 	hover_area.shape.size.x = CONST.FLOOR_UNIT_WIDTH * CONST.MAX_WIDTH
 	hover_area.shape.size.y = CONST.FLOOR_UNIT_HEIGHT
+	
+	Data.property_changed.connect(on_property_changed)
 
+
+func on_property_changed(property_name:String, old_value, new_value):
+	match property_name:
+		"global.permanent_reveal":
+			$FrontWall.visible = new_value
+	
 # note: can return null
 func get_unit(index:int) -> FloorUnit:
 	var found_unit:FloorUnit
@@ -67,6 +111,34 @@ func add_unit_at(coord:Vector2):
 	unit.h_index = coord.x
 	unit.player_owned = player_owned
 	units_by_coord[coord] = unit
+	
+	var min_x = get_min_unit_x(unit.position.x)
+	var max_x = get_max_unit_x(unit.position.x)
+	
+	$HoverArea.position.x = min_x
+	$HoverArea.shape.size.x = max_x - min_x
+	
+	update_walls()
+	
+	if player_owned:
+		if coord.x < GameState.left_most_coord:
+			GameState.left_most_coord = coord.x
+		if coord.x > GameState.right_most_coord:
+			GameState.right_most_coord = coord.x
+
+func get_min_unit_x(start:=999) -> float:
+	var min_x = start
+	for u in $Units.get_children():
+		if u.position.x < min_x:
+			min_x = u.position.x
+	return min_x
+
+func get_max_unit_x(start:=-999) -> float:
+	var max_x = start
+	for u in $Units.get_children():
+		if u.position.x > max_x:
+			max_x = u.position.x
+	return max_x
 
 func on_mouse_entered():
 	if Data.of("global.permanent_reveal"):
@@ -106,6 +178,7 @@ func is_coord_occupied(coord:Vector2, non_existent_as_occupied:=true):
 		return non_existent_as_occupied
 	
 	return rooms_by_coord.has(coord)
+
 
 func build_front_wall():
 	pass

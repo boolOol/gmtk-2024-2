@@ -48,8 +48,11 @@ func _process(delta: float) -> void:
 	
 	var button_coord = add_unit_button.get_current_coord()
 	add_unit_button.visible = can_coord_be_added(button_coord) and GameState.is_state(GameState.State.Managing)
-
-
+	$Ghost.visible = add_unit_button.visible
+	if add_unit_button.visible:
+		var mouse_coord = MapMath.pos_to_coord(get_global_mouse_position())
+		$Ghost.global_position = (mouse_coord * CONST.FLOOR_UNIT_HEIGHT)# - global_position
+		$Ghost.global_position -= Vector2(CONST.FLOOR_UNIT_WIDTH, CONST.FLOOR_UNIT_HEIGHT) * 0.5
 
 func get_household_res_from_enum(value:CONST.HouseholdArchetype):
 	match value:
@@ -92,6 +95,13 @@ func get_random_household() -> int:
 			pool.append(i)
 	return pool.pick_random()
 
+func get_sorted_coords(coords:Array) -> Array:
+	coords = coords.duplicate()
+	coords.sort_custom(sort_coords)
+	return coords
+func sort_coords(coord_a: Vector2, coord_b: Vector2):
+	return coord_a.x < coord_b.x
+
 func get_flats() -> Array:
 	var flats := []
 	
@@ -107,7 +117,7 @@ func get_flats() -> Array:
 			var is_empty = not floor.is_coord_occupied(coord)
 			if is_empty:
 				if not flat_sequence.is_empty():
-					flats.append(flat_sequence.duplicate())
+					flats.append(get_sorted_coords(flat_sequence.duplicate()))
 					flat_sequence.clear()
 				continue
 			
@@ -115,7 +125,7 @@ func get_flats() -> Array:
 				flat_sequence.append(coord)
 			handled_rooms.append(get_room(coord))
 		if not flat_sequence.is_empty():
-			flats.append(flat_sequence.duplicate())
+			flats.append(get_sorted_coords(flat_sequence.duplicate()))
 	prints("returning flats", flats)
 	return flats
 
@@ -232,6 +242,7 @@ func get_adjacent_coords_to_flat(flat:Array):
 	return coords
 
 func get_household_id_of(coord:Vector2) -> int:
+	var a = occupation_by_flat
 	for flat : Array in occupation_by_flat:
 		if flat.has(coord):
 			return occupation_by_flat.get(flat)
@@ -241,13 +252,17 @@ func get_flat(coord:Vector2) -> Array:
 	for flat in get_flats():
 		if flat.has(coord):
 			return flat
-	#for flat : Array in occupation_by_flat:
-		#if flat.has(coord):
-			#return flat
-	#
-	#var flat
 	
 	return []
+
+func is_in_flat(coord:Vector2):
+	return not get_flat(coord).is_empty()
+
+func get_household(coord:Vector2):
+	for flat in occupation_by_flat:
+		if coord in flat:
+			return occupation_by_flat.get(flat)
+	return null
 
 func get_adjacent_neighbors(coord_in_flat:Vector2):
 	var adjacents := []
@@ -281,6 +296,8 @@ func add_floor(horizontal_index:int):
 	floor.add_unit_at(Vector2(horizontal_index, -floor_count))
 	
 	GameState.camera.apply_shake(10)
+	
+	GameState.highest_coord = -floor_count
 
 func is_coord_free(coord: Vector2) -> bool:
 	var floor := get_floor(coord.y)

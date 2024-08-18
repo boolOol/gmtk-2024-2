@@ -6,6 +6,10 @@ enum State {
 	PickingTenants
 }
 
+var left_most_coord := 0
+var right_most_coord := 0
+var highest_coord := 0
+
 signal state_changed(new_state:State)
 
 var state := State.Managing
@@ -48,6 +52,18 @@ func can_drag_target_fit_room(room:Room) -> bool:
 	for i in size:
 		if floor.is_coord_occupied(Vector2(drag_target.h_index + i, -level)):
 			return false
+			
+	
+	# squished between
+	if (
+		building.get_household(Vector2(drag_target.h_index -1, -level)) and
+		building.get_household(Vector2(drag_target.h_index +1, -level))):
+			GameState.build_indicator(
+				str("Tile is between occupied apartments.\nEvict either to merge."),
+				drag_target.global_position
+			)
+			return false
+	
 	return true
 
 func is_state(value:State) -> bool:
@@ -78,6 +94,29 @@ func transfer_to_drag_target():
 	dragged_room.set_player_owned(true)
 	camera.apply_shake()
 	
+	var adjacent_household
+	if building.get_household(coord + Vector2.LEFT):
+		adjacent_household = building.get_household(coord + Vector2.LEFT)
+	if building.get_household(coord + Vector2.RIGHT):
+		adjacent_household = building.get_household(coord + Vector2.RIGHT)
+	if adjacent_household:
+		var previous_flat:Array
+		var new_flat:Array
+		var hh 
+		for household in building.occupation_by_household_id:
+			if household == adjacent_household:
+				previous_flat = building.occupation_by_household_id[household]
+				building.occupation_by_household_id[household].append(coord)
+				building.occupation_by_household_id[household] = building.get_sorted_coords(building.occupation_by_household_id[household])
+				new_flat = building.occupation_by_household_id[household]
+				prints("merged ",coord,"into", building.occupation_by_household_id.get(household))
+				hh = household
+				break
+		for flat in building.occupation_by_flat:
+			if flat == previous_flat:
+				building.occupation_by_flat[new_flat] = hh#building.occupation_by_flat.get(flat)
+				#building.occupation_by_flat.erase(previous_flat)
+			#building.occupation_by_flat.has(adjacent_household)
 	var price : int = CONST.get_price(dragged_room.room_type)
 	build_indicator(
 		str("-",price),

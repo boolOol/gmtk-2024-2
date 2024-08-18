@@ -20,6 +20,8 @@ func _ready() -> void:
 	GameState.state_changed.connect(on_state_changed)
 	$TextureButton.visible = false
 	$InfoButton.visible = player_owned
+	$TextureButton.modulate.a = 0.6
+	find_child("HoverContainer").modulate.a = 0.0
 
 func on_state_changed(new_state:GameState.State):
 	$TextureButton.visible = (not player_owned) and new_state == GameState.State.Building
@@ -28,35 +30,39 @@ func on_state_changed(new_state:GameState.State):
 
 func set_room_type(value):
 	room_type = value
+	room_size = get_room_size()
+	
+	var size_string = "Medium" if room_size == 2 else "Small"
+	
 	match value:
 		CONST.RoomType.Kitchen:
-			$Sprite2D.texture = load(str(sprite_root, "kitchenMedium01.png"))
+			$Sprite2D.texture = load(str(sprite_root, "kitchen", size_string,"01.png"))
 		CONST.RoomType.Bathroom:
-			$Sprite2D.texture = load(str(sprite_root, "bathSmall01.png"))
+			$Sprite2D.texture = load(str(sprite_root, "bath", size_string,"01.png"))
 		CONST.RoomType.Livingroom:
-			$Sprite2D.texture = load(str(sprite_root, "livingroomMedium01.png"))
+			$Sprite2D.texture = load(str(sprite_root, "livingroom", size_string,"01.png"))
 		CONST.RoomType.Bedroom:
-			$Sprite2D.texture = load(str(sprite_root, "bedroomMedium01.png"))
+			$Sprite2D.texture = load(str(sprite_root, "bedroom", size_string,"01.png"))
 		CONST.RoomType.Hallway:
-			$Sprite2D.texture = load(str(sprite_root, "hallwaySmall01.png"))
+			$Sprite2D.texture = load(str(sprite_root, "hallway", size_string,"01.png"))
 		CONST.RoomType.Storeroom:
-			$Sprite2D.texture = load(str(sprite_root, "storageSmall01.png"))
+			$Sprite2D.texture = load(str(sprite_root, "storage", size_string,"01.png"))
 		CONST.RoomType.Office:
-			$Sprite2D.texture = load("res://src/floor/office.png")
+			$Sprite2D.texture = load(str(sprite_root, "office", size_string,"01.png"))
 		CONST.RoomType.Fitnessroom:
-			$Sprite2D.texture = load("res://src/floor/fitness.png")
+			$Sprite2D.texture = load(str(sprite_root, "gym", size_string,"01.png"))
 		CONST.RoomType.Garage:
-			$Sprite2D.texture = load("res://src/floor/garage.png")
+			$Sprite2D.texture = load(str(sprite_root, "garage", size_string,"01.png"))
 		CONST.RoomType.ChildRoom:
-			$Sprite2D.texture = load("res://src/floor/childroom.png")
+			$Sprite2D.texture = load(str(sprite_root, "childRoom", size_string,"01.png"))
 		CONST.RoomType.Library:
-			$Sprite2D.texture = load("res://src/floor/library.png")
+			$Sprite2D.texture = load(str(sprite_root, "library", size_string,"01.png"))
 		CONST.RoomType.GamingRoom:
-			$Sprite2D.texture = load("res://src/floor/gaming.png")
+			$Sprite2D.texture = load(str(sprite_root, "gaming", size_string,"01.png"))
 		CONST.RoomType.PleasureRoom:
-			$Sprite2D.texture = load("res://src/floor/pleasure.png")
+			$Sprite2D.texture = load(str(sprite_root, "goonCave", size_string,"01.png"))
 	
-	room_size = get_room_size()
+	
 	if room_size == 1:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorSmallWhite.png")
 		$InfoButton.texture_hover = load("res://src/rooms/spr_UI-InfoSmallWhite.png")
@@ -137,3 +143,23 @@ func _on_texture_button_button_up() -> void:
 func _on_info_button_pressed() -> void:
 	if player_owned:
 		emit_signal("request_room_info", coord)
+
+var texture_modulate_tween:Tween
+func _on_texture_button_mouse_entered() -> void:
+	var label = find_child("HoverContainer")
+	if texture_modulate_tween:
+		texture_modulate_tween.kill()
+	texture_modulate_tween = create_tween()
+	texture_modulate_tween.tween_property($TextureButton, "modulate:a", 1.0, 0.4).set_ease(Tween.EASE_OUT)
+	texture_modulate_tween.tween_property(label, "modulate:a", 1.0, 1.0)
+	
+	find_child("HoverInfoLabel").text = CONST.ROOM_NAMES.get(room_type)
+
+func _on_texture_button_mouse_exited() -> void:
+	if texture_modulate_tween:
+		texture_modulate_tween.kill()
+	texture_modulate_tween = create_tween()
+	
+	var label = find_child("HoverContainer")
+	texture_modulate_tween.tween_property($TextureButton, "modulate:a", 0.6, 1.0)
+	texture_modulate_tween.tween_property(label, "modulate:a", 0.0, 1.0)
