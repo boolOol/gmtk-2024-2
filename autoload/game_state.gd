@@ -149,6 +149,17 @@ func transfer_to_drag_target():
 	building.get_adjacent_neighbors(coord)
 	
 	if adjacent_household:
+		var hgjdfj : Household = building.household_node_by_id.get(adjacent_household)
+		var data = hgjdfj.serialize()
+		hgjdfj.queue_free()
+		var new = preload("res://src/household/household.tscn")
+		
+		building.get_node("Tenants").add_child(new)
+		new.deserialize(data)
+		building.household_node_by_id[adjacent_household] = new
+		
+	
+	if adjacent_household:
 		building.update_flat_extents(adjacent_household)
 
 func build_indicator(text_to_display:String, global_pos:Vector2, delay:=0.0, text_color:=Color.LAWN_GREEN, font_size:=32):

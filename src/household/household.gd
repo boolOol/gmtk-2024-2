@@ -13,6 +13,44 @@ var happiness_change := 0
 
 var household_name:String
 
+func serialize() -> Dictionary:
+	var result := {}
+	
+	result["id"] = id
+	result["rent"] = rent
+	result["rentToPay"] = rentToPay
+	result["rentMod"] = rentMod
+	result["happiness"] = happiness
+	result["happiness_change"] = happiness_change
+	result["household_name"] = household_name
+	result["stats"] = stats
+	
+	var people := []
+	for person in $People.get_children():
+		people.append(person.serialize())
+	result["people"] = people
+	
+	return result
+
+func deserialize(data: Dictionary):
+	id = data.get("id")
+	rent = data.get("rent")
+	rentToPay = data.get("rentToPay")
+	rentMod = data.get("rentMod")
+	happiness = data.get("happiness")
+	happiness_change = data.get("happiness_change")
+	household_name = data.get("household_name")
+	stats = data.get("stats")
+	
+	for person in $People.get_children():
+		person.queue_free()
+	
+	for person in data.get("people"):
+		var a = preload("res://sprites/people/person.tscn").instantiate()
+		$People.add_child(a)
+		a.deserialize(person)
+	# do more shit
+
 func build_from_resource(res:Resource):
 	household_name = res.household_name
 	var inhabitants = res.inhabitants
@@ -23,7 +61,7 @@ func build_from_resource(res:Resource):
 			pass
 		elif inhabitant == 1:
 			child_scale = 0.75
-			offset = 32.0 * (1-child_scale)
+			offset = 32.0 * ((1-child_scale) * 0.5)
 			
 		
 		var person = preload("res://sprites/people/person.tscn").instantiate()
