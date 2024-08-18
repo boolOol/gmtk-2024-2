@@ -255,6 +255,18 @@ func get_flat(coord:Vector2) -> Array:
 	
 	return []
 
+func get_flat_index(coord:Vector2) -> Vector2:
+	var flats = get_flats()
+	var flats_on_floor := 1
+	for flat in flats:
+		if flat.has(coord):
+			break
+		if flat.front().y == coord.y:
+			flats_on_floor += 1
+			continue
+	
+	return Vector2(flats_on_floor, abs(coord.y))
+
 func is_in_flat(coord:Vector2):
 	return not get_flat(coord).is_empty()
 
