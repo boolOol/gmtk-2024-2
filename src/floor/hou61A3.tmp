@@ -1,0 +1,280 @@
+[gd_scene load_steps=11 format=3 uid="uid://b34uijx7uwlgj"]
+
+[ext_resource type="Script" path="res://src/floor/flat_info.gd" id="1_kki78"]
+[ext_resource type="FontFile" uid="uid://dabpaeltxr8u" path="res://fonts/CraftPixNet Survival Kit.otf" id="2_f1qmo"]
+[ext_resource type="Texture2D" uid="uid://b2njqioqydrap" path="res://sprites/ui/Windows/Cartoon RPG UI_Window - Popup.png" id="2_v6ofs"]
+[ext_resource type="Texture2D" uid="uid://raw5cwkiiotn" path="res://sprites/ui/Buttons/Cartoon RPG UI_Button Text - Green light.png" id="3_jtsro"]
+[ext_resource type="Texture2D" uid="uid://bq40uv2e723q3" path="res://sprites/ui/Bars/Cartoon RPG UI_Progress Bar - Background.png" id="4_g34wq"]
+[ext_resource type="Texture2D" uid="uid://cbwg4tfwmwgx0" path="res://sprites/ui/Bars/Cartoon RPG UI_Progress Bar - Mana.png" id="5_p2yyh"]
+[ext_resource type="Texture2D" uid="uid://bewumdlbm50am" path="res://sprites/ui/Bars/Cartoon RPG UI_Progress Bar - Exp.png" id="6_pyjd5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j0tln"]
+
+[sub_resource type="Gradient" id="Gradient_7qqhl"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 0.243137)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0pyys"]
+gradient = SubResource("Gradient_7qqhl")
+fill_from = Vector2(1, 1)
+
+[node name="FlatInfo" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_kki78")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="BG" type="TextureRect" parent="HBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+texture = ExtResource("2_v6ofs")
+expand_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Flat" type="VBoxContainer" parent="HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="NameContainer" type="Control" parent="HBoxContainer/MarginContainer/VBoxContainer/Flat"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="FlatName" type="Label" parent="HBoxContainer/MarginContainer/VBoxContainer/Flat/NameContainer"]
+layout_mode = 2
+offset_left = 3.0
+offset_top = 17.0
+offset_right = 230.0
+offset_bottom = 45.0
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_f1qmo")
+theme_override_font_sizes/font_size = 25
+text = "Floor 10 - Flat 1"
+horizontal_alignment = 1
+
+[node name="FlatValue" type="Label" parent="HBoxContainer/MarginContainer/VBoxContainer/Flat"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_f1qmo")
+theme_override_font_sizes/font_size = 20
+text = "Value: 1000 $ / month"
+horizontal_alignment = 1
+
+[node name="ShowValueDetails" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer/Flat"]
+layout_mode = 2
+theme_override_colors/icon_pressed_color = Color(0.836726, 0, 0.334266, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_f1qmo")
+theme_override_font_sizes/font_size = 17
+theme_override_styles/focus = SubResource("StyleBoxEmpty_j0tln")
+toggle_mode = true
+text = "Show Details"
+icon = ExtResource("3_jtsro")
+flat = true
+icon_alignment = 1
+
+[node name="RentFactor" type="Label" parent="HBoxContainer/MarginContainer/VBoxContainer/Flat"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_f1qmo")
+theme_override_font_sizes/font_size = 20
+text = "Rent Factor: 1 x"
+horizontal_alignment = 1
+
+[node name="RentSlider" type="HSlider" parent="HBoxContainer/MarginContainer/VBoxContainer/Flat"]
+clip_contents = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+max_value = 2.0
+step = 0.1
+value = 1.0
+tick_count = 11
+ticks_on_borders = true
+
+[node name="FlatRent" type="Label" parent="HBoxContainer/MarginContainer/VBoxContainer/Flat"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_f1qmo")
+theme_override_font_sizes/font_size = 20
+text = "Rent: 1200$ / month"
+horizontal_alignment = 1
+
+[node name="Seperator" type="Label" parent="HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "_________________________________"
+
+[node name="Household" type="VBoxContainer" parent="HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HouseholdName" type="Label" parent="HBoxContainer/MarginContainer/VBoxContainer/Household"]
+layout_mode = 2
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_f1qmo")
+theme_override_font_sizes/font_size = 25
+text = "Ordinary Family"
+horizontal_alignment = 1
+
+[node name="Income" type="Label" parent="HBoxContainer/MarginContainer/VBoxContainer/Household"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_f1qmo")
+theme_override_font_sizes/font_size = 20
+text = "Income: 1300 $ / month"
+horizontal_alignment = 1
+
+[node name="Happiness" type="Label" parent="HBoxContainer/MarginContainer/VBoxContainer/Household"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_f1qmo")
+theme_override_font_sizes/font_size = 20
+text = "Happiness:"
+horizontal_alignment = 1
+
+[node name="HappyChangeBar" type="TextureProgressBar" parent="HBoxContainer/MarginContainer/VBoxContainer/Household/Happiness"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 23.0
+offset_right = 416.0
+offset_bottom = 123.0
+scale = Vector2(0.5, 0.5)
+max_value = 200.0
+value = 60.0
+texture_under = ExtResource("4_g34wq")
+texture_progress = ExtResource("5_p2yyh")
+
+[node name="HappyBar" type="TextureProgressBar" parent="HBoxContainer/MarginContainer/VBoxContainer/Household/Happiness/HappyChangeBar"]
+layout_mode = 2
+offset_right = 400.0
+offset_bottom = 100.0
+max_value = 200.0
+value = 50.0
+texture_progress = ExtResource("6_pyjd5")
+
+[node name="HappyValue" type="Label" parent="HBoxContainer/MarginContainer/VBoxContainer/Household/Happiness/HappyChangeBar/HappyBar"]
+layout_mode = 0
+offset_left = 124.0
+offset_top = 8.0
+offset_right = 278.0
+offset_bottom = 92.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.666667)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.666667)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 61
+text = "97"
+horizontal_alignment = 1
+
+[node name="Seperator1" type="Control" parent="HBoxContainer/MarginContainer/VBoxContainer/Household"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="ShowHappyDetails" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer/Household"]
+layout_mode = 2
+theme_override_colors/icon_pressed_color = Color(0.836726, 0, 0.334266, 1)
+theme_override_fonts/font = ExtResource("2_f1qmo")
+theme_override_font_sizes/font_size = 17
+theme_override_styles/focus = SubResource("StyleBoxEmpty_j0tln")
+toggle_mode = true
+text = "Show Details"
+icon = ExtResource("3_jtsro")
+flat = true
+icon_alignment = 1
+
+[node name="ShowPref" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer/Household"]
+layout_mode = 2
+theme_override_colors/icon_pressed_color = Color(0.836726, 0, 0.334266, 1)
+theme_override_fonts/font = ExtResource("2_f1qmo")
+theme_override_font_sizes/font_size = 17
+theme_override_styles/focus = SubResource("StyleBoxEmpty_j0tln")
+toggle_mode = true
+text = "Show Preferences"
+icon = ExtResource("3_jtsro")
+flat = true
+icon_alignment = 1
+
+[node name="Seperator2" type="Control" parent="HBoxContainer/MarginContainer/VBoxContainer/Household"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="MarginContainerDetails" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="BG" type="TextureRect" parent="HBoxContainer/MarginContainerDetails"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+texture = SubResource("GradientTexture2D_0pyys")
+expand_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MarginContainerDetails"]
+layout_mode = 2
+
+[node name="ValueDetails" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/VBoxContainer"]
+visible = false
+clip_contents = false
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_f1qmo")
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "Value: 1000 $
++ 100 $ Bathroom
++ 250 $ Living Room
++ 250 $ Kitchen
++ 150 $ Child Room
++ 150 $ Child Room
++ 100 $ Storage Room
+"
+fit_content = true
+scroll_active = false
+
+[node name="HappyDetails" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/VBoxContainer"]
+visible = false
+clip_contents = false
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_f1qmo")
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "Happiness ( - 13 )
+[color=green]+ 4 (money left after rent)
++ 4 for good rooms
++ 5 for good neighbours [/color]
+[color=red]- 10 overpriced
+- 6 for bad rooms
+- 10 for bad neighbours [/color]"
+fit_content = true
+scroll_active = false
+
+[node name="RoomPref" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/VBoxContainer"]
+visible = false
+clip_contents = false
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_f1qmo")
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "Room Preferences:
+[color=green]+ Kitchen
++ Bathroom
+[color=red]- Pleasure Room"
+fit_content = true
+scroll_active = false
+
+[node name="NeighbourPref" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/VBoxContainer"]
+visible = false
+clip_contents = false
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_f1qmo")
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "Neighbour Preferences:
+[color=green]+ Big Family
+[color=red]- Drug Dealer"
+fit_content = true
+scroll_active = false

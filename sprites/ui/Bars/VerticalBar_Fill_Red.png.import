@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ck5vjdayawfj1"
-path="res://.godot/imported/VerticalBar_Fill_White.png-8a590547d8a9ce404eb4e88f61a62533.ctex"
+uid="uid://cs6gdq7ev1wmn"
+path="res://.godot/imported/VerticalBar_Fill_Red.png-b74dce66be1ea881e2d2c5721cb5e99b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/ui/VerticalBar_Fill_White.png"
-dest_files=["res://.godot/imported/VerticalBar_Fill_White.png-8a590547d8a9ce404eb4e88f61a62533.ctex"]
+source_file="res://sprites/ui/Bars/VerticalBar_Fill_Red.png"
+dest_files=["res://.godot/imported/VerticalBar_Fill_Red.png-b74dce66be1ea881e2d2c5721cb5e99b.ctex"]
 
 [params]
 

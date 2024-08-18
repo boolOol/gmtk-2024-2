@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://t1ldruuqt86s"
-path="res://.godot/imported/VerticalBar_Background.png-1efba776f2de8ae199a2a90574fe2488.ctex"
+uid="uid://bq40uv2e723q3"
+path="res://.godot/imported/Cartoon RPG UI_Progress Bar - Background.png-5ccef5a5fdba6c32ac63cf4aacde8cb1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/ui/VerticalBar_Background.png"
-dest_files=["res://.godot/imported/VerticalBar_Background.png-1efba776f2de8ae199a2a90574fe2488.ctex"]
+source_file="res://sprites/ui/Bars/Cartoon RPG UI_Progress Bar - Background.png"
+dest_files=["res://.godot/imported/Cartoon RPG UI_Progress Bar - Background.png-5ccef5a5fdba6c32ac63cf4aacde8cb1.ctex"]
 
 [params]
 
