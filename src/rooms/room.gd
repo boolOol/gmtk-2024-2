@@ -155,8 +155,8 @@ func _on_texture_button_mouse_entered() -> void:
 	if texture_modulate_tween:
 		texture_modulate_tween.kill()
 	texture_modulate_tween = create_tween()
-	texture_modulate_tween.tween_property($TextureButton, "modulate:a", 1.0, 0.4).set_ease(Tween.EASE_OUT)
-	texture_modulate_tween.tween_property(label, "modulate:a", 1.0, 1.0)
+	texture_modulate_tween.tween_property($TextureButton, "modulate:a", 1.0, 0.3).set_ease(Tween.EASE_OUT)
+	texture_modulate_tween.tween_property(label, "modulate:a", 1.0, 0.3)
 	
 	find_child("HoverInfoLabel").text = str(
 		CONST.ROOM_NAMES.get(room_type), "\n",
@@ -169,5 +169,5 @@ func _on_texture_button_mouse_exited() -> void:
 	texture_modulate_tween = create_tween()
 	
 	var label = find_child("HoverContainer")
-	texture_modulate_tween.tween_property($TextureButton, "modulate:a", 0.6, 1.0)
-	texture_modulate_tween.tween_property(label, "modulate:a", 0.0, 1.0)
+	texture_modulate_tween.tween_property($TextureButton, "modulate:a", 0.4, 0.2)
+	texture_modulate_tween.tween_property(label, "modulate:a", 0.0, 0.1)

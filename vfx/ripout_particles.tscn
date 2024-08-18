@@ -1,0 +1,79 @@
+[gd_scene load_steps=9 format=3 uid="uid://cmssubusfau1t"]
+
+[ext_resource type="Texture2D" uid="uid://cv34cmhgjepx3" path="res://vfx/Drop.png" id="1_yb4pc"]
+
+[sub_resource type="Curve" id="Curve_vhomo"]
+_data = [Vector2(0, 0.478774), 0.0, 0.0, 0, 0, Vector2(0.113772, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.486439), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_80xg4"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_g7ib5"]
+colors = PackedColorArray(0.273873, 0.273873, 0.273873, 1, 1, 1, 1, 1)
+
+[sub_resource type="Gradient" id="Gradient_pm8pw"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.462434, 0.423883, 0.342575, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3t31o"]
+gradient = SubResource("Gradient_pm8pw")
+width = 8
+height = 8
+
+[sub_resource type="Gradient" id="Gradient_vxjoa"]
+
+[sub_resource type="Gradient" id="Gradient_2ojfa"]
+colors = PackedColorArray(0.707967, 0.707967, 0.707967, 1, 1, 1, 1, 1)
+
+[node name="RipoutParticles" type="Node2D"]
+
+[node name="Cloud" type="CPUParticles2D" parent="."]
+amount = 16
+lifetime = 2.0
+explosiveness = 1.0
+texture = ExtResource("1_yb4pc")
+emission_shape = 1
+emission_sphere_radius = 60.0
+direction = Vector2(0, -1)
+spread = 80.0
+gravity = Vector2(0, 50)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angle_max = 382.4
+scale_amount_min = 0.5
+scale_amount_curve = SubResource("Curve_vhomo")
+color = Color(1, 1, 0.929412, 1)
+color_ramp = SubResource("Gradient_80xg4")
+color_initial_ramp = SubResource("Gradient_g7ib5")
+
+[node name="Dirt" type="CPUParticles2D" parent="."]
+amount = 16
+explosiveness = 1.0
+texture = SubResource("GradientTexture2D_3t31o")
+emission_shape = 1
+emission_sphere_radius = 40.0
+direction = Vector2(0, -1)
+spread = 80.0
+gravity = Vector2(0, 300)
+initial_velocity_min = 150.0
+initial_velocity_max = 200.0
+scale_amount_min = 0.5
+scale_amount_curve = SubResource("Curve_vhomo")
+color_initial_ramp = SubResource("Gradient_vxjoa")
+
+[node name="Dirt2" type="CPUParticles2D" parent="."]
+amount = 16
+explosiveness = 1.0
+texture = SubResource("GradientTexture2D_3t31o")
+emission_shape = 1
+emission_sphere_radius = 40.0
+direction = Vector2(0, -1)
+spread = 90.0
+gravity = Vector2(0, 300)
+initial_velocity_min = 300.0
+initial_velocity_max = 500.0
+scale_amount_min = 0.5
+scale_amount_curve = SubResource("Curve_vhomo")
+color = Color(0.92549, 0.709804, 0, 1)
+color_initial_ramp = SubResource("Gradient_2ojfa")

@@ -7,7 +7,9 @@ var stats:Resource
 var id := 0
 var rent := 0
 var rentToPay := 0
+var rentMod :=1.0
 var happiness := 100
+var happiness_change := 0
 
 var household_name:String
 

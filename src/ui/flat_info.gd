@@ -56,8 +56,6 @@ func _ready() -> void:
 	tenant_room_pref_details = find_child("RoomPref")
 	tenant_neighbour_pref_details= find_child("NeighbourPref")
 	
-	SetupFlat(1052)
-	
 	GameState.state_changed.connect(on_state_changed)
 
 func on_state_changed(a):
@@ -75,18 +73,16 @@ func SetupTenant(household:Household): # setup with tenant data
 	happy_change_bar.value = happiness_current
 	# setup happy bars
 	ShowFutureHappiness(0) #number doesnt matter
-
-func SetupFlat(value:int): # take array of rooms and calculate their total value
-	flat_value = value
-	flat_value_label.text = "Value:\n" + str(value) + " $ / month"
+	# setup rent modifier
+	rent_slider.value = household.rentMod
+	
 
 func ShowFutureHappiness(a:float):
 	ShowHappyBarChange(GetHappinessChange(tenant_income))
 	
-	
 func GetHappinessChange(tenantMoney:int):
 	tenant_happiness_detail.text = "Happiness\n"
-	var happyNew:int = 0
+	var happyChange:int = 0
 	# Happiness from leftover money
 	var money_left = (1-(flat_value*rent_slider.value/tenantMoney))*50
 	if (money_left > 0): tenant_happiness_detail.text += "[color=lawngreen]+" + str(int(money_left)) + " for leftover money[/color]\n"
@@ -108,12 +104,14 @@ func GetHappinessChange(tenantMoney:int):
 	if (n_bonus > 0): tenant_happiness_detail.text += "[color=lawngreen]+" + str(int(n_bonus)) + " for liked neighbours[/color]\n"
 	if (n_bonus < 0): tenant_happiness_detail.text += "[color=orangered]" + str(int(n_bonus)) + " for disliked neighbours[/color]\n"
 	# QoL: Sort the boni in descending order and display it that way
-	happyNew += money_left
-	happyNew += value_for_money
-	happyNew += unaffordable
-	happyNew += r_bonus
-	happyNew += n_bonus
-	return happyNew
+	happyChange += money_left
+	happyChange += value_for_money
+	happyChange += unaffordable
+	happyChange += r_bonus
+	happyChange += n_bonus
+	household.happiness_change = happyChange
+	return happyChange
+	
 func ShowHappyBarChange(change:int):
 	var happy_value:Label = find_child("HappyValue")
 	if (change > 0):
@@ -132,6 +130,7 @@ func ChangeRent(a:float):
 		household.rentToPay = flat_value * rent_slider.value
 		rent_factor_label.text = "x " + str(rent_slider.value)
 		rent_value_label.text = "Rent:\n" + str(household.rentToPay) + " $ / month"
+		household.rentMod = rent_slider.value
 		ShowFutureHappiness(0) # number doesnt matter
 
 func ToggleFlatDetails(on:bool):
@@ -164,8 +163,14 @@ func IsInfoOpen():
 	else: return false
 func HideHouseholdInfo():
 	find_child("Household").visible = false
+	find_child("RentSlider").visible= false
+	find_child("RentFactor").visible= false
+	find_child("FlatRent").visible= false
 func ShowHouseholdInfo():
 	find_child("Household").visible = true
+	find_child("RentSlider").visible= true
+	find_child("RentFactor").visible= true
+	find_child("FlatRent").visible= true
 
 
 func set_occupied(value:bool):
@@ -197,7 +202,9 @@ func handle_room_types_of_flat(rooms:Array):
 		flatValueInt += CONST.get_rent(room)
 		flatValueText += "+ " + str(CONST.get_rent(room)) + " $ " + str(CONST.ROOM_NAMES.get(room)) + "\n"
 	flat_value_details.text = flatValueText
-	SetupFlat(flatValueInt)
+	flat_value = flatValueInt
+	flat_value_label.text = "Value:\n" + str(flat_value) + " $ / month"
+	ChangeRent(0) # nr doensnt matter
 
 func handle_neighbor_archetypes(neighbors:Array):
 	# const.household

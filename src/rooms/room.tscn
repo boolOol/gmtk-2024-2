@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1haod6ojc87f"]
+[gd_scene load_steps=4 format=3 uid="uid://b1haod6ojc87f"]
 
 [ext_resource type="Script" path="res://src/rooms/room.gd" id="1_c2lfv"]
 [ext_resource type="Texture2D" uid="uid://b7cexrpcx4pj4" path="res://src/floor/kitchen.png" id="2_18x7e"]
+[ext_resource type="FontFile" uid="uid://dabpaeltxr8u" path="res://fonts/CraftPixNet Survival Kit.otf" id="3_b5hqq"]
 
 [node name="Room" type="Node2D"]
 script = ExtResource("1_c2lfv")
@@ -20,6 +21,7 @@ offset_bottom = 40.0
 texture_normal = ExtResource("2_18x7e")
 
 [node name="HoverContainer" type="PanelContainer" parent="TextureButton"]
+z_index = 1
 layout_mode = 1
 anchors_preset = -1
 offset_left = -41.0
@@ -32,6 +34,10 @@ mouse_filter = 2
 
 [node name="HoverInfoLabel" type="Label" parent="TextureButton/HoverContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.592157, 1)
+theme_override_fonts/font = ExtResource("3_b5hqq")
+theme_override_font_sizes/font_size = 20
+text = "asda"
 horizontal_alignment = 2
 
 [node name="InfoButton" type="TextureButton" parent="."]

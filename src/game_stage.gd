@@ -57,6 +57,8 @@ func show_month_summary():
 	var expenditures := 0
 	for id in building.occupation_by_household_id:
 		var hh : Household = building.get_household_from_id(id)
+		hh.happiness += hh.happiness_change
+		hh.happiness_change = 0
 		var flat = building.occupation_by_household_id.get(id)
 		if not hh:
 			continue
