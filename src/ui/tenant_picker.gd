@@ -5,6 +5,13 @@ var apartment_in_question:Array
 signal tenant_picked_for_apartment(apartment_coords:Array, tenant:Dictionary)
 
 
+func _ready() -> void:
+	GameState.state_changed.connect(on_state_changed)
+
+func on_state_changed(new_state:GameState.State):
+	$VisibilityHover.visible = false
+
+
 # apartment_amalgam is an array of indicies that make up the apartment
 func present_tenants(tenants:Dictionary, apartment_amalgam:Array):
 	visible = true

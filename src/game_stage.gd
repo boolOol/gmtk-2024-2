@@ -19,18 +19,24 @@ func on_property_changed(property_name:String, old_value, new_value):
 var last_clicked_coord := Vector2(5342,-45654)
 func display_room_info(coord:Vector2):
 	if last_clicked_coord == coord:
-		$FlatOverview.visible = false
+		$FlatInfo.visible = false
 		last_clicked_coord = Vector2(5342,-45654)
 		return
 	prints("fdsdfg", coord, GameState.building.get_flat(coord))
-	$FlatOverview.visible = true
-	$FlatOverview.position = MapMath.coord_to_pos(coord)# + $Building.position
-	$FlatOverview.position.x += CONST.FLOOR_UNIT_WIDTH * 2.5
+	$FlatInfo.visible = true
+	$FlatInfo.position = MapMath.coord_to_pos(coord)# + $Building.position
+	$FlatInfo.position.x += CONST.FLOOR_UNIT_WIDTH * 2.5
 	
 	var flat = GameState.building.get_flat(coord)
+	
+	
 	var rooms = GameState.building.get_room_types_of_flat(flat)
 	var neighbors = GameState.building.get_adjacent_household_archetypes(coord)
 	var id = GameState.building.get_household_id_of(coord)
+	
+	$FlatInfo.set_id(id)
+	$FlatInfo.handle_room_types_of_flat(rooms)
+	$FlatInfo.handle_neighbor_archetypes(neighbors)
 	
 	var room_string := ""
 	var neighbor_string := ""
@@ -45,7 +51,6 @@ func display_room_info(coord:Vector2):
 		#"resource": tenant,
 		#"archetype": archetype
 	
-		print("occupied")
 		var resource = data.get("resource")
 		var tenant_name = data.get("name")
 		var archetype = data.get("archetype")
@@ -58,30 +63,48 @@ func display_room_info(coord:Vector2):
 		var sad_rooms : Array[CONST.RoomType] = resource.happy_rooms
 		var happy_neighbors : Array[CONST.HouseholdArchetype] = resource.happy_neighbors
 		var sad_neighbors : Array[CONST.HouseholdArchetype] = resource.sad_neighbors
+		$FlatInfo.set_happiness_preferences(
+			happy_rooms,
+			sad_rooms,
+			happy_neighbors,
+			sad_neighbors
+		)
+		
+		var happy_room_presences := []
+		var sad_room_presences := []
+		var happy_neighbor_presences := []
+		var sad_neighbor_presences := []
 		
 		for room in rooms:
 			var color:Color
 			if room in happy_rooms:
-				color = Color.AQUAMARINE.to_html()
+				happy_room_presences.append(room)
 			elif room in sad_rooms:
-				color = Color.ORANGE_RED.to_html()
-			else:
-				color = Color.LIGHT_BLUE.to_html()
-			room_string += str("[color=#", color, "]", CONST.ROOM_NAMES.get(room), "[/color]")
-			room_string += "\n"
-		room_string = room_string.trim_suffix("\n")
+				sad_room_presences.append(room)
+			#else:
+				#color = Color.LIGHT_BLUE.to_html()
+			#room_string += str("[color=#", color, "]", CONST.ROOM_NAMES.get(room), "[/color]")
+			#room_string += "\n"
+		#room_string = room_string.trim_suffix("\n")
 	
 		for nb in neighbors:
 			var color:Color
 			if nb in happy_neighbors:
-				color = Color.AQUAMARINE.to_html()
+				happy_neighbor_presences.append(nb)
 			elif nb in sad_neighbors:
-				color = Color.ORANGE_RED.to_html()
-			else:
-				color = Color.LIGHT_BLUE.to_html()
-			neighbor_string += str("[color=#", color, "]", CONST.HOUSEHOLD_NAMES.get(nb), "[/color]")
-			neighbor_string += "\n"
-		neighbor_string = neighbor_string.trim_suffix("\n")
+				sad_neighbor_presences.append(nb)
+			#else:
+				#color = Color.LIGHT_BLUE.to_html()
+			#neighbor_string += str("[color=#", color, "]", CONST.HOUSEHOLD_NAMES.get(nb), "[/color]")
+			#neighbor_string += "\n"
+		#neighbor_string = neighbor_string.trim_suffix("\n")
+		
+		$FlatInfo.set_happiness_affectors(
+			happy_room_presences,
+			sad_room_presences,
+			happy_neighbor_presences,
+			sad_neighbor_presences
+		)
 	else:
 		print("unoccupied flat")
 		find_child("NameLabel").text = ""

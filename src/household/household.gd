@@ -3,6 +3,7 @@ extends Node2D
 var stats:Resource
 
 var id := 0
+var happiness := 100
 
 var household_name:String
 

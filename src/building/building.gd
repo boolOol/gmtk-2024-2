@@ -26,6 +26,7 @@ signal query_add_floor(coord:Vector2)
 var occupation_by_flat := {}
 var occupation_by_household_id := {}
 var household_data_by_id := {} # filled with tenant data
+var household_object_by_id := {} # filled with Household.tscn
 
 func _ready() -> void:
 	GameState.building = self
@@ -101,6 +102,7 @@ func get_flats() -> Array:
 		var flats_on_floor := []
 		
 		var flat_sequence := []
+		
 		for coord in coords:
 			var is_empty = not floor.is_coord_occupied(coord)
 			if is_empty:
@@ -108,7 +110,10 @@ func get_flats() -> Array:
 					flats.append(flat_sequence.duplicate())
 					flat_sequence.clear()
 				continue
-			flat_sequence.append(coord)
+			
+			if not handled_rooms.has(get_room(coord)):
+				flat_sequence.append(coord)
+			handled_rooms.append(get_room(coord))
 		if not flat_sequence.is_empty():
 			flats.append(flat_sequence.duplicate())
 	prints("returning flats", flats)
@@ -121,6 +126,7 @@ func occupy_flat(flat_amalgam:Array, tenant_data:Dictionary):
 	occupation_by_household_id[household_id] = flat_amalgam
 	household_data_by_id[household_id] = tenant_data
 	
+	
 	var tenant_layer = $Tenants
 	var tenant = preload("res://src/household/household.tscn").instantiate()
 	tenant_layer.add_child(tenant)
@@ -128,6 +134,8 @@ func occupy_flat(flat_amalgam:Array, tenant_data:Dictionary):
 	tenant.global_position.y -= 2
 	tenant.id = household_id
 	tenant.build_from_resource(tenant_data.get("resource"))
+	
+	household_object_by_id[household_id] = tenant
 	
 	update_flat_extents(tenant.id)
 
@@ -169,10 +177,14 @@ func get_adjacent_household_archetypes(coord:Vector2) -> Array:
 	
 	return archetypes
 
-func get_room_types_of_flat(flat:Array):
+func get_room_types_of_flat(flat:Array) -> Array:
 	var rooms := []
+	var handled_rooms := []
 	for coord in flat:
-		rooms.append(get_room(coord).room_type)
+		var room = get_room(coord)
+		if not handled_rooms.has(room):
+			rooms.append(room.room_type)
+		handled_rooms.append(room)
 	return rooms
 
 func get_room(coord: Vector2):

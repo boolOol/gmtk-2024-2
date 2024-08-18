@@ -20,6 +20,8 @@ var flat_details_button:Button
 var happiness_details_button:Button
 var pref_details_button:Button
 
+var id := -1
+
 func _ready() -> void:
 	flat_name_label = find_child("FlatName")
 	flat_value_label = find_child("FlatValue")
@@ -124,3 +126,34 @@ func IsInfoOpen():
 	elif (find_child("HappyDetails").visible == true): return true
 	elif (find_child("RoomPref").visible == true): return true
 	else: return false
+
+func set_occupied(value:bool):
+	pass
+
+func set_id(id:int):
+	self.id = id
+	set_occupied(id != -1)
+
+# physically present
+func handle_room_types_of_flat(rooms:Array):
+	pass
+
+func handle_neighbor_archetypes(neighbors:Array):
+	pass
+
+func set_happiness_affectors(
+	happy_room_presences : Array,
+	sad_room_presences : Array,
+	happy_neighbor_presences : Array,
+	sad_neighbor_presences : Array,
+):
+	pass
+
+# theoretical preferences
+func set_happiness_preferences(
+	happy_rooms : Array,
+	sad_rooms : Array,
+	happy_neighbors : Array,
+	sad_neighbors : Array
+):
+	pass

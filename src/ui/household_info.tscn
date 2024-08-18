@@ -241,7 +241,6 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
 [node name="MarginContainerDetails" type="MarginContainer" parent="HBoxContainer"]
-visible = false
 layout_mode = 2
 
 [node name="BG" type="TextureRect" parent="HBoxContainer/MarginContainerDetails"]
@@ -269,7 +268,6 @@ custom_minimum_size = Vector2(180, 20)
 layout_mode = 2
 
 [node name="ValueDetails" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/MarginContainer/ScrollContainer/VBoxContainer"]
-visible = false
 clip_contents = false
 layout_mode = 2
 theme_override_constants/outline_size = 3
@@ -288,7 +286,6 @@ fit_content = true
 scroll_active = false
 
 [node name="HappyDetails" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/MarginContainer/ScrollContainer/VBoxContainer"]
-visible = false
 clip_contents = false
 layout_mode = 2
 theme_override_constants/outline_size = 3
@@ -306,7 +303,6 @@ fit_content = true
 scroll_active = false
 
 [node name="RoomPref" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/MarginContainer/ScrollContainer/VBoxContainer"]
-visible = false
 clip_contents = false
 layout_mode = 2
 theme_override_constants/outline_size = 3
@@ -321,7 +317,6 @@ fit_content = true
 scroll_active = false
 
 [node name="NeighbourPref" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/MarginContainer/ScrollContainer/VBoxContainer"]
-visible = false
 clip_contents = false
 layout_mode = 2
 theme_override_constants/outline_size = 3

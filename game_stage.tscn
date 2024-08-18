@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bk3nrnqrwiuyn"]
+[gd_scene load_steps=20 format=3 uid="uid://bk3nrnqrwiuyn"]
 
 [ext_resource type="Script" path="res://src/game_stage.gd" id="1_p5hh2"]
 [ext_resource type="PackedScene" uid="uid://dq2meide5oo8r" path="res://src/building/building.tscn" id="2_6ic3h"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://b80v1e1peqaia" path="res://sprites/background/enviroment/spr_enviroment-VG.png" id="7_v8uqo"]
 [ext_resource type="PackedScene" uid="uid://dk1v0umuvbrtu" path="res://src/building/harvestable_building.tscn" id="8_d4048"]
 [ext_resource type="PackedScene" uid="uid://ct4mnxgtkxsbr" path="res://src/ui/tenant_picker.tscn" id="10_77nrk"]
+[ext_resource type="PackedScene" uid="uid://b34uijx7uwlgj" path="res://src/ui/household_info.tscn" id="13_m72j7"]
 
 [sub_resource type="Gradient" id="Gradient_b53k7"]
 offsets = PackedFloat32Array(0)
@@ -200,7 +201,17 @@ layout_mode = 2
 text = "NOTIFICATION"
 horizontal_alignment = 1
 
+[node name="FlatInfo" parent="." instance=ExtResource("13_m72j7")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 705.0
+offset_top = 157.0
+offset_right = 705.0
+offset_bottom = 180.0
+
 [node name="FlatOverview" type="PanelContainer" parent="."]
+visible = false
 custom_minimum_size = Vector2(400, 0)
 offset_left = 305.0
 offset_top = 95.0

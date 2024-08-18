@@ -59,11 +59,12 @@ func set_room_type(value):
 	room_size = get_room_size()
 	if room_size == 1:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorSmallWhite.png")
-		$InfoButton.texture_normal = load("res://src/rooms/spr_UI-selectorSmallWhite.png")
+		$InfoButton.texture_hover = load("res://src/rooms/spr_UI-InfoSmallWhite.png")
+		$InfoButton.texture_pressed = load("res://src/rooms/spr_UI-InfoSmallGreen.png")
 	elif room_size == 2:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorMediumWhite.png")
-		$InfoButton.texture_normal = load("res://src/rooms/spr_UI-selectorMediumWhite.png")
-
+		$InfoButton.texture_hover = load("res://src/rooms/spr_UI-InfoMediumWhite.png")
+		$InfoButton.texture_pressed = load("res://src/rooms/spr_UI-InfoMediumGreen.png")
 func set_dropability(do:bool):
 	var size = get_room_size()
 	if do:
