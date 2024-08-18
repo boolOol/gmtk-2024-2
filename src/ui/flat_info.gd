@@ -56,8 +56,12 @@ func _ready() -> void:
 	tenant_room_pref_details = find_child("RoomPref")
 	tenant_neighbour_pref_details= find_child("NeighbourPref")
 	
-	SetupFlat(1052, "Floor 57 - Flat 1")
+	SetupFlat(1052)
 	
+	GameState.state_changed.connect(on_state_changed)
+
+func on_state_changed(a):
+	visible = false
 
 func SetupTenant(household:Household): # setup with tenant data
 	# setup name
@@ -72,9 +76,8 @@ func SetupTenant(household:Household): # setup with tenant data
 	# setup happy bars
 	ShowFutureHappiness(0) #number doesnt matter
 
-func SetupFlat(value:int, name:String): # take array of rooms and calculate their total value
+func SetupFlat(value:int): # take array of rooms and calculate their total value
 	flat_value = value
-	flat_name_label.text = name
 	flat_value_label.text = "Value:\n" + str(value) + " $ / month"
 
 func ShowFutureHappiness(a:float):
@@ -168,6 +171,12 @@ func ShowHouseholdInfo():
 func set_occupied(value:bool):
 	pass
 
+func set_flat_index(index:Vector2):
+	find_child("FlatName").text = str(
+		"Floor ", index.y, " - ",
+		"Flat ", index.x
+	)
+
 func set_id(id:int):
 	self.id = id
 	set_occupied(id != -1)
@@ -188,7 +197,7 @@ func handle_room_types_of_flat(rooms:Array):
 		flatValueInt += CONST.get_rent(room)
 		flatValueText += "+ " + str(CONST.get_rent(room)) + " $ " + str(CONST.ROOM_NAMES.get(room)) + "\n"
 	flat_value_details.text = flatValueText
-	SetupFlat(flatValueInt, "Floor X - Flat Y")
+	SetupFlat(flatValueInt)
 
 func handle_neighbor_archetypes(neighbors:Array):
 	# const.household

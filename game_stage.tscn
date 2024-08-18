@@ -208,60 +208,14 @@ layout_mode = 2
 text = "NOTIFICATION"
 horizontal_alignment = 1
 
-[node name="FlatInfo" parent="." instance=ExtResource("13_m72j7")]
-anchors_preset = 0
+[node name="FlatInfo" parent="CanvasLayer" instance=ExtResource("13_m72j7")]
+anchors_preset = 4
+anchor_top = 0.5
 anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 705.0
-offset_top = 157.0
-offset_right = 705.0
-offset_bottom = 180.0
+anchor_bottom = 0.5
+offset_top = -197.0
+offset_bottom = -174.0
 grow_horizontal = 1
-grow_vertical = 1
-
-[node name="FlatOverview" type="PanelContainer" parent="."]
-visible = false
-custom_minimum_size = Vector2(400, 0)
-offset_left = 305.0
-offset_top = 95.0
-offset_right = 370.0
-offset_bottom = 135.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="FlatOverview"]
-layout_mode = 2
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="FlatOverview/VBoxContainer"]
-layout_mode = 2
-
-[node name="NameLabel" type="Label" parent="FlatOverview/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-text = "Polycule"
-
-[node name="EvictButton" type="Button" parent="FlatOverview/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 10
-text = "EVICT"
-
-[node name="RentLabel" type="Label" parent="FlatOverview/VBoxContainer"]
-layout_mode = 2
-text = "200 bucks per month"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="FlatOverview/VBoxContainer"]
-layout_mode = 2
-
-[node name="RoomInfoLabel" type="RichTextLabel" parent="FlatOverview/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-bbcode_enabled = true
-text = "Rooms: yay"
-fit_content = true
-
-[node name="NeighborInfoLabel" type="RichTextLabel" parent="FlatOverview/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-bbcode_enabled = true
-text = "Neighbors;:"
-fit_content = true
 
 [connection signal="query_add_floor" from="Building" to="." method="_on_building_query_add_floor"]
 [connection signal="tenant_picked_for_apartment" from="CanvasLayer/Control/TenantPicker" to="." method="_on_tenant_picker_tenant_picked_for_apartment"]
