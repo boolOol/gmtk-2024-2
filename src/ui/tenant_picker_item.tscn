@@ -1,23 +1,83 @@
-[gd_scene load_steps=2 format=3 uid="uid://vsn3mublrlkw"]
+[gd_scene load_steps=5 format=3 uid="uid://vsn3mublrlkw"]
 
 [ext_resource type="Script" path="res://src/ui/tenant_picker_item.gd" id="1_kfeyl"]
+[ext_resource type="FontFile" uid="uid://dabpaeltxr8u" path="res://fonts/CraftPixNet Survival Kit.otf" id="2_vit3l"]
+
+[sub_resource type="Gradient" id="Gradient_p4wjo"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.0999861, 0.0999859, 0.099986, 0.352941)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lkysp"]
+gradient = SubResource("Gradient_p4wjo")
 
 [node name="PanelContainer" type="PanelContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_kfeyl")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
+[node name="BG" type="TextureRect" parent="MarginContainer"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-text = "hjmkhjkhj"
+texture = SubResource("GradientTexture2D_lkysp")
+expand_mode = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HouseholdName" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.745098, 0.811765, 1, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_vit3l")
+theme_override_font_sizes/font_size = 25
+text = "Influencer Couple"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Income" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.513726, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("2_vit3l")
+theme_override_font_sizes/font_size = 20
+text = "income"
+horizontal_alignment = 1
+
+[node name="PreferenceRooms" type="RichTextLabel" parent="MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 3
+theme_override_fonts/normal_font = ExtResource("2_vit3l")
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "Pref rooms"
 fit_content = true
 
-[node name="Button" type="Button" parent="VBoxContainer"]
+[node name="PreferenceNeighbours" type="RichTextLabel" parent="MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 3
+theme_override_fonts/normal_font = ExtResource("2_vit3l")
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "Pref neighbour"
+fit_content = true
+scroll_active = false
+
+[node name="Button" type="Button" parent="MarginContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "PICK ME!!"
+theme_override_colors/font_outline_color = Color(0.414607, 0.227801, 0.48045, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("2_vit3l")
+theme_override_font_sizes/font_size = 25
+text = "CHOOSE"
 
-[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="MarginContainer/MarginContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

@@ -7,12 +7,12 @@
 [ext_resource type="Texture2D" uid="uid://df8ko6i7w8ew1" path="res://sprites/ui/Bars/Cartoon RPG UI_Progress Bar - Life.png" id="6_3e557"]
 [ext_resource type="Texture2D" uid="uid://bewumdlbm50am" path="res://sprites/ui/Bars/Cartoon RPG UI_Progress Bar - Exp.png" id="7_34p1p"]
 
-[sub_resource type="Gradient" id="Gradient_p4wjo"]
+[sub_resource type="Gradient" id="Gradient_240po"]
 offsets = PackedFloat32Array(0)
 colors = PackedColorArray(0.0999861, 0.0999859, 0.099986, 0.352941)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_jvxj5"]
-gradient = SubResource("Gradient_p4wjo")
+gradient = SubResource("Gradient_240po")
 
 [node name="FlatInfo" type="Control"]
 layout_mode = 3
@@ -196,7 +196,6 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
 [node name="MarginContainerDetails" type="MarginContainer" parent="HBoxContainer"]
-visible = false
 layout_mode = 2
 
 [node name="BG" type="TextureRect" parent="HBoxContainer/MarginContainerDetails"]
