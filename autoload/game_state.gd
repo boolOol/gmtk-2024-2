@@ -147,6 +147,9 @@ func transfer_to_drag_target():
 	Data.change_by_int("cash", -price)
 	
 	building.get_adjacent_neighbors(coord)
+	
+	if adjacent_household:
+		building.update_flat_extents(adjacent_household)
 
 func build_indicator(text_to_display:String, global_pos:Vector2, delay:=0.0, text_color:=Color.LAWN_GREEN, font_size:=32):
 	var indicator = preload("res://src/ui/number_indicator.tscn").instantiate()
