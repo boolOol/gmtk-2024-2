@@ -8,7 +8,7 @@ func _ready() -> void:
 	GameState.set_state(GameState.State.Building)
 	Data.property_changed.connect(on_property_changed)
 	
-	Data.apply("cash", 5000)
+	Data.apply("cash", 50)
 
 func on_property_changed(property_name:String, old_value, new_value):
 	match property_name:

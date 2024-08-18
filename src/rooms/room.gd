@@ -50,19 +50,14 @@ func set_room_type(value):
 		CONST.RoomType.PleasureRoom:
 			$Sprite2D.texture = load("res://src/floor/pleasure.png")
 	
-	var size = CONST.ROOM_SIZES.get(room_type)
+	var size = get_room_size()
 	if size == 1:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorSmallWhite.png")
 	elif size == 2:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorMediumWhite.png")
-	#var collider : CollisionShape2D = find_child("CollisionShape2D")
-	#var shape = RectangleShape2D.new()
-	#shape.size = $Sprite2D.texture.get_size()
-	#collider.position = $Sprite2D.texture.get_size() * 0.5
-	#collider.shape = shape
 
 func set_dropability(do:bool):
-	var size = CONST.ROOM_SIZES.get(room_type)
+	var size = get_room_size()
 	if do:
 		if size == 1:
 			$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorSmallGreen.png")
@@ -114,7 +109,7 @@ func _on_texture_button_button_down() -> void:
 	drag_start_position = global_position
 	drag_offset = get_local_mouse_position()
 	
-	var size = CONST.ROOM_SIZES.get(room_type)
+	var size = get_room_size()
 	if size == 1:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorSmallRed.png")
 	elif size == 2:
@@ -124,17 +119,23 @@ func set_player_owned(value:bool):
 	player_owned = value
 	$TextureButton.visible = (not player_owned) and GameState.is_state(GameState.State.Building)
 
+func get_room_size() -> int:
+	return CONST.ROOM_SIZES.get(room_type)
+
+func get_center() -> Vector2:
+	return global_position + (Vector2(get_room_size() * CONST.FLOOR_UNIT_WIDTH, CONST.FLOOR_UNIT_HEIGHT) * 0.5)
+
 func _on_texture_button_button_up() -> void:
 	selected = false
 	if GameState.drag_target:
-		if GameState.can_room_fit_drag_target(self):
+		if GameState.can_drag_target_fit_room(self):
 			GameState.transfer_to_drag_target()
 		else:
 			global_position = drag_start_position
 	else:
 		global_position = drag_start_position
 	GameState.dragged_room = null
-	var size = CONST.ROOM_SIZES.get(room_type)
+	var size = get_room_size()
 	if size == 1:
 		$TextureButton.texture_normal = load("res://src/rooms/spr_UI-selectorSmallWhite.png")
 	elif size == 2:

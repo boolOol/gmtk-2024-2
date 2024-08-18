@@ -18,18 +18,29 @@ var dragged_room : Room
 func set_drag_target(target: FloorUnit):
 	drag_target = target
 	if dragged_room:
-		dragged_room.set_dropability(can_room_fit_drag_target(dragged_room) and drag_target != null)
+		dragged_room.set_dropability(can_drag_target_fit_room(dragged_room) and drag_target != null)
 
+var indicator_debounce := false
 
-
-func can_room_fit_drag_target(room:Room) -> bool:
+func can_drag_target_fit_room(room:Room) -> bool:
 	if not drag_target:
-		print("c")
+		return false
+	
+	if Data.of("cash", 0) < CONST.get_price(room.room_type):
+		if not indicator_debounce:
+			build_indicator(
+				str("Not enough cash.\n", CONST.ROOM_NAMES.get(room.room_type), " costs ", CONST.get_price(room.room_type)),
+				room.get_center(),
+				0.0,
+				Color.MEDIUM_VIOLET_RED
+				)
+			indicator_debounce = true
+			var t = get_tree().create_timer(3)
+			t.timeout.connect(set.bind("indicator_debounce", false))
 		return false
 	
 	var floor : Floor = building.get_floor(drag_target.floor)
 	if not floor:
-		print("b")
 		return false
 	var size = CONST.ROOM_SIZES.get(room.room_type)
 	var level = floor.get_index()
@@ -37,7 +48,6 @@ func can_room_fit_drag_target(room:Room) -> bool:
 	print(size)
 	for i in size:
 		if floor.is_coord_occupied(Vector2(drag_target.h_index + i, level)):
-			prints("a", Vector2(drag_target.h_index + i, level))
 			return false
 	return true
 
@@ -66,3 +76,21 @@ func transfer_to_drag_target():
 	
 	dragged_room.set_player_owned(true)
 	camera.apply_shake()
+	
+	var price : int = CONST.get_price(dragged_room.room_type)
+	build_indicator(
+		str("-",price),
+		dragged_room.get_center(),
+		2.0,
+		Color.CRIMSON)
+	build_indicator(
+		CONST.ROOM_NAMES.get(dragged_room.room_type),
+		dragged_room.get_center(),
+		0.0,
+		Color.CORAL)
+	Data.change_by_int("cash", -price)
+
+func build_indicator(text_to_display:String, global_pos:Vector2, delay:=0.0, text_color:=Color.LAWN_GREEN, font_size:=32):
+	var indicator = preload("res://src/ui/number_indicator.tscn").instantiate()
+	building.add_child(indicator)
+	indicator.start(text_to_display, global_pos, delay, text_color, font_size)

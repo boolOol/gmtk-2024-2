@@ -31,6 +31,43 @@ const ROOM_SIZES := {
 	RoomType.GamingRoom : 1,
 	RoomType.PleasureRoom : 1,
 }
+const ROOM_VALUES := {
+	RoomType.Kitchen : 4,
+	RoomType.Bathroom : 2,
+	RoomType.Livingroom : 4,
+	RoomType.Bedroom : 4,
+	RoomType.Hallway : 1,
+	RoomType.Storeroom : 1,
+	RoomType.Office : 2,
+	RoomType.Fitnessroom : 6,
+	RoomType.Garage : 8,
+	RoomType.ChildRoom : 2,
+	RoomType.Library : 4,
+	RoomType.GamingRoom : 3,
+	RoomType.PleasureRoom : 3,
+}
+const ROOM_NAMES := {
+	RoomType.Kitchen : "Kitchen",
+	RoomType.Bathroom : "Bathroom",
+	RoomType.Livingroom : "Living Room",
+	RoomType.Bedroom : "Bedroom",
+	RoomType.Hallway : "Hallway",
+	RoomType.Storeroom : "Storeroom",
+	RoomType.Office : "Office",
+	RoomType.Fitnessroom : "Gym",
+	RoomType.Garage : "Garage",
+	RoomType.ChildRoom : "Child Room",
+	RoomType.Library : "Library",
+	RoomType.GamingRoom : "Gaming Cave",
+	RoomType.PleasureRoom : "Pleasure Room",
+}
+
+const ROOM_PRICE_FACTOR := 200
+const ROOM_RENT_FACTOR := 200
+func get_price(room_type:int):
+	return ROOM_VALUES.get(room_type) * ROOM_PRICE_FACTOR
+func get_rent(room_type:int):
+	return ROOM_VALUES.get(room_type) * ROOM_RENT_FACTOR
 
 enum HouseholdArchetype {
 	StudentFlatShare,

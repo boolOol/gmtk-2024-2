@@ -9,7 +9,6 @@ signal room_added(at_coord:Vector2)
 func _ready() -> void:
 	for type in CONST.RoomType:
 		apply(str("inventory.", type), 0)
-	apply("cash", 5000)
 
 func of(property_name: String, default=false):
 	if not properties.has(property_name):
