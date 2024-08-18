@@ -26,7 +26,7 @@ signal query_add_floor(coord:Vector2)
 var occupation_by_flat := {}
 var occupation_by_household_id := {}
 var household_data_by_id := {} # filled with tenant data
-var household_object_by_id := {} # filled with Household.tscn
+var household_node_by_id := {} # filled with Household.tscn
 
 func _ready() -> void:
 	GameState.building = self
@@ -133,9 +133,10 @@ func occupy_flat(flat_amalgam:Array, tenant_data:Dictionary):
 	tenant.global_position.y = flat_amalgam.front().y * CONST.FLOOR_UNIT_HEIGHT + (CONST.FLOOR_UNIT_HEIGHT * 0.5)
 	tenant.global_position.y -= 2
 	tenant.id = household_id
+	tenant.rent = tenant_data.get("rent")
 	tenant.build_from_resource(tenant_data.get("resource"))
 	
-	household_object_by_id[household_id] = tenant
+	household_node_by_id[household_id] = tenant
 	
 	update_flat_extents(tenant.id)
 
