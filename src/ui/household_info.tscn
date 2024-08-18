@@ -1,9 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://b34uijx7uwlgj"]
+[gd_scene load_steps=9 format=3 uid="uid://b34uijx7uwlgj"]
 
 [ext_resource type="Script" path="res://src/ui/flat_info.gd" id="1_nm4dv"]
 [ext_resource type="FontFile" uid="uid://dabpaeltxr8u" path="res://fonts/CraftPixNet Survival Kit.otf" id="2_8ann0"]
 [ext_resource type="Texture2D" uid="uid://c86o1b22rh703" path="res://sprites/ui/Icon_30.png" id="3_bq3sf"]
-[ext_resource type="Texture2D" uid="uid://raw5cwkiiotn" path="res://sprites/ui/Buttons/Cartoon RPG UI_Button Text - Green light.png" id="4_d74m1"]
 [ext_resource type="Texture2D" uid="uid://n7hielngbbqe" path="res://sprites/ui/Bars/Cartoon RPG UI_Progress Bar - Background2.png" id="5_yj4wa"]
 [ext_resource type="Texture2D" uid="uid://df8ko6i7w8ew1" path="res://sprites/ui/Bars/Cartoon RPG UI_Progress Bar - Life.png" id="6_3e557"]
 [ext_resource type="Texture2D" uid="uid://bewumdlbm50am" path="res://sprites/ui/Bars/Cartoon RPG UI_Progress Bar - Exp.png" id="7_34p1p"]
@@ -14,8 +13,6 @@ colors = PackedColorArray(0.0999861, 0.0999859, 0.099986, 0.352941)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_jvxj5"]
 gradient = SubResource("Gradient_p4wjo")
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j0tln"]
 
 [node name="FlatInfo" type="Control"]
 layout_mode = 3
@@ -82,20 +79,6 @@ offset_top = -31.0
 offset_right = 246.0
 scale = Vector2(0.655, 0.655)
 texture = ExtResource("3_bq3sf")
-
-[node name="ShowValueDetails" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer/Flat"]
-visible = false
-layout_mode = 2
-theme_override_colors/icon_pressed_color = Color(0.836726, 0, 0.334266, 1)
-theme_override_constants/outline_size = 5
-theme_override_fonts/font = ExtResource("2_8ann0")
-theme_override_font_sizes/font_size = 20
-theme_override_styles/focus = SubResource("StyleBoxEmpty_j0tln")
-toggle_mode = true
-text = "FLAT DETAILS"
-icon = ExtResource("4_d74m1")
-flat = true
-icon_alignment = 1
 
 [node name="RentSlider" type="HSlider" parent="HBoxContainer/MarginContainer/VBoxContainer/Flat"]
 clip_contents = true
@@ -208,43 +191,16 @@ clip_text = true
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="ShowHappyDetails" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer/Household"]
-visible = false
-layout_mode = 2
-theme_override_colors/icon_pressed_color = Color(0.836726, 0, 0.334266, 1)
-theme_override_constants/outline_size = 5
-theme_override_fonts/font = ExtResource("2_8ann0")
-theme_override_font_sizes/font_size = 20
-theme_override_styles/focus = SubResource("StyleBoxEmpty_j0tln")
-toggle_mode = true
-text = "HAPPINESS"
-icon = ExtResource("4_d74m1")
-flat = true
-icon_alignment = 1
-
-[node name="ShowPref" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer/Household"]
-visible = false
-layout_mode = 2
-theme_override_colors/icon_pressed_color = Color(0.836726, 0, 0.334266, 1)
-theme_override_constants/outline_size = 5
-theme_override_fonts/font = ExtResource("2_8ann0")
-theme_override_font_sizes/font_size = 20
-theme_override_styles/focus = SubResource("StyleBoxEmpty_j0tln")
-toggle_mode = true
-text = "PREFERENCES"
-icon = ExtResource("4_d74m1")
-flat = true
-icon_alignment = 1
-
 [node name="Seperator2" type="Control" parent="HBoxContainer/MarginContainer/VBoxContainer/Household"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
 [node name="MarginContainerDetails" type="MarginContainer" parent="HBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="BG" type="TextureRect" parent="HBoxContainer/MarginContainerDetails"]
-custom_minimum_size = Vector2(250, 0)
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 texture = SubResource("GradientTexture2D_jvxj5")
 expand_mode = 4
@@ -254,25 +210,23 @@ layout_mode = 2
 size_flags_horizontal = 4
 
 [node name="WidthHolder" type="Control" parent="HBoxContainer/MarginContainerDetails/MarginContainer"]
-custom_minimum_size = Vector2(200, 0)
+custom_minimum_size = Vector2(270, 0)
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/MarginContainerDetails/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MarginContainerDetails/MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MarginContainerDetails/MarginContainer/ScrollContainer"]
+[node name="HeightHolder" type="Control" parent="HBoxContainer/MarginContainerDetails/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(180, 7)
 layout_mode = 2
 
-[node name="HeightHolder" type="Control" parent="HBoxContainer/MarginContainerDetails/MarginContainer/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(180, 20)
-layout_mode = 2
-
-[node name="ValueDetails" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="ValueDetails" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/MarginContainer/VBoxContainer"]
+visible = false
 clip_contents = false
 layout_mode = 2
 theme_override_constants/outline_size = 3
 theme_override_fonts/normal_font = ExtResource("2_8ann0")
-theme_override_font_sizes/normal_font_size = 17
+theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "Value: 1000 $
 + 100 $ Bathroom
@@ -285,12 +239,13 @@ text = "Value: 1000 $
 fit_content = true
 scroll_active = false
 
-[node name="HappyDetails" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HappyDetails" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/MarginContainer/VBoxContainer"]
+visible = false
 clip_contents = false
 layout_mode = 2
 theme_override_constants/outline_size = 3
 theme_override_fonts/normal_font = ExtResource("2_8ann0")
-theme_override_font_sizes/normal_font_size = 17
+theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "Happiness ( - 13 )
 [color=green]+ 4 (money left after rent)
@@ -302,12 +257,13 @@ text = "Happiness ( - 13 )
 fit_content = true
 scroll_active = false
 
-[node name="RoomPref" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="RoomPref" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/MarginContainer/VBoxContainer"]
+visible = false
 clip_contents = false
 layout_mode = 2
 theme_override_constants/outline_size = 3
 theme_override_fonts/normal_font = ExtResource("2_8ann0")
-theme_override_font_sizes/normal_font_size = 17
+theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "Room Preferences:
 [color=green]+ Kitchen
@@ -316,12 +272,13 @@ text = "Room Preferences:
 fit_content = true
 scroll_active = false
 
-[node name="NeighbourPref" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="NeighbourPref" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/MarginContainer/VBoxContainer"]
+visible = false
 clip_contents = false
 layout_mode = 2
 theme_override_constants/outline_size = 3
 theme_override_fonts/normal_font = ExtResource("2_8ann0")
-theme_override_font_sizes/normal_font_size = 17
+theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "Neighbour Preferences:
 [color=green]+ Big Family
@@ -329,6 +286,6 @@ text = "Neighbour Preferences:
 fit_content = true
 scroll_active = false
 
-[node name="HeightHolder2" type="Control" parent="HBoxContainer/MarginContainerDetails/MarginContainer/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(180, 20)
+[node name="HeightHolder2" type="Control" parent="HBoxContainer/MarginContainerDetails/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(180, 7)
 layout_mode = 2

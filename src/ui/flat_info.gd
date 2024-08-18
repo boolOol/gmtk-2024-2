@@ -1,24 +1,32 @@
 extends Control
 
 var flat_value:int # get in setup instead
-var tenantIncome:int # get in setup instead
-
 var flat_name_label:Label
 var flat_value_label:Label
 var rent_factor_label:Label
 var rent_slider:HSlider
 var rent_value_label:Label
 
+var rooms_in_flat:Array
+
+var household:Household
+var tenant_income:int 
 var tenant_name_label:Label
 var tenant_income_label:Label
+
+var room_bonus:int = 0
+var neighbour_bonus:int = 0
 
 var happiness_current:int
 var happy_bar:TextureProgressBar
 var happy_change_bar:TextureProgressBar
 
-var flat_details_button:Button
-var happiness_details_button:Button
-var pref_details_button:Button
+var flat_value_details:RichTextLabel
+var tenant_happiness_detail:RichTextLabel
+var tenant_room_pref_details:RichTextLabel
+var tenant_neighbour_pref_details:RichTextLabel
+
+
 
 var id := -1
 
@@ -29,7 +37,7 @@ func _ready() -> void:
 	flat_value_label.get_child(0).mouse_exited.connect(ToggleFlatDetails.bind(false))
 	rent_factor_label= find_child("RentFactor")
 	rent_slider = find_child("RentSlider")
-	rent_slider.value_changed.connect(ChangeRentInfo)
+	rent_slider.value_changed.connect(ChangeRent)
 	rent_slider.value_changed.connect(ShowFutureHappiness)
 	rent_value_label = find_child("FlatRent")
 	
@@ -43,27 +51,26 @@ func _ready() -> void:
 	happy_bar.mouse_entered.connect(ToggleHappinessDetails.bind(true))
 	happy_bar.mouse_exited.connect(ToggleHappinessDetails.bind(false))
 	
-	flat_details_button = find_child("ShowValueDetails")
-	flat_details_button.toggled.connect(ToggleFlatDetails)
-	happiness_details_button = find_child("ShowHappyDetails")
-	happiness_details_button.toggled.connect(ToggleHappinessDetails)
-	pref_details_button = find_child("ShowPref")
-	pref_details_button.toggled.connect(TogglePreferenceDetails)
+	flat_value_details = find_child("ValueDetails")
+	tenant_happiness_detail = find_child("HappyDetails")
+	tenant_room_pref_details = find_child("RoomPref")
+	tenant_neighbour_pref_details= find_child("NeighbourPref")
 	
 	SetupFlat(1052, "Floor 57 - Flat 1")
-	SetupTenant()
-	ShowFutureHappiness(0)
+	
 
-func SetupTenant(): # setup with tenant data
-	print("not yet")
+func SetupTenant(household:Household): # setup with tenant data
+	# setup name
+	tenant_name_label.text = household.household_name
+	# setup income
+	tenant_income = household.rent
+	tenant_income_label.text = "Income:\n" + str(tenant_income) + " $ / month"
 	# setup happiness_current
-	happiness_current = 100
+	happiness_current = household.happiness
 	happy_bar.value = happiness_current
 	happy_change_bar.value = happiness_current
-	# setup income
-	tenantIncome = 1300
-	tenant_income_label.text = "Income: " + str(tenantIncome) + " $ / month"
 	# setup happy bars
+	ShowFutureHappiness(0) #number doesnt matter
 
 func SetupFlat(value:int, name:String): # take array of rooms and calculate their total value
 	flat_value = value
@@ -71,15 +78,40 @@ func SetupFlat(value:int, name:String): # take array of rooms and calculate thei
 	flat_value_label.text = "Value:\n" + str(value) + " $ / month"
 
 func ShowFutureHappiness(a:float):
-	ShowHappyChange(GetHappinessChange(tenantIncome))
-func GetHappinessChange(tenantMoney:int):
-	var happyNew:int = 0
-	happyNew = (1-(flat_value*rent_slider.value/tenantMoney))*50
-	happyNew -= (rent_slider.value-1)*50
+	ShowHappyBarChange(GetHappinessChange(tenant_income))
 	
-	if (flat_value*rent_slider.value > tenantMoney): happyNew -= 50
+	
+func GetHappinessChange(tenantMoney:int):
+	tenant_happiness_detail.text = "Happiness\n"
+	var happyNew:int = 0
+	# Happiness from leftover money
+	var money_left = (1-(flat_value*rent_slider.value/tenantMoney))*50
+	if (money_left > 0): tenant_happiness_detail.text += "[color=lawngreen]+" + str(int(money_left)) + " for leftover money[/color]\n"
+	elif(money_left < 0): tenant_happiness_detail.text += "[color=orangered]" + str(int(money_left)) + " for missing money[/color]\n"
+	# Happiness from relative price of flat
+	var value_for_money = -(rent_slider.value-1)*50
+	if (value_for_money > 0): tenant_happiness_detail.text += "[color=lawngreen]+" + str(int(value_for_money)) + " for underpriced rent[/color]\n"
+	elif(value_for_money < 0): tenant_happiness_detail.text += "[color=orangered]" + str(int(value_for_money)) + " for overpriced rent[/color]\n"
+	# Happiness if unaffordable
+	var unaffordable = 0
+	if (flat_value*rent_slider.value > tenantMoney): unaffordable -= 50
+	if (unaffordable < 0): tenant_happiness_detail.text += "[color=orangered]" + str(int(unaffordable)) + " for unaffordability[/color]\n"
+	# Happiness from rooms
+	var r_bonus = room_bonus
+	if (r_bonus > 0): tenant_happiness_detail.text += "[color=lawngreen]+" + str(int(r_bonus)) + " for liked rooms[/color]\n"
+	if (r_bonus < 0): tenant_happiness_detail.text += "[color=orangered]" + str(int(r_bonus)) + " for disliked rooms[/color]\n"
+	# Happiness from neighbours
+	var n_bonus = neighbour_bonus
+	if (n_bonus > 0): tenant_happiness_detail.text += "[color=lawngreen]+" + str(int(n_bonus)) + " for liked neighbours[/color]\n"
+	if (n_bonus < 0): tenant_happiness_detail.text += "[color=orangered]" + str(int(n_bonus)) + " for disliked neighbours[/color]\n"
+	# QoL: Sort the boni in descending order and display it that way
+	happyNew += money_left
+	happyNew += value_for_money
+	happyNew += unaffordable
+	happyNew += r_bonus
+	happyNew += n_bonus
 	return happyNew
-func ShowHappyChange(change:int):
+func ShowHappyBarChange(change:int):
 	var happy_value:Label = find_child("HappyValue")
 	if (change > 0):
 		happy_change_bar.texture_progress = load("res://sprites/ui/Bars/Cartoon RPG UI_Progress Bar - Mana.png")
@@ -92,40 +124,46 @@ func ShowHappyChange(change:int):
 		happy_bar.value = happiness_current + change
 		happy_value.text = str(happiness_current) + " (" + str(change) + ")"
 
-func ChangeRentInfo(a:float):
-	rent_factor_label.text = "x " + str(rent_slider.value)
-	rent_value_label.text = "Rent:\n" + str(flat_value * rent_slider.value) + " $ / month"
+func ChangeRent(a:float):
+	if (household != null):
+		household.rentToPay = flat_value * rent_slider.value
+		rent_factor_label.text = "x " + str(rent_slider.value)
+		rent_value_label.text = "Rent:\n" + str(household.rentToPay) + " $ / month"
+		ShowFutureHappiness(0) # number doesnt matter
 
 func ToggleFlatDetails(on:bool):
 	if on == true: 
 		find_child("MarginContainerDetails").visible = true
-		find_child("ValueDetails").visible = true
+		flat_value_details.visible = true
 	else: 
-		find_child("ValueDetails").visible = false
+		flat_value_details.visible = false
 		if !IsInfoOpen(): find_child("MarginContainerDetails").visible = false
 func ToggleHappinessDetails(on:bool):
 	if on == true: 
 		find_child("MarginContainerDetails").visible = true
-		find_child("HappyDetails").visible = true
+		tenant_happiness_detail.visible = true
 	else: 
-		find_child("HappyDetails").visible = false
+		tenant_happiness_detail.visible = false
 		if !IsInfoOpen(): find_child("MarginContainerDetails").visible = false
-
 func TogglePreferenceDetails(on:bool):
 	if on == true: 
 		find_child("MarginContainerDetails").visible = true
-		find_child("RoomPref").visible = true
-		find_child("NeighbourPref").visible = true
+		tenant_room_pref_details.visible = true
+		tenant_neighbour_pref_details.visible = true
 	else: 
-		find_child("RoomPref").visible = false
-		find_child("NeighbourPref").visible = false
+		tenant_room_pref_details.visible = false
+		tenant_neighbour_pref_details.visible = false
 		if !IsInfoOpen(): find_child("MarginContainerDetails").visible = false
-
 func IsInfoOpen():
 	if (find_child("ValueDetails").visible == true): return true
 	elif (find_child("HappyDetails").visible == true): return true
 	elif (find_child("RoomPref").visible == true): return true
 	else: return false
+func HideHouseholdInfo():
+	find_child("Household").visible = false
+func ShowHouseholdInfo():
+	find_child("Household").visible = true
+
 
 func set_occupied(value:bool):
 	pass
@@ -133,12 +171,27 @@ func set_occupied(value:bool):
 func set_id(id:int):
 	self.id = id
 	set_occupied(id != -1)
+	var hh : Household = GameState.building.household_node_by_id.get(id)
+	if hh != null:
+		household = hh
+		SetupTenant(household)
+		ShowHouseholdInfo()
+	else: HideHouseholdInfo()
 
 # physically present
 func handle_room_types_of_flat(rooms:Array):
-	pass
+	# FILL FLAT ROOM TOOLTIP
+	var flatValueText:String
+	var flatValueInt:int = 0
+	for room in rooms:
+		rooms_in_flat.append(room)
+		flatValueInt += CONST.get_rent(room)
+		flatValueText += "+ " + str(CONST.get_rent(room)) + " $ " + str(CONST.ROOM_NAMES.get(room)) + "\n"
+	flat_value_details.text = flatValueText
+	SetupFlat(flatValueInt, "Floor X - Flat Y")
 
 func handle_neighbor_archetypes(neighbors:Array):
+	# const.household
 	pass
 
 func set_happiness_affectors(
@@ -147,7 +200,16 @@ func set_happiness_affectors(
 	happy_neighbor_presences : Array,
 	sad_neighbor_presences : Array,
 ):
-	pass
+	# CALCULATE HAPPINESS MODIFIERS
+	for room in happy_room_presences:
+		room_bonus += 3
+	for room in sad_room_presences:
+		room_bonus -= 3
+	for n in happy_neighbor_presences:
+		neighbour_bonus += 5
+	for n in sad_neighbor_presences:
+		neighbour_bonus -= 5
+	
 
 # theoretical preferences
 func set_happiness_preferences(
@@ -156,4 +218,17 @@ func set_happiness_preferences(
 	happy_neighbors : Array,
 	sad_neighbors : Array
 ):
-	pass
+	# FILL PREFERENCES TOOLTIPS
+	var room_prefs:String = "Room Preferences\n"
+	for room in happy_rooms:
+		room_prefs += "[color=lawngreen]+ " + CONST.ROOM_NAMES.get(room) + "[/color]\n"
+	for room in sad_rooms:
+		room_prefs += "[color=orangered]- " + CONST.ROOM_NAMES.get(room) + "[/color]\n"
+	tenant_room_pref_details.text = room_prefs
+	
+	var neighbour_prefs:String = "Neighbour Preferences\n"
+	for tenant in happy_neighbors:
+		neighbour_prefs += "[color=lawngreen]+ " + CONST.HOUSEHOLD_NAMES.get(tenant) + "[/color]\n"
+	for tenant in sad_neighbors:
+		neighbour_prefs += "[color=orangered]- " + CONST.HOUSEHOLD_NAMES.get(tenant) + "[/color]\n"
+	tenant_neighbour_pref_details.text = neighbour_prefs
