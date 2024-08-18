@@ -275,7 +275,7 @@ func evict(id: int):
 	occupation_by_flat.erase(flat)
 	occupation_by_household_id.erase(id)
 	
-	
+	Sound.sound("eviction")
 
 func is_in_flat(coord:Vector2):
 	return not get_flat(coord).is_empty()
@@ -358,13 +358,17 @@ func request_add_unit(coord: Vector2):
 	if not has_floor(coord.y):
 		emit_signal("query_add_floor", coord)
 		return
-	if Data.of("cash") < 20:
-		GameState.build_indicator("Need 20$.", get_global_mouse_position())
+	if Data.of("cash") < CONST.ROOM_UNIT_PRICE:
+		GameState.build_indicator(str("Need ", CONST.ROOM_UNIT_PRICE, "$."), get_global_mouse_position())
 		return
-	Data.change_by_int("cash", -20)
+	Data.change_by_int("cash", -CONST.ROOM_UNIT_PRICE)
 	var floor := get_floor(coord.y)
 	floor.add_unit_at(coord)
 	GameState.camera.apply_shake(5)
+	GameState.build_indicator(
+		str("-", CONST.ROOM_UNIT_PRICE, "$"),
+		MapMath.coord_to_pos(coord) + Vector2(0.5 * CONST.FLOOR_UNIT_WIDTH, 0)
+	)
 
 func _on_add_unit_button_place_room_at(coord: Vector2) -> void:
 	request_add_unit(coord)

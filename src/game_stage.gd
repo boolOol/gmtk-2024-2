@@ -31,6 +31,7 @@ func on_state_changed(new_state:int):
 			show_month_summary()
 
 func show_month_summary():
+	Sound.sound("income")
 	find_child("SummaryContainer").visible = true
 	var building : Building = GameState.building
 	
@@ -201,6 +202,7 @@ func _on_finish_stage_button_pressed() -> void:
 		GameState.set_state(GameState.State.Building)
 	elif GameState.state == GameState.State.Building:
 		GameState.set_state(GameState.State.PickingTenants)
+		ignore_list.clear()
 		handle_empty_apartments()
 	elif GameState.state == GameState.State.PickingTenants:
 		GameState.set_state(GameState.State.Managing)
@@ -209,6 +211,12 @@ func _on_finish_stage_button_pressed() -> void:
 var flats_to_handle := []
 func handle_empty_apartments():
 	flats_to_handle = GameState.building.get_empty_flats()
+	var actually := []
+	for flat in flats_to_handle:
+		if flat in ignore_list:
+			continue
+		actually.append(flat)
+	flats_to_handle = actually
 	if flats_to_handle.is_empty():
 		GameState.set_state(GameState.State.Managing)
 		find_child("FinishStageButton").visible = true
@@ -242,3 +250,11 @@ func _on_summary_gui_input(event: InputEvent) -> void:
 			find_child("SummaryContainer").visible = false
 			if is_broke:
 				get_tree().reload_current_scene()
+
+var ignore_list := []
+
+
+func _on_tenant_picker_no_tenant_picked(apartment_coords: Array) -> void:
+	ignore_list.append(apartment_coords)
+	await get_tree().process_frame
+	handle_empty_apartments()

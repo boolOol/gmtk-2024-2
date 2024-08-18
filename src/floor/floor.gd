@@ -159,7 +159,6 @@ func on_mouse_exited():
 func add_room(coord: Vector2, room_type:CONST.RoomType):
 	var room = preload("res://src/rooms/room.tscn").instantiate()
 	$Rooms.add_child(room)
-	prints("game stage ",GameState.game_stage)
 	if GameState.game_stage:
 		room.request_room_info.connect(GameState.game_stage.display_room_info)
 	room.coord = coord

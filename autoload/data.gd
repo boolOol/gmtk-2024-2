@@ -9,8 +9,6 @@ signal room_added(at_coord:Vector2)
 func _ready() -> void:
 	apply("household_counter", 0)
 	apply("global.permanent_reveal", false)
-	for type in CONST.RoomType:
-		apply(str("inventory.", type), 0)
 
 func of(property_name: String, default=false):
 	if not properties.has(property_name):

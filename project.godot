@@ -21,6 +21,7 @@ Data="*res://autoload/data.tscn"
 CONST="*res://autoload/const.tscn"
 MapMath="*res://autoload/map_math.tscn"
 GameState="*res://autoload/game_state.tscn"
+Sound="*res://autoload/sound.tscn"
 
 [global_group]
 

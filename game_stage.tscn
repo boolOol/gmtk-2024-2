@@ -240,6 +240,7 @@ fghfg"
 fit_content = true
 
 [connection signal="query_add_floor" from="Building" to="." method="_on_building_query_add_floor"]
+[connection signal="no_tenant_picked" from="CanvasLayer/Control/TenantPicker" to="." method="_on_tenant_picker_no_tenant_picked"]
 [connection signal="tenant_picked_for_apartment" from="CanvasLayer/Control/TenantPicker" to="." method="_on_tenant_picker_tenant_picked_for_apartment"]
 [connection signal="confirm_add_floor" from="CanvasLayer/Control/AddFloorContainer" to="Building" method="add_floor_by_coord"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/FinishStageButton" to="." method="_on_finish_stage_button_pressed"]

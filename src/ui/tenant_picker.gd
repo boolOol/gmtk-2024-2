@@ -3,7 +3,7 @@ extends Control
 var apartment_in_question:Array
 
 signal tenant_picked_for_apartment(apartment_coords:Array, tenant:Dictionary)
-
+signal no_tenant_picked(apartment_coords:Array)
 
 func _ready() -> void:
 	GameState.state_changed.connect(on_state_changed)
@@ -68,3 +68,9 @@ func _on_visibility_hover_mouse_entered() -> void:
 		visibility_tween.kill()
 	visibility_tween = create_tween()
 	visibility_tween.tween_property(find_child("ItemContainer"), "modulate:a", 0.0, 2.0)
+
+
+func _on_ignore_button_pressed() -> void:
+	visible = false
+	emit_signal("no_tenant_picked", apartment_in_question)
+	

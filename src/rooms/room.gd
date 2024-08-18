@@ -10,6 +10,9 @@ var floor := 0
 var coord := Vector2.ZERO
 var room_size := 0
 
+var mouse_in = false
+@onready var last_position := global_position
+
 const sprite_root := "res://src/rooms/room_sprites/spr_room-"
 
 @export var room_type: CONST.RoomType
@@ -88,8 +91,10 @@ func set_dropability(do:bool):
 func _physics_process(delta: float) -> void:
 	if selected:
 		global_position = lerp(global_position, get_global_mouse_position() - drag_offset, 20*delta)
-
-var mouse_in = false
+		if last_position == drag_start_position and global_position != drag_start_position:
+			Sound.sound("room_rip")
+			GameState.camera.apply_shake(2)
+	last_position = global_position
 
 func _process(delta: float) -> void:
 	var mouse_pos := get_local_mouse_position() 
