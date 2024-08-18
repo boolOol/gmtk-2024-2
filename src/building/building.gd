@@ -46,7 +46,7 @@ func _process(delta: float) -> void:
 	add_unit_button.position = lerp(add_unit_button.position, target_pos, 0.2)
 	
 	var button_coord = add_unit_button.get_current_coord()
-	add_unit_button.visible = can_coord_be_added(button_coord)
+	add_unit_button.visible = can_coord_be_added(button_coord) and GameState.is_state(GameState.State.Managing)
 
 
 
@@ -266,6 +266,8 @@ func add_floor(horizontal_index:int):
 	$Floors.add_child(floor)
 	floor.position = MapMath.coord_to_pos(Vector2(horizontal_index, -floor_count))# - global_position
 	floor.add_unit_at(Vector2(horizontal_index, -floor_count))
+	
+	GameState.camera.apply_shake(10)
 
 func is_coord_free(coord: Vector2) -> bool:
 	var floor := get_floor(coord.y)
@@ -304,8 +306,13 @@ func request_add_unit(coord: Vector2):
 	if not has_floor(coord.y):
 		emit_signal("query_add_floor", coord)
 		return
+	if Data.of("cash") < 20:
+		GameState.build_indicator("Need 20$.", get_global_mouse_position())
+		return
+	Data.change_by_int("cash", -20)
 	var floor := get_floor(coord.y)
 	floor.add_unit_at(coord)
+	GameState.camera.apply_shake(5)
 
 func _on_add_unit_button_place_room_at(coord: Vector2) -> void:
 	request_add_unit(coord)

@@ -1,9 +1,8 @@
 extends Camera2D
 class_name  GameCamera
 
-@onready var target_zoom := Vector2.ONE
+@onready var target_zoom := Vector2.ONE * 1.75
 
-@export var random_strength := 30.0
 @export var shake_fade := 5.0
 
 var rng := RandomNumberGenerator.new()
@@ -13,8 +12,8 @@ var shake_strength := 0.0
 func _ready() -> void:
 	GameState.camera = self
 
-func apply_shake():
-	shake_strength = random_strength
+func apply_shake(intensity := 30.0):
+	shake_strength = intensity
 
 func random_offset() -> Vector2:
 	return Vector2(

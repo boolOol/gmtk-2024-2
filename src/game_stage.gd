@@ -79,7 +79,7 @@ func display_room_info(coord:Vector2):
 				color = Color.ORANGE_RED.to_html()
 			else:
 				color = Color.LIGHT_BLUE.to_html()
-			neighbor_string += str("[color=#", color, "]", nb, "[/color]")
+			neighbor_string += str("[color=#", color, "]", CONST.HOUSEHOLD_NAMES.get(nb), "[/color]")
 			neighbor_string += "\n"
 		neighbor_string = neighbor_string.trim_suffix("\n")
 	else:

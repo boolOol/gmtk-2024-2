@@ -86,6 +86,24 @@ enum HouseholdArchetype {
 	DrugDealer,
 	MarathonCouple,
 }
+
+const HOUSEHOLD_NAMES := {
+	HouseholdArchetype.StudentFlatShare : "Student Flat Share",
+	HouseholdArchetype.Apprentice : "Apprentice",
+	HouseholdArchetype.OrdinaryFamily : "Ordinary Family",
+	HouseholdArchetype.SingleParent : "Single Parent",
+	HouseholdArchetype.YoungCouple : "Young Couple",
+	HouseholdArchetype.Workaholic : "Workaholic",
+	HouseholdArchetype.Polycule : "Polycule",
+	HouseholdArchetype.ElderlyCouple : "Elderly Couple",
+	HouseholdArchetype.BigFamily : "Big Family",
+	HouseholdArchetype.Widow : "Widow",
+	HouseholdArchetype.CEO : "CEO",
+	HouseholdArchetype.InfluencerCouple : "Influencer Couple",
+	HouseholdArchetype.Kevin : "Kevin",
+	HouseholdArchetype.DrugDealer : "Drug Dealer",
+	HouseholdArchetype.MarathonCouple : "Marathon Couple",
+}
 #const HouseholdArchetype {
 	#StudentFlatShare,
 	#Apprentice,

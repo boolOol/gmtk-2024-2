@@ -44,6 +44,7 @@ fill_from = Vector2(1, 1)
 script = ExtResource("1_p5hh2")
 
 [node name="Background" type="Node2D" parent="."]
+position = Vector2(0, -173)
 
 [node name="Sky2" type="Parallax2D" parent="Background"]
 scroll_scale = Vector2(0.1, 1)
@@ -92,27 +93,40 @@ repeat_times = 7
 [node name="Sprite2D" type="Sprite2D" parent="Background/Floor"]
 texture = ExtResource("6_57kyt")
 
-[node name="Foreground" type="Parallax2D" parent="Background"]
+[node name="GameCamera" parent="." instance=ExtResource("2_8dd5b")]
+position = Vector2(215, 111)
+zoom = Vector2(0.49, 0.49)
+
+[node name="Building" parent="." instance=ExtResource("2_6ic3h")]
+position = Vector2(143, -29)
+
+[node name="HarvestableBuilding" parent="." instance=ExtResource("8_d4048")]
+position = Vector2(354, -7)
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(76, -181)
+
+[node name="Foreground" type="Parallax2D" parent="Node2D"]
 repeat_size = Vector2(1024, 0)
 repeat_times = 7
 
-[node name="Sprite2D" type="Sprite2D" parent="Background/Foreground"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Foreground"]
 texture = ExtResource("7_v8uqo")
 
-[node name="EndlessGround" type="Parallax2D" parent="Background"]
+[node name="EndlessGround" type="Parallax2D" parent="Node2D"]
 scroll_scale = Vector2(0.1, 1)
 repeat_size = Vector2(1024, 0)
 repeat_times = 7
 
-[node name="Sprite2D" type="Sprite2D" parent="Background/EndlessGround"]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/EndlessGround"]
 position = Vector2(-9, 1244)
 texture = SubResource("GradientTexture2D_gwuf7")
 
-[node name="Particles" type="Parallax2D" parent="Background"]
+[node name="Particles" type="Parallax2D" parent="Node2D"]
 repeat_size = Vector2(1200, 0)
 repeat_times = 4
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="Background/Particles"]
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Node2D/Particles"]
 position = Vector2(6, -2919.49)
 amount = 48
 lifetime = 1.6
@@ -126,12 +140,6 @@ initial_velocity_min = 2000.0
 initial_velocity_max = 2000.0
 angle_min = 10.0
 angle_max = 10.0
-
-[node name="GameCamera" parent="." instance=ExtResource("2_8dd5b")]
-position = Vector2(215, 111)
-
-[node name="Building" parent="." instance=ExtResource("2_6ic3h")]
-position = Vector2(143, -29)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -177,8 +185,20 @@ offset_left = -40.0
 offset_bottom = 23.0
 grow_horizontal = 0
 
-[node name="HarvestableBuilding" parent="." instance=ExtResource("8_d4048")]
-position = Vector2(521, -29)
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/PanelContainer"]
+layout_mode = 2
+text = "NOTIFICATION"
+horizontal_alignment = 1
 
 [node name="FlatOverview" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(400, 0)
@@ -212,12 +232,14 @@ layout_mode = 2
 [node name="RoomInfoLabel" type="RichTextLabel" parent="FlatOverview/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+bbcode_enabled = true
 text = "Rooms: yay"
 fit_content = true
 
 [node name="NeighborInfoLabel" type="RichTextLabel" parent="FlatOverview/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+bbcode_enabled = true
 text = "Neighbors;:"
 fit_content = true
 
