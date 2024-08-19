@@ -15,9 +15,12 @@ func _ready() -> void:
 	
 	GameState.game_stage = self
 	Data.property_changed.connect(on_property_changed)
-	Data.apply("cash", 1000)
+	Data.apply("cash", 100000)
+	Data.apply("idle_lives", 3)
 	
 	find_child("SummaryContainer").visible = false
+	find_child("HelpContainer").visible = false
+	find_child("OutOfLivesContainer").visible = false
 	
 	var t0 = get_tree().create_timer(2)
 	t0.timeout.connect(notify.bind(
@@ -99,6 +102,8 @@ func on_property_changed(property_name:String, old_value, new_value):
 	match property_name:
 		"cash":
 			find_child("CashLabel").text = str("FUNDS: $", new_value)
+		"idle_lives":
+			find_child("LivesLabel").text = str("INVESTOR TOLERANCE: ", new_value)
 
 var last_clicked_coord := Vector2(5342,-45654)
 func display_room_info(coord:Vector2):
@@ -230,8 +235,19 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_finish_stage_button_pressed() -> void:
 	go_to_next_state()
+
 func go_to_next_state():
+	if Data.of("idle_lives") <= 0:
+		return
 	if GameState.state == GameState.State.Managing:
+		if not GameState.expanded_this_phase:
+			Data.change_by_int("idle_lives", -1)
+			if Data.of("idle_lives") <= 0:
+				find_child("OutOfLivesContainer").visible = true
+			notify(
+				"YOU DID NOT EXPAND.\nINVESTORS ARE DISPLEASED."
+			)
+		#print("expanded", GameState.expanded_this_phase)
 		GameState.set_state(GameState.State.Building)
 	elif GameState.state == GameState.State.Building:
 		GameState.set_state(GameState.State.PickingTenants)
@@ -298,3 +314,15 @@ func _on_tenant_picker_no_tenant_picked(apartment_coords: Array) -> void:
 func _on_summary_container_visibility_changed() -> void:
 	if is_broke and not find_child("SummaryContainer").visible:
 		get_tree().reload_current_scene()
+
+
+func _on_help_container_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			find_child("HelpContainer").visible = false
+
+
+func _on_out_of_lives_container_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			get_tree().reload_current_scene()

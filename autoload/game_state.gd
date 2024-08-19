@@ -19,6 +19,7 @@ var camera:GameCamera
 var drag_target : FloorUnit
 var dragged_room : Room
 var indicator_debounce := false
+var expanded_this_phase := false
 
 func set_drag_target(target: FloorUnit):
 	drag_target = target
@@ -78,6 +79,8 @@ func is_state(value:State) -> bool:
 
 func set_state(value:State):
 	state = value
+	if state == State.Building:
+		expanded_this_phase = false
 	emit_signal("state_changed", value)
 
 func transfer_to_drag_target():
@@ -101,6 +104,7 @@ func transfer_to_drag_target():
 	dragged_room.set_player_owned(true)
 	camera.apply_shake()
 	Sound.sound("place")
+	expanded_this_phase = true
 	
 	var adjacent_household:int
 	var adjacent_coord:Vector2

@@ -48,5 +48,7 @@ MarginContainer/constants/margin_left = 11
 MarginContainer/constants/margin_right = 11
 MarginContainer/constants/margin_top = 5
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_2go8y")
+RichTextLabel/font_sizes/bold_font_size = 22
 RichTextLabel/font_sizes/normal_font_size = 23
+RichTextLabel/fonts/bold_font = ExtResource("7_jlf4v")
 RichTextLabel/fonts/normal_font = ExtResource("5_84aak")

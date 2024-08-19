@@ -1,4 +1,4 @@
-extends PanelContainer
+extends Control
 
 var vis_tween:Tween
 

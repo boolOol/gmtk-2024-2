@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://ct4mnxgtkxsbr" path="res://src/ui/tenant_picker.tscn" id="10_77nrk"]
 [ext_resource type="Theme" uid="uid://dxmarsh5uodsy" path="res://theme/fonts/new_theme.tres" id="11_r0vxq"]
 [ext_resource type="PackedScene" uid="uid://b34uijx7uwlgj" path="res://src/ui/household_info.tscn" id="13_m72j7"]
-[ext_resource type="Script" path="res://summary_container.gd" id="14_5vgpf"]
+[ext_resource type="Script" path="res://fade_in_screen.gd" id="14_5vgpf"]
 
 [sub_resource type="Gradient" id="Gradient_b53k7"]
 offsets = PackedFloat32Array(0)
@@ -130,6 +130,7 @@ repeat_size = Vector2(1200, 0)
 repeat_times = 4
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="Node2D/Particles"]
+visible = false
 position = Vector2(6, -2919.49)
 amount = 48
 lifetime = 1.6
@@ -145,6 +146,15 @@ angle_min = 10.0
 angle_max = 10.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="FlatInfo" parent="CanvasLayer" instance=ExtResource("13_m72j7")]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_right = 0.0
+anchor_bottom = 0.5
+offset_top = -197.0
+offset_bottom = -174.0
+grow_horizontal = 1
 
 [node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -202,9 +212,16 @@ offset_left = -23.0
 offset_bottom = 39.0
 grow_horizontal = 0
 
-[node name="CashLabel" type="Label" parent="CanvasLayer/Control/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+
+[node name="CashLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
+
+[node name="LivesLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
 
 [node name="Notification" type="PanelContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -226,16 +243,8 @@ theme_override_font_sizes/font_size = 28
 text = "NOTIFICATION"
 horizontal_alignment = 1
 
-[node name="FlatInfo" parent="CanvasLayer" instance=ExtResource("13_m72j7")]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_right = 0.0
-anchor_bottom = 0.5
-offset_top = -197.0
-offset_bottom = -174.0
-grow_horizontal = 1
-
-[node name="SummaryContainer" type="PanelContainer" parent="CanvasLayer"]
+[node name="SummaryContainer" type="PanelContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -246,12 +255,12 @@ size_flags_vertical = 3
 theme = ExtResource("11_r0vxq")
 script = ExtResource("14_5vgpf")
 
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/SummaryContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control/SummaryContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Summary" type="RichTextLabel" parent="CanvasLayer/SummaryContainer/CenterContainer"]
+[node name="Summary" type="RichTextLabel" parent="CanvasLayer/Control/SummaryContainer/CenterContainer"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -259,6 +268,77 @@ size_flags_vertical = 3
 bbcode_enabled = true
 text = "fghfghfghfg
 fghfg"
+fit_content = true
+
+[node name="HelpContainer" type="Control" parent="CanvasLayer/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("14_5vgpf")
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/HelpContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Control/HelpContainer/PanelContainer"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+bbcode_enabled = true
+text = "[b]CONTROLS[/b]
+
+Zoom - Mouse Wheel or M/N
+Move Camera: WASD or Arrow Keys
+Drag rooms: Left Click
+Close menus: Left Click
+
+[b]HOW TO PLAY[/b]
+Steal rooms from other buildings.
+Let households move in.
+Expand the building around the edges and skywards.
+Don't run out of funds."
+fit_content = true
+
+[node name="OutOfLivesContainer" type="Control" parent="CanvasLayer/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("14_5vgpf")
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/OutOfLivesContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Control/OutOfLivesContainer/PanelContainer"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+bbcode_enabled = true
+text = "[center][color=red][b]YOU STALLED INVESTMENT GROWTH TOO MUCH. NEXT TIME, EXPAND MORE OFTEN.[/b][/color]
+
+Click to restart."
 fit_content = true
 
 [node name="Indicators" type="Node2D" parent="."]
@@ -269,5 +349,7 @@ fit_content = true
 [connection signal="confirm_add_floor" from="CanvasLayer/Control/AddFloorContainer" to="Building" method="add_floor_by_coord"]
 [connection signal="toggled" from="CanvasLayer/Control/MarginContainer2/VBoxContainer/PermanentRevealCheckBox" to="." method="_on_permanent_reveal_check_box_toggled"]
 [connection signal="pressed" from="CanvasLayer/Control/MarginContainer2/VBoxContainer/FinishStageButton" to="." method="_on_finish_stage_button_pressed"]
-[connection signal="visibility_changed" from="CanvasLayer/SummaryContainer" to="." method="_on_summary_container_visibility_changed"]
-[connection signal="gui_input" from="CanvasLayer/SummaryContainer/CenterContainer/Summary" to="." method="_on_summary_gui_input"]
+[connection signal="visibility_changed" from="CanvasLayer/Control/SummaryContainer" to="." method="_on_summary_container_visibility_changed"]
+[connection signal="gui_input" from="CanvasLayer/Control/SummaryContainer/CenterContainer/Summary" to="." method="_on_summary_gui_input"]
+[connection signal="gui_input" from="CanvasLayer/Control/HelpContainer" to="." method="_on_help_container_gui_input"]
+[connection signal="gui_input" from="CanvasLayer/Control/OutOfLivesContainer" to="." method="_on_out_of_lives_container_gui_input"]

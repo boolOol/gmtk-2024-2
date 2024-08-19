@@ -13,7 +13,12 @@ func show_menu(coord:Vector2):
 	current_coord = coord
 	visible = true
 	
-	find_child("RichTextLabel").text = str("[center]Do you want to add floor ", abs(coord.y) + 1, "? This will increase maintenance fees.")
+	var more_costs : int
+	if abs(coord.y) >= CONST.PRICE_PER_HEIGHT.size():
+		more_costs = CONST.PRICE_PER_HEIGHT.get(CONST.PRICE_PER_HEIGHT.size() - 1)
+	else:
+		more_costs = CONST.PRICE_PER_HEIGHT.get(abs(coord.y))
+	find_child("RichTextLabel").text = str("[center]Do you want to add floor ", abs(coord.y) + 1, "? This will increase maintenance fees by ", more_costs, ".")
 	find_child("ConfirmButton").grab_focus()
 	if popup_tween:
 		popup_tween.kill()
