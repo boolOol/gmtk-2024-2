@@ -17,7 +17,7 @@ func _ready() -> void:
 	Data.property_changed.connect(on_property_changed)
 	Data.apply("cash", 1000)
 	Data.apply("idle_lives", 3)
-	Data.apply("global.permanent_reveal", false)
+	Data.apply("global.permanent_reveal", true)
 	
 	find_child("SummaryContainer").visible = false
 	find_child("HelpContainer").visible = false
