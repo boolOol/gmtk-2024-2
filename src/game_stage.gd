@@ -70,7 +70,7 @@ func show_month_summary():
 		income += hh.rentToPay
 		var flat_index = building.get_flat_index(flat.front())
 		var flat_str = str("Floor ", flat_index.y, " - Flat ", flat_index.x)
-		items.append(str(hh.household_name, " ", flat_str, " \t+$", hh.rentToPay))
+		items.append(str(hh.household_name, " @ ", flat_str, " \t+$", hh.rentToPay))
 	
 	items.append("--------")
 	var height_cost := 0
@@ -80,20 +80,20 @@ func show_month_summary():
 		else:
 			height_cost += CONST.PRICE_PER_HEIGHT.get(i)
 	expenditures += height_cost
-	items.append(str("Height: ", abs(GameState.highest_coord) + 1, " - $", height_cost))
+	items.append(str(abs(GameState.highest_coord) + 1, " Floors", ": -$", height_cost))
 	
 	items.append("========")
-	items.append(str("Total Income: ", income - expenditures))
+	items.append(str("Total Income: $", income - expenditures))
 	
 	Data.change_by_int("cash", income - expenditures)
 	
-	items.append(str("Total Funds: ", Data.of("cash")))
+	items.append(str("Total Funds: $", Data.of("cash")))
 	
 	if Data.of("cash") < 0:
 		items.append("[font_size=60][color=red]\nYOU ARE BROKE. CLICK TO RESTART.[/color][/font_size]")
 		is_broke = true
 	
-	find_child("Summary").text = str("[center]", "\n".join(items))
+	find_child("Summary").text  = str("[left]", "\n".join(items))
 	
 func on_property_changed(property_name:String, old_value, new_value):
 	match property_name:

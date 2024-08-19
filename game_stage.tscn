@@ -236,7 +236,6 @@ offset_bottom = -174.0
 grow_horizontal = 1
 
 [node name="SummaryContainer" type="PanelContainer" parent="CanvasLayer"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -247,11 +246,13 @@ size_flags_vertical = 3
 theme = ExtResource("11_r0vxq")
 script = ExtResource("14_5vgpf")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/SummaryContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/SummaryContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="Summary" type="RichTextLabel" parent="CanvasLayer/SummaryContainer/ScrollContainer"]
-custom_minimum_size = Vector2(300, 0)
+[node name="Summary" type="RichTextLabel" parent="CanvasLayer/SummaryContainer/CenterContainer"]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -269,4 +270,4 @@ fit_content = true
 [connection signal="toggled" from="CanvasLayer/Control/MarginContainer2/VBoxContainer/PermanentRevealCheckBox" to="." method="_on_permanent_reveal_check_box_toggled"]
 [connection signal="pressed" from="CanvasLayer/Control/MarginContainer2/VBoxContainer/FinishStageButton" to="." method="_on_finish_stage_button_pressed"]
 [connection signal="visibility_changed" from="CanvasLayer/SummaryContainer" to="." method="_on_summary_container_visibility_changed"]
-[connection signal="gui_input" from="CanvasLayer/SummaryContainer/ScrollContainer/Summary" to="." method="_on_summary_gui_input"]
+[connection signal="gui_input" from="CanvasLayer/SummaryContainer/CenterContainer/Summary" to="." method="_on_summary_gui_input"]

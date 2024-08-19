@@ -26,14 +26,14 @@ func present_tenant(t:Resource):
 	for room in tenant.happy_rooms:
 		roomPref += "[color=lawngreen]+ " + CONST.ROOM_NAMES.get(room) + "[/color]\n"
 	for room in tenant.sad_rooms:
-		roomPref += "[color=orangered]- " + CONST.ROOM_NAMES.get(room) + "[/color]\n"
+		roomPref += "[color=orangered]-  " + CONST.ROOM_NAMES.get(room) + "[/color]\n"
 	label_rooms.text = "Room Preferences:\n" +  roomPref
 	
 	var neighbourPref:String = ""
 	for n in tenant.happy_neighbors:
 		neighbourPref += "[color=lawngreen]+ " + CONST.HOUSEHOLD_NAMES.get(n) + "[/color]\n"
 	for n in tenant.sad_neighbors:
-		neighbourPref += "[color=orangered]- " + CONST.HOUSEHOLD_NAMES.get(n) + "[/color]\n"
+		neighbourPref += "[color=orangered]-  " + CONST.HOUSEHOLD_NAMES.get(n) + "[/color]\n"
 	label_neighbours.text = "Neighbor Preferences:\n" +  neighbourPref
 	
 func pick_tenant():
