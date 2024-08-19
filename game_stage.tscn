@@ -306,7 +306,7 @@ mouse_filter = 2
 bbcode_enabled = true
 text = "[b]CONTROLS[/b]
 
-Zoom - Mouse Wheel or M/N
+Zoom - Mouse Wheel or Q/E or M/N
 Move Camera: WASD or Arrow Keys
 Drag rooms: Left Click
 Close menus: Left Click
@@ -316,7 +316,8 @@ Go to next phase: Space or bottom-right button
 Steal rooms from other buildings.
 Let households move in.
 Expand the building around the edges and skywards.
-Don't run out of funds."
+Don't run out of funds.
+Don't disappoint investors."
 fit_content = true
 
 [node name="OutOfLivesContainer" type="Control" parent="CanvasLayer/Control"]
