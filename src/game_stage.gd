@@ -55,13 +55,18 @@ func show_month_summary():
 	var items : PackedStringArray = []
 	var income := 0
 	var expenditures := 0
-	for id in building.occupation_by_household_id:
+	var handled_ids := []
+	for id in building.household_id_by_coord.values():
+		if handled_ids.has(id):
+			continue
+		handled_ids.append(id)
 		var hh : Household = building.get_household_from_id(id)
-		hh.happiness += hh.happiness_change
-		hh.happiness_change = 0
-		var flat = building.occupation_by_household_id.get(id)
 		if not hh:
 			continue
+		hh.happiness += hh.happiness_change
+		hh.happiness_change = 0
+		var flat = building.get_flat_of_household(id)
+		
 		income += hh.rentToPay
 		var flat_index = building.get_flat_index(flat.front())
 		var flat_str = str("Floor ", flat_index.y, " - Flat ", flat_index.x)
@@ -120,7 +125,7 @@ func display_room_info(coord:Vector2):
 	var room_string := ""
 	var neighbor_string := ""
 	
-	if id != -1: # occupied
+	if id != -1 and id != 0: # occupied
 		var data = GameState.building.household_data_by_id.get(id)
 		# --- this is in data
 		#"name" : tenant.household_name,
@@ -216,7 +221,16 @@ func get_random_tenants(count:int) -> Dictionary:
 	return {"res":res, "archetypes":hh}
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("advance"):
+		if find_child("SummaryContainer").visible:
+			find_child("SummaryContainer").visible = false
+		else:
+			go_to_next_state()
+
 func _on_finish_stage_button_pressed() -> void:
+	go_to_next_state()
+func go_to_next_state():
 	if GameState.state == GameState.State.Managing:
 		GameState.set_state(GameState.State.Building)
 	elif GameState.state == GameState.State.Building:

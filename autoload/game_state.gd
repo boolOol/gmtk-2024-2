@@ -57,15 +57,21 @@ func can_drag_target_fit_room(room:Room) -> bool:
 	
 	# squished between
 	if (
-		building.get_household(Vector2(drag_target.h_index -1, -level)) or
+		building.get_household(Vector2(drag_target.h_index -1, -level)) and
 		building.get_household(Vector2(drag_target.h_index +1, -level))):
-			GameState.build_indicator(
-				str("Next-door construction work is rude.\nEvict either to expand.\n"),
-				drag_target.global_position
-			)
+			if not rude_debounce:
+				GameState.build_indicator(
+					str("Next-door construction\nwork is rude.\nEvict to expand.\n"),
+					drag_target.global_position
+				)
+				rude_debounce = true
+				var t = get_tree().create_timer(3)
+				t.timeout.connect(set.bind("rude_debounce", false))
 			return false
 	
 	return true
+
+var rude_debounce := false
 
 func is_state(value:State) -> bool:
 	return value == state
@@ -89,49 +95,29 @@ func transfer_to_drag_target():
 	
 	var size = CONST.ROOM_SIZES.get(dragged_room.room_type)
 	for i in size:
-		prints("allocating ", Vector2(coord.x + i, coord.y))
+		#prints("allocating ", Vector2(coord.x + i, coord.y))
 		floor.rooms_by_coord[Vector2(coord.x + i, coord.y)] = dragged_room
 	
 	dragged_room.set_player_owned(true)
 	camera.apply_shake()
 	Sound.sound("place")
 	
-	var adjacent_household
+	var adjacent_household:int
+	var adjacent_coord:Vector2
+	#prints("looking for adjacent in ", coord + Vector2.LEFT, coord + (Vector2.RIGHT * size))
 	if building.get_household(coord + Vector2.LEFT):
-		adjacent_household = building.get_household(coord + Vector2.LEFT)
-	if building.get_household(coord + Vector2.RIGHT):
-		adjacent_household = building.get_household(coord + Vector2.RIGHT)
-	if adjacent_household:
-		var previous_flat:Array
-		var new_flat:Array
-		var hh
-		for household in building.occupation_by_household_id:
-			if household == adjacent_household:
-				previous_flat = building.occupation_by_household_id[household]
-				building.occupation_by_household_id[household].append(coord)
-				building.occupation_by_household_id[household] = building.get_sorted_coords(building.occupation_by_household_id[household])
-				new_flat = building.occupation_by_household_id[household]
-				prints("merged ",coord,"into", building.occupation_by_household_id.get(household))
-				hh = household
-				break
-		for flat in building.occupation_by_flat:
-			if flat == previous_flat:
-				building.occupation_by_flat[new_flat] = hh#building.occupation_by_flat.get(flat)
-				building.occupation_by_flat.erase(previous_flat)
+		adjacent_coord = coord + Vector2.LEFT
+		adjacent_household = building.get_household_id_of(adjacent_coord)
+	if building.get_household(coord + (Vector2.RIGHT * size)):
+		adjacent_coord = coord + (Vector2.RIGHT * size)
+		adjacent_household = building.get_household_id_of(adjacent_coord)
+	if adjacent_household != -1:
+		building.household_id_by_coord[adjacent_coord] = adjacent_household
+		for i in size:
+			building.household_id_by_coord[coord + Vector2(i, 0)] = adjacent_household
+		building.household_node_by_id[adjacent_household] = building.get_household_from_id(adjacent_household)
+		
 				
-			#building.occupation_by_flat.has(adjacent_household)
-		#if hh:
-			#building.occupation_by_household_id[hh] = new_flat
-			#building.occupation_by_flat[new_flat] = hh
-			#var household = building.get_household_from_id(hh)
-			#var value := 0
-			#for flat_coord in new_flat:
-				#value += CONST.get_rent(building.get_room_type(flat_coord))
-			#household.rentToPay = household.rentMod * value
-		#
-	#for o in building.occupation_by_flat:
-		#if building.occupation_by_flat.get(o) == null or not is_instance_valid(o):
-			#building.occupation_by_flat.erase(o)
 	#
 	var price : int = CONST.get_price(dragged_room.room_type)
 	build_indicator(
@@ -151,18 +137,23 @@ func transfer_to_drag_target():
 	if adjacent_household:
 		var hgjdfj : Household = building.household_node_by_id.get(adjacent_household)
 		var data = hgjdfj.serialize()
+		var old_pos = hgjdfj.position
 		hgjdfj.queue_free()
-		var new = preload("res://src/household/household.tscn")
+		var new = preload("res://src/household/household.tscn").instantiate()
 		
 		building.get_node("Tenants").add_child(new)
 		new.deserialize(data)
+		new.build_from_resource(new.stats)
+		new.deserialize(data)
+		new.position = old_pos
 		building.household_node_by_id[adjacent_household] = new
 		
+		#new.position.y = CONST.FLOOR_UNIT_HEIGHT * 0.5
 	
 	if adjacent_household:
 		building.update_flat_extents(adjacent_household)
 
 func build_indicator(text_to_display:String, global_pos:Vector2, delay:=0.0, text_color:=Color.LAWN_GREEN, font_size:=32):
 	var indicator = preload("res://src/ui/number_indicator.tscn").instantiate()
-	building.add_child(indicator)
+	game_stage.get_node("Indicators").add_child(indicator)
 	indicator.start(text_to_display, global_pos, delay, text_color, font_size)

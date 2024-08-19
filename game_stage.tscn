@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bk3nrnqrwiuyn"]
+[gd_scene load_steps=21 format=3 uid="uid://bk3nrnqrwiuyn"]
 
 [ext_resource type="Script" path="res://src/game_stage.gd" id="1_p5hh2"]
 [ext_resource type="PackedScene" uid="uid://dq2meide5oo8r" path="res://src/building/building.tscn" id="2_6ic3h"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://dk1v0umuvbrtu" path="res://src/building/harvestable_building.tscn" id="8_d4048"]
 [ext_resource type="PackedScene" uid="uid://ct4mnxgtkxsbr" path="res://src/ui/tenant_picker.tscn" id="10_77nrk"]
 [ext_resource type="PackedScene" uid="uid://b34uijx7uwlgj" path="res://src/ui/household_info.tscn" id="13_m72j7"]
+[ext_resource type="Script" path="res://summary_container.gd" id="14_5vgpf"]
 
 [sub_resource type="Gradient" id="Gradient_b53k7"]
 offsets = PackedFloat32Array(0)
@@ -225,6 +226,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource("14_5vgpf")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/SummaryContainer"]
 layout_mode = 2
@@ -238,6 +240,8 @@ bbcode_enabled = true
 text = "fghfghfghfg
 fghfg"
 fit_content = true
+
+[node name="Indicators" type="Node2D" parent="."]
 
 [connection signal="query_add_floor" from="Building" to="." method="_on_building_query_add_floor"]
 [connection signal="no_tenant_picked" from="CanvasLayer/Control/TenantPicker" to="." method="_on_tenant_picker_no_tenant_picked"]

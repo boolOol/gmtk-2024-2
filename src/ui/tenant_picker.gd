@@ -16,8 +16,8 @@ func on_state_changed(new_state:GameState.State):
 # apartment_amalgam is an array of indicies that make up the apartment
 func present_tenants(tenants:Dictionary, apartment_amalgam:Array):
 	var apartment_summary := "[center]The following applicants want to move into this flat:\n"
-	for coord in apartment_amalgam:
-		apartment_summary += CONST.ROOM_NAMES.get(GameState.building.get_room_type(coord))
+	for room_type in GameState.building.get_room_types_of_flat(apartment_amalgam):
+		apartment_summary += CONST.ROOM_NAMES.get(room_type)
 		apartment_summary += ", "
 	apartment_summary = apartment_summary.trim_suffix(", ")
 	var index = GameState.building.get_flat_index(apartment_amalgam.front())

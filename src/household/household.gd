@@ -23,7 +23,7 @@ func serialize() -> Dictionary:
 	result["happiness"] = happiness
 	result["happiness_change"] = happiness_change
 	result["household_name"] = household_name
-	result["stats"] = stats
+	result["stats"] = stats.duplicate()
 	
 	var people := []
 	for person in $People.get_children():
@@ -72,7 +72,10 @@ func build_from_resource(res:Resource):
 	stats = res
 	
 	var value := 0
-	for coord in GameState.building.occupation_by_household_id.get(id):
+	for coord in GameState.building.household_id_by_coord.keys():
+		var household_id = GameState.building.household_id_by_coord.get(coord)
+		if household_id != id:
+			continue
 		var room_type = GameState.building.get_room_type(coord)
 		value += CONST.get_rent(room_type)
 	rentToPay = value

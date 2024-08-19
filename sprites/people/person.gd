@@ -41,12 +41,12 @@ func serialize() -> Dictionary:
 	}
 
 func deserialize(data:Dictionary):
-	skin_idx = data.get("_idx")
-	skin.play(str("idle_skin"))
-	hair_idx = data.get("_idx")
-	hair.play(str("idle_hair"))
-	body_idx = data.get("_idx")
-	body.play(str("body"))
-	legs_idx = data.get("_idx")
-	legs.play(str("idle_legs"))
+	skin_idx = data.get("skin_idx")
+	skin.play(str("idle_skin", skin_idx))
+	hair_idx = data.get("hair_idx")
+	hair.play(str("idle_hair", hair_idx))
+	body_idx = data.get("body_idx")
+	body.play(str("idle_body", body_idx))
+	legs_idx = data.get("legs_idx")
+	legs.play(str("idle_legs", legs_idx))
 	scale = data.get("scale")

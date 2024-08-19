@@ -185,13 +185,14 @@ func set_flat_index(index:Vector2):
 func set_id(id:int):
 	self.id = id
 	set_occupied(id != -1)
-	var hh : Household = GameState.building.household_node_by_id.get(id)
+	var hh : Household = GameState.building.get_household_from_id(id)
 	prints("hot id ", id, " hh is ", hh)
-	if hh != null:
+	if hh:
 		household = hh
 		SetupTenant(household)
 		ShowHouseholdInfo()
-	else: HideHouseholdInfo()
+	else:
+		HideHouseholdInfo()
 
 # physically present
 func handle_room_types_of_flat(rooms:Array):
