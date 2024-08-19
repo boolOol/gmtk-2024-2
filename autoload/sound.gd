@@ -10,7 +10,8 @@ var place = "res://sounds/sfx/sfx_roomConnectedToSelf.ogg"
 var explosion = "res://src/building/explosion.png"
 
 var music := [
-	"res://sounds/music/DrumApocalypse.ogg"
+	"res://sounds/music/DrumApocalypse.ogg",
+	"res://sounds/music/MetrosexualCannibals.ogg",
 ]
 
 func _ready() -> void:
