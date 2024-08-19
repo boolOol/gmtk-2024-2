@@ -22,6 +22,8 @@ func _ready() -> void:
 	find_child("SummaryContainer").visible = false
 	find_child("HelpContainer").visible = false
 	find_child("OutOfLivesContainer").visible = false
+	for child in find_child("Events").get_children():
+		child.visible = false
 	
 	var t0 = get_tree().create_timer(2)
 	t0.timeout.connect(notify.bind(
@@ -233,8 +235,13 @@ func get_random_tenants(count:int) -> Dictionary:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("advance"):
+		for child in find_child("Events").get_children():
+			if child.visible:
+				return
 		if find_child("SummaryContainer").visible:
 			find_child("SummaryContainer").visible = false
+		elif find_child("HelpContainer").visible:
+			find_child("HelpContainer").visible = false
 		else:
 			go_to_next_state()
 
@@ -318,10 +325,21 @@ func _on_tenant_picker_no_tenant_picked(apartment_coords: Array) -> void:
 	handle_empty_apartments()
 
 
+var first_event_blockers := 1
 func _on_summary_container_visibility_changed() -> void:
+	if not find_child("SummaryContainer").visible:
+		if first_event_blockers > 0:
+			first_event_blockers -= 1
+			return
+		roll_event()
+		
 	if is_broke and not find_child("SummaryContainer").visible:
 		get_tree().reload_current_scene()
 
+func roll_event():
+	if randf() > CONST.EVENT_CHANCE:
+		return
+	find_child("Events").get_children().pick_random().visible = true
 
 func _on_help_container_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -343,3 +361,13 @@ func _on_summary_container_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			find_child("SummaryContainer").visible = false
+
+
+func _on_new_story_button_pressed() -> void:
+	var highest_y := 0
+	var building : Building = GameState.building
+	var highest_coord:=Vector2.ZERO
+	for coord : Vector2 in building.get_all_coords():
+		if coord.y < highest_y:
+			highest_coord = coord
+	building.add_floor(highest_coord.x)

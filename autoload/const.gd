@@ -16,6 +16,8 @@ enum RoomType {
 	PleasureRoom,
 }
 
+const EVENT_CHANCE := 0.33
+
 const ROOM_SIZES := {
 	RoomType.Kitchen : 2,
 	RoomType.Bathroom : 1,

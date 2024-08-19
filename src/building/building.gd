@@ -43,15 +43,19 @@ func _ready() -> void:
 	for i in 5:
 		get_floor(2).add_unit_at(Vector2(i + 1, -2))
 
+func get_all_coords() -> Array:
+	var all_coords := []
+	for floor in $Floors.get_children():
+		all_coords.append_array(floor.units_by_coord.keys())
+	return all_coords
+
 func update_walls():
 	var highest_point_by_x := {}
 	var rightest_point_by_y := {}
 	
 	for wall in $FrontWall.get_children():
 		wall.queue_free()
-	var all_coords := []
-	for floor in $Floors.get_children():
-		all_coords.append_array(floor.units_by_coord.keys())
+	var all_coords := get_all_coords()
 	for coord in all_coords:
 		if highest_point_by_x.has(coord.x):
 			if highest_point_by_x[coord.x] > coord.y:
