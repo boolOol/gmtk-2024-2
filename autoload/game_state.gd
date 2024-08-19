@@ -18,13 +18,13 @@ var game_stage:Node2D
 var camera:GameCamera
 var drag_target : FloorUnit
 var dragged_room : Room
+var indicator_debounce := false
 
 func set_drag_target(target: FloorUnit):
 	drag_target = target
 	if dragged_room:
 		dragged_room.set_dropability(can_drag_target_fit_room(dragged_room) and drag_target != null)
 
-var indicator_debounce := false
 
 
 func can_drag_target_fit_room(room:Room) -> bool:
@@ -88,7 +88,7 @@ func transfer_to_drag_target():
 	# bad code lmao
 	var floor : Floor = drag_target.get_parent().get_parent()
 	var coord = Vector2(drag_target.h_index, -drag_target.floor)
-	dragged_room.reparent(floor.get_node("Rooms"))
+	dragged_room.reparent(floor.find_child("Rooms"))
 	dragged_room.floor = floor.get_index()
 	dragged_room.coord = coord
 	dragged_room.global_position = MapMath.coord_to_pos(coord) + floor.offset
@@ -121,9 +121,9 @@ func transfer_to_drag_target():
 	#
 	var price : int = CONST.get_price(dragged_room.room_type)
 	build_indicator(
-		str("-",price),
+		str("- $",price),
 		dragged_room.get_center(),
-		2.0,
+		1.8,
 		Color.CRIMSON)
 	build_indicator(
 		CONST.ROOM_NAMES.get(dragged_room.room_type),
@@ -141,7 +141,7 @@ func transfer_to_drag_target():
 		hgjdfj.queue_free()
 		var new = preload("res://src/household/household.tscn").instantiate()
 		
-		building.get_node("Tenants").add_child(new)
+		building.find_child("Tenants").add_child(new)
 		new.deserialize(data)
 		new.build_from_resource(new.stats)
 		new.deserialize(data)
@@ -155,5 +155,5 @@ func transfer_to_drag_target():
 
 func build_indicator(text_to_display:String, global_pos:Vector2, delay:=0.0, text_color:=Color.LAWN_GREEN, font_size:=32):
 	var indicator = preload("res://src/ui/number_indicator.tscn").instantiate()
-	game_stage.get_node("Indicators").add_child(indicator)
+	game_stage.find_child("Indicators").add_child(indicator)
 	indicator.start(text_to_display, global_pos, delay, text_color, font_size)

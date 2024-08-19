@@ -10,7 +10,7 @@ func _ready() -> void:
 	visible = false
 
 func on_state_changed(new_state:GameState.State):
-	$VisibilityHover.visible = false
+	visible = false
 
 
 # apartment_amalgam is an array of indicies that make up the apartment

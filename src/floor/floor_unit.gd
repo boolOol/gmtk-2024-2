@@ -26,11 +26,18 @@ func _process(delta: float) -> void:
 		if  mouse_in_last_frame:
 			on_mouse_exited()
 		mouse_in_last_frame = false
+	
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and GameState.dragged_room:
+		$Construction.modulate.a = 1.0 - MapMath.get_transparency(get_local_mouse_position().length(), 75, 15)
+	else:
+		$Construction.modulate.a = lerp($Construction.modulate.a, 0.0, 0.05)
+
 
 func _ready() -> void:
 	$Sprite.texture = load(sprite_paths.pick_random())
 	GameState.state_changed.connect(on_state_changed)
 	$Construction.visible = false
+
 
 func on_state_changed(new_state:GameState.State):
 	$Construction.visible = player_owned and new_state == GameState.State.Building

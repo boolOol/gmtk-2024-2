@@ -13,46 +13,9 @@ var player_owned : bool
 var rooms_by_coord := {}
 var units_by_coord := {}
 
-signal propagate_wall_update(originator:Floor)
+#signal propagate_wall_update(originator:Floor)
+signal unit_added()
 
-func update_walls():
-	var highest_point_by_x := {}
-	var righest_point_by_y := {}
-	
-	for wall in $FrontWall.get_children():
-		wall.queue_free()
-	for coord in units_by_coord:
-		var highest = coord.y == GameState.highest_coord
-		var left = coord.x == GameState.left_most_coord
-		var right = coord.x == GameState.right_most_coord
-		var ground = coord.x == 0
-		
-		var tex_str := "res://src/building/sprites/spr_building-"
-		if ground:
-			tex_str += "ground"
-		elif highest:
-			tex_str += "top"
-		else:
-			tex_str += "middle"
-		tex_str += "Floor"
-		
-		if left:
-			tex_str += "Left"
-		elif right:
-			tex_str += "Right"
-		else:
-			tex_str += "Center"
-		tex_str += "01"
-		#tex_str += str(int(coord.x)%3+1)
-		tex_str += ".png"
-		
-		var wall = Sprite2D.new()
-		wall.texture = load(tex_str)
-		$FrontWall.add_child(wall)
-		wall.global_position.x = coord.x * CONST.FLOOR_UNIT_WIDTH
-		wall.global_position.y = coord.y * CONST.FLOOR_UNIT_HEIGHT
-		wall.centered = false
-	emit_signal("propagate_wall_update", self)
 
 func get_sorted_rooms() -> Array:
 	var keys := rooms_by_coord.keys().duplicate()
@@ -83,14 +46,7 @@ func _ready():
 	
 	hover_area.shape.size.x = CONST.FLOOR_UNIT_WIDTH * CONST.MAX_WIDTH
 	hover_area.shape.size.y = CONST.FLOOR_UNIT_HEIGHT
-	
-	Data.property_changed.connect(on_property_changed)
 
-
-func on_property_changed(property_name:String, old_value, new_value):
-	match property_name:
-		"global.permanent_reveal":
-			$FrontWall.visible = new_value
 	
 # note: can return null
 func get_unit(index:int) -> FloorUnit:
@@ -118,7 +74,7 @@ func add_unit_at(coord:Vector2):
 	$HoverArea.position.x = min_x
 	$HoverArea.shape.size.x = max_x - min_x
 	
-	update_walls()
+	emit_signal("unit_added")
 	
 	if player_owned:
 		if coord.x < GameState.left_most_coord:

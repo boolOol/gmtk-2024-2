@@ -41,7 +41,8 @@ func _process(delta):
 		position.x -= CONST.CAMERA_MOVE_STEP * delta / zoom.x
 	if Input.is_action_pressed("ui_right"):
 		position.x += CONST.CAMERA_MOVE_STEP * delta / zoom.x
-	position.y = min(position.y, 10 / CONST.ZOOM_MIN)
+	position.y = clamp(position.y, -GameState.building.get_height_px() - 400, 10 / CONST.ZOOM_MIN)
+	position.x = clamp(position.x, -500, 500)
 	
 	var total_offset = Vector2.ZERO
 	if shake_strength > 0:

@@ -1,7 +1,7 @@
 extends Node2D
 
 @onready var add_floor_container : CenterContainer = find_child("AddFloorContainer")
-@onready var notification : PanelContainer = find_child("Notification")
+@onready var noti : PanelContainer = find_child("Notification")
 
 var notification_tween:Tween
 
@@ -9,23 +9,23 @@ var is_broke := false
 
 func _ready() -> void:
 	is_broke = false
-	notification.modulate.a = 0.0
+	noti.modulate.a = 0.0
 	GameState.state_changed.connect(on_state_changed)
 	GameState.set_state(GameState.State.Building)
 	
 	GameState.game_stage = self
 	Data.property_changed.connect(on_property_changed)
-	Data.apply("cash", 50000)
+	Data.apply("cash", 1000)
 	
 	find_child("SummaryContainer").visible = false
 	
 	var t0 = get_tree().create_timer(2)
 	t0.timeout.connect(notify.bind(
-		"Hiiiiii!", 3.0, 2.0
+		"Hiiiiii!", 2.0, 3.0
 	))
 	var t1 = get_tree().create_timer(8)
 	t1.timeout.connect(notify.bind(
-		"Welcome to GAMENAME", 3.0, 2.5
+		"Welcome to NEUBAUHAUS", 2.0, 3.5
 	))
 	var t2 = get_tree().create_timer(16)
 	t2.timeout.connect(notify.bind(
@@ -90,7 +90,7 @@ func show_month_summary():
 	items.append(str("Total Funds: ", Data.of("cash")))
 	
 	if Data.of("cash") < 0:
-		items.append("YOU ARE BROKE. CLICK TO RESTART.")
+		items.append("[font_size=60][color=red]\nYOU ARE BROKE. CLICK TO RESTART.[/color][/font_size]")
 		is_broke = true
 	
 	find_child("Summary").text = str("[center]", "\n".join(items))
@@ -98,7 +98,7 @@ func show_month_summary():
 func on_property_changed(property_name:String, old_value, new_value):
 	match property_name:
 		"cash":
-			find_child("CashLabel").text = str(new_value)
+			find_child("CashLabel").text = str("FUNDS: $", new_value)
 
 var last_clicked_coord := Vector2(5342,-45654)
 func display_room_info(coord:Vector2):
@@ -258,12 +258,16 @@ func handle_empty_apartments():
 	find_child("TenantPicker").present_tenants(get_random_tenants(3), flat_to_handle)
 
 func notify(message:String, duration:=5.0, fade_delay := 2.0):
-	notification.modulate.a = 1.0
+	noti.modulate.a = 0.0
+	noti.position.y = get_viewport_rect().size.y * 0.33
 	if notification_tween:
 		notification_tween.kill()
-	notification.get_node("NotificationLabel").text = message
+	noti.find_child("NotificationLabel").text = message
 	notification_tween = create_tween()
-	notification_tween.tween_property(notification, "modulate:a", 0.0, duration).set_delay(fade_delay).set_ease(Tween.EASE_OUT_IN)
+	notification_tween.set_parallel()
+	notification_tween.tween_property(noti, "modulate:a", 1.0, 1.0).set_ease(Tween.EASE_OUT)
+	notification_tween.tween_property(noti, "position:y", 25, 1.0).set_ease(Tween.EASE_OUT)
+	notification_tween.tween_property(noti, "modulate:a", 0.0, duration).set_delay(fade_delay).set_ease(Tween.EASE_OUT_IN)
 
 func _on_tenant_picker_tenant_picked_for_apartment(apartment_coords: Array, tenant: Dictionary) -> void:
 	# building.occupy_flat race conditions are a funny thing (occupy_flat
@@ -281,8 +285,6 @@ func _on_summary_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			find_child("SummaryContainer").visible = false
-			if is_broke:
-				get_tree().reload_current_scene()
 
 var ignore_list := []
 
@@ -291,3 +293,8 @@ func _on_tenant_picker_no_tenant_picked(apartment_coords: Array) -> void:
 	ignore_list.append(apartment_coords)
 	await get_tree().process_frame
 	handle_empty_apartments()
+
+
+func _on_summary_container_visibility_changed() -> void:
+	if is_broke and not find_child("SummaryContainer").visible:
+		get_tree().reload_current_scene()

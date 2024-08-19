@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://jt5euqp7xirv"
-path="res://.godot/imported/CyberpunkCraftpixPixel.otf-dbae14d06a7ceb4307019e0f2d40aac6.fontdata"
+path="res://.godot/imported/CyberpunkCraftpixPixel.otf-3694d63006aaa41f62070bf88a7fc1fc.fontdata"
 
 [deps]
 
-source_file="res://fonts/CyberpunkCraftpixPixel.otf"
-dest_files=["res://.godot/imported/CyberpunkCraftpixPixel.otf-dbae14d06a7ceb4307019e0f2d40aac6.fontdata"]
+source_file="res://theme/fonts/CyberpunkCraftpixPixel.otf"
+dest_files=["res://.godot/imported/CyberpunkCraftpixPixel.otf-3694d63006aaa41f62070bf88a7fc1fc.fontdata"]
 
 [params]
 

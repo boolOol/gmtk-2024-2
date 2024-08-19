@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://52h6fgg8t01w"]
+[gd_scene load_steps=3 format=3 uid="uid://52h6fgg8t01w"]
 
 [ext_resource type="Script" path="res://src/ui/number_indicator.gd" id="1_f26n8"]
+[ext_resource type="Theme" uid="uid://dxmarsh5uodsy" path="res://theme/fonts/new_theme.tres" id="1_lu816"]
 
 [node name="NumberIndicator" type="RichTextLabel"]
 custom_minimum_size = Vector2(118.645, 0)
@@ -15,6 +16,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 6
 mouse_filter = 2
+theme = ExtResource("1_lu816")
 bbcode_enabled = true
 text = "dfgdfg"
 fit_content = true

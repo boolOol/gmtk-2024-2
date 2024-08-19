@@ -22,6 +22,8 @@ class_name Building
 @export var drug_dealer:Resource
 @export var marathon_couple :Resource
 
+@onready var roof_rng = RandomNumberGenerator.new()
+
 signal query_add_floor(coord:Vector2)
 #var occupation_by_flat := {}
 #var occupation_by_household_id := {}
@@ -40,7 +42,59 @@ func _ready() -> void:
 	add_floor(0)
 	for i in 5:
 		get_floor(2).add_unit_at(Vector2(i + 1, -2))
+
+func update_walls():
+	var highest_point_by_x := {}
+	var rightest_point_by_y := {}
 	
+	for wall in $FrontWall.get_children():
+		wall.queue_free()
+	var all_coords := []
+	for floor in $Floors.get_children():
+		all_coords.append_array(floor.units_by_coord.keys())
+	for coord in all_coords:
+		if highest_point_by_x.has(coord.x):
+			if highest_point_by_x[coord.x] > coord.y:
+				highest_point_by_x[coord.x] = coord.y
+		else:
+			highest_point_by_x[coord.x] = coord.y
+		
+		if rightest_point_by_y.has(coord.y):
+			if rightest_point_by_y[coord.y] < coord.x:
+				rightest_point_by_y[coord.y] = coord.x
+		else:
+			rightest_point_by_y[coord.y] = coord.x
+		
+		var wall = preload("res://src/floor/wall.tscn").instantiate()
+		$FrontWall.add_child(wall)
+		wall.global_position.x = coord.x * CONST.FLOOR_UNIT_WIDTH
+		wall.global_position.y = coord.y * CONST.FLOOR_UNIT_HEIGHT
+		wall.set_from_coord(coord, roof_rng)
+	for x in highest_point_by_x:
+		var coord = Vector2(x, highest_point_by_x.get(x) - 1)
+		var wall = preload("res://src/floor/wall.tscn").instantiate()
+		$FrontWall.add_child(wall)
+		wall.global_position.x = coord.x * CONST.FLOOR_UNIT_WIDTH
+		wall.global_position.y = coord.y * CONST.FLOOR_UNIT_HEIGHT
+		wall.set_from_coord(coord, roof_rng)
+	
+	var highest := Vector2.ZERO
+	
+	for y in rightest_point_by_y:
+		if y < highest.y:
+			highest = Vector2(rightest_point_by_y.get(y) + 1, y - 2)
+		var coord = Vector2(rightest_point_by_y.get(y) + 1, y)
+		var wall = preload("res://src/floor/wall.tscn").instantiate()
+		$FrontWall.add_child(wall)
+		wall.global_position.x = coord.x * CONST.FLOOR_UNIT_WIDTH
+		wall.global_position.y = coord.y * CONST.FLOOR_UNIT_HEIGHT
+		wall.set_from_coord(coord, roof_rng)
+	
+	var wall = preload("res://src/floor/wall.tscn").instantiate()
+	$FrontWall.add_child(wall)
+	wall.global_position.x = highest.x * CONST.FLOOR_UNIT_WIDTH
+	wall.global_position.y = highest.y * CONST.FLOOR_UNIT_HEIGHT
+	wall.set_from_coord(highest, roof_rng)
 
 
 func _process(delta: float) -> void:
@@ -352,12 +406,16 @@ func add_floor(horizontal_index:int):
 	var floor = preload("res://src/floor/floor.tscn").instantiate()
 	floor.player_owned = true
 	$Floors.add_child(floor)
+	floor.unit_added.connect(update_walls)
 	floor.position = MapMath.coord_to_pos(Vector2(horizontal_index, -floor_count))# - global_position
 	floor.add_unit_at(Vector2(horizontal_index, -floor_count))
 	
 	GameState.camera.apply_shake(10)
 	
 	GameState.highest_coord = -floor_count
+
+func get_height_px() -> float:
+	return $Floors.get_child_count() * CONST.FLOOR_UNIT_HEIGHT + global_position.y
 
 func is_coord_free(coord: Vector2) -> bool:
 	var floor := get_floor(coord.y)

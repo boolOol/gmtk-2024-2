@@ -231,6 +231,8 @@ marathon_couple = SubResource("Resource_c45pl")
 
 [node name="Tenants" type="Node2D" parent="."]
 
+[node name="FrontWall" type="Node2D" parent="."]
+
 [node name="AddUnitButton" parent="." instance=ExtResource("3_jd121")]
 offset_left = -40.0
 offset_top = 37.0

@@ -1,0 +1,52 @@
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://dxmarsh5uodsy"]
+
+[ext_resource type="Texture2D" uid="uid://bo5p4lfrx2qtv" path="res://theme/checked.png" id="2_csxuc"]
+[ext_resource type="Texture2D" uid="uid://bg4hulippfp80" path="res://theme/grabber3_hover.png" id="2_i5q00"]
+[ext_resource type="Texture2D" uid="uid://c0c4nsa6a2x73" path="res://theme/unchecked.png" id="3_ed4t5"]
+[ext_resource type="Texture2D" uid="uid://t5h43qo58xpx" path="res://theme/grabber3.png" id="3_xojyv"]
+[ext_resource type="Texture2D" uid="uid://cem8hb6vhm1s6" path="res://theme/grabber3_grab.png" id="4_fmhjm"]
+[ext_resource type="FontFile" uid="uid://cld5qbnooki4p" path="res://theme/fonts/battlenet.ttf" id="5_84aak"]
+[ext_resource type="FontFile" uid="uid://bxn8os4ef2a0r" path="res://theme/fonts/Bauhaus2015.ttf" id="7_jlf4v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8jsy6"]
+bg_color = Color(0.439049, 0.439049, 0.439049, 1)
+border_width_top = 3
+border_width_right = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hc2db"]
+border_width_top = 3
+border_width_right = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2f3cm"]
+border_width_top = 3
+border_width_bottom = 3
+border_color = Color(0.243137, 0.243137, 0.243137, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2go8y"]
+bg_color = Color(0, 0, 0, 0.698039)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[resource]
+Button/colors/font_outline_color = Color(0.415686, 0.227451, 0.478431, 0.886275)
+Button/constants/outline_size = 3
+Button/font_sizes/font_size = 25
+Button/fonts/font = ExtResource("7_jlf4v")
+CheckBox/icons/checked = ExtResource("2_csxuc")
+CheckBox/icons/unchecked = ExtResource("3_ed4t5")
+HSlider/icons/grabber = ExtResource("2_i5q00")
+HSlider/icons/grabber_disabled = ExtResource("3_xojyv")
+HSlider/icons/grabber_highlight = ExtResource("4_fmhjm")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_8jsy6")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_hc2db")
+HSlider/styles/slider = SubResource("StyleBoxFlat_2f3cm")
+Label/fonts/font = ExtResource("7_jlf4v")
+MarginContainer/constants/margin_bottom = 5
+MarginContainer/constants/margin_left = 11
+MarginContainer/constants/margin_right = 11
+MarginContainer/constants/margin_top = 5
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_2go8y")
+RichTextLabel/font_sizes/normal_font_size = 23
+RichTextLabel/fonts/normal_font = ExtResource("5_84aak")

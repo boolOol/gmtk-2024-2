@@ -34,7 +34,7 @@ func present_tenant(t:Resource):
 		neighbourPref += "[color=lawngreen]+ " + CONST.HOUSEHOLD_NAMES.get(n) + "[/color]\n"
 	for n in tenant.sad_neighbors:
 		neighbourPref += "[color=orangered]- " + CONST.HOUSEHOLD_NAMES.get(n) + "[/color]\n"
-	label_neighbours.text = "Neighbour Preferences:\n" +  neighbourPref
+	label_neighbours.text = "Neighbor Preferences:\n" +  neighbourPref
 	
 func pick_tenant():
 	var rent = randi_range(tenant.max_rent_range.x, tenant.max_rent_range.y)

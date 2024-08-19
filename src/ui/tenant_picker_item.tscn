@@ -1,10 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://vsn3mublrlkw"]
 
 [ext_resource type="Script" path="res://src/ui/tenant_picker_item.gd" id="1_kfeyl"]
-[ext_resource type="FontFile" uid="uid://dabpaeltxr8u" path="res://fonts/CraftPixNet Survival Kit.otf" id="2_vit3l"]
-
-[sub_resource type="Theme" id="Theme_xlxb7"]
-Label/fonts/font = ExtResource("2_vit3l")
+[ext_resource type="Theme" uid="uid://dxmarsh5uodsy" path="res://theme/fonts/new_theme.tres" id="1_sa3g0"]
+[ext_resource type="FontFile" uid="uid://dabpaeltxr8u" path="res://theme/fonts/CraftPixNet Survival Kit.otf" id="2_vit3l"]
 
 [sub_resource type="Gradient" id="Gradient_p4wjo"]
 offsets = PackedFloat32Array(0)
@@ -16,7 +14,7 @@ gradient = SubResource("Gradient_p4wjo")
 [node name="PanelContainer" type="PanelContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
-theme = SubResource("Theme_xlxb7")
+theme = ExtResource("1_sa3g0")
 script = ExtResource("1_kfeyl")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -59,7 +57,6 @@ horizontal_alignment = 1
 [node name="PreferenceRooms" type="RichTextLabel" parent="MarginContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 3
-theme_override_fonts/normal_font = ExtResource("2_vit3l")
 theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "Pref rooms"
@@ -68,7 +65,6 @@ fit_content = true
 [node name="PreferenceNeighbours" type="RichTextLabel" parent="MarginContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 3
-theme_override_fonts/normal_font = ExtResource("2_vit3l")
 theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "Pref neighbour"
@@ -78,10 +74,6 @@ scroll_active = false
 [node name="Button" type="Button" parent="MarginContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-theme_override_colors/font_outline_color = Color(0.414607, 0.227801, 0.48045, 1)
-theme_override_constants/outline_size = 3
-theme_override_fonts/font = ExtResource("2_vit3l")
-theme_override_font_sizes/font_size = 25
 text = "CHOOSE"
 
 [connection signal="pressed" from="MarginContainer/MarginContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]
