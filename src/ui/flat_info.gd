@@ -231,13 +231,13 @@ func set_happiness_affectors(
 	neighbour_bonus = 0
 	# CALCULATE HAPPINESS MODIFIERS
 	for room in happy_room_presences:
-		room_bonus += 3
+		room_bonus += 5
 	for room in sad_room_presences:
-		room_bonus -= 3
+		room_bonus -= 5
 	for n in happy_neighbor_presences:
-		neighbour_bonus += 5
+		neighbour_bonus += 10
 	for n in sad_neighbor_presences:
-		neighbour_bonus -= 5
+		neighbour_bonus -= 10
 	
 	present_happy_rooms = happy_room_presences
 	present_sad_rooms = sad_room_presences

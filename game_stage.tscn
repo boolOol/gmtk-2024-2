@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bk3nrnqrwiuyn"]
+[gd_scene load_steps=25 format=3 uid="uid://bk3nrnqrwiuyn"]
 
 [ext_resource type="Script" path="res://src/game_stage.gd" id="1_p5hh2"]
 [ext_resource type="PackedScene" uid="uid://dq2meide5oo8r" path="res://src/building/building.tscn" id="2_6ic3h"]
@@ -26,6 +26,19 @@ gradient = SubResource("Gradient_b53k7")
 width = 1024
 height = 4000
 
+[sub_resource type="Gradient" id="Gradient_7ub7g"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 1, 1, 0.47451)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_du4d6"]
+gradient = SubResource("Gradient_7ub7g")
+width = 1
+height = 10
+fill_from = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_n3jhr"]
+colors = PackedColorArray(0.493545, 0.493546, 0.493546, 1, 1, 1, 1, 1)
+
 [sub_resource type="Gradient" id="Gradient_27qcy"]
 offsets = PackedFloat32Array(0)
 colors = PackedColorArray(0.0509804, 0.0509804, 0.0509804, 1)
@@ -35,14 +48,9 @@ gradient = SubResource("Gradient_27qcy")
 width = 1024
 height = 2000
 
-[sub_resource type="Gradient" id="Gradient_7ub7g"]
-colors = PackedColorArray(0.372549, 0.470588, 0.509804, 1, 0.6, 0.894118, 0.439216, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_du4d6"]
-gradient = SubResource("Gradient_7ub7g")
-width = 5
-height = 50
-fill_from = Vector2(1, 1)
+[sub_resource type="Gradient" id="Gradient_7fsg7"]
+offsets = PackedFloat32Array(0.879085, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_p5hh2")
@@ -51,7 +59,6 @@ script = ExtResource("1_p5hh2")
 position = Vector2(0, -173)
 
 [node name="Sky2" type="Parallax2D" parent="Background"]
-scroll_scale = Vector2(0.1, 1)
 repeat_size = Vector2(1024, 0)
 repeat_times = 7
 
@@ -68,34 +75,47 @@ repeat_times = 7
 texture = ExtResource("2_ehhv2")
 
 [node name="BG3" type="Parallax2D" parent="Background"]
-scroll_scale = Vector2(0.5, 1)
+scroll_scale = Vector2(0.2, 1)
 repeat_size = Vector2(1024, 0)
 repeat_times = 7
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/BG3"]
+position = Vector2(-120, 3)
 texture = ExtResource("3_n851i")
 
 [node name="BG2" type="Parallax2D" parent="Background"]
-scroll_scale = Vector2(0.5, 1)
+scroll_scale = Vector2(0.3, 1)
 repeat_size = Vector2(1024, 0)
 repeat_times = 7
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/BG2"]
+position = Vector2(-83, -3)
 texture = ExtResource("4_tgj48")
 
 [node name="BG1" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0.9, 1)
 repeat_size = Vector2(1024, 0)
 repeat_times = 7
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/BG1"]
 texture = ExtResource("5_lhhng")
 
-[node name="Floor" type="Parallax2D" parent="Background"]
-repeat_size = Vector2(1024, 0)
-repeat_times = 7
-
-[node name="Sprite2D" type="Sprite2D" parent="Background/Floor"]
-texture = ExtResource("6_57kyt")
+[node name="RainBG" type="CPUParticles2D" parent="Background"]
+position = Vector2(-924, -1949)
+amount = 5000
+lifetime = 2.4
+texture = SubResource("GradientTexture2D_du4d6")
+emission_shape = 3
+emission_rect_extents = Vector2(3000, 1)
+direction = Vector2(1, 2)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 1000.0
+initial_velocity_max = 1000.0
+angle_min = 22.5
+angle_max = 22.5
+scale_amount_min = 0.8
+color_initial_ramp = SubResource("Gradient_n3jhr")
 
 [node name="GameCamera" parent="." instance=ExtResource("2_8dd5b")]
 position = Vector2(276, -8)
@@ -110,40 +130,50 @@ position = Vector2(307, 0)
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(76, -181)
 
-[node name="Foreground" type="Parallax2D" parent="Node2D"]
+[node name="Grass" type="Parallax2D" parent="Node2D"]
 repeat_size = Vector2(1024, 0)
 repeat_times = 7
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Foreground"]
-texture = ExtResource("7_v8uqo")
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Grass"]
+position = Vector2(0, 15)
+texture = ExtResource("6_57kyt")
 
 [node name="EndlessGround" type="Parallax2D" parent="Node2D"]
 scroll_scale = Vector2(0.1, 1)
 repeat_size = Vector2(1024, 0)
-repeat_times = 7
+repeat_times = 9
 
 [node name="Sprite2D" type="Sprite2D" parent="Node2D/EndlessGround"]
 position = Vector2(-9, 1244)
 texture = SubResource("GradientTexture2D_gwuf7")
 
-[node name="Particles" type="Parallax2D" parent="Node2D"]
-repeat_size = Vector2(1200, 0)
-repeat_times = 4
+[node name="Foreground" type="Parallax2D" parent="Node2D"]
+scroll_scale = Vector2(1.2, 1)
+repeat_size = Vector2(1024, 0)
+repeat_times = 7
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="Node2D/Particles"]
-position = Vector2(6, -2919.49)
-amount = 48
-lifetime = 1.6
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Foreground"]
+position = Vector2(170, 5)
+texture = ExtResource("7_v8uqo")
+
+[node name="RainFG" type="CPUParticles2D" parent="Node2D"]
+position = Vector2(-79, -1912)
+amount = 400
+lifetime = 2.8
+lifetime_randomness = 0.1
 texture = SubResource("GradientTexture2D_du4d6")
 emission_shape = 3
-emission_rect_extents = Vector2(1200, 1)
-direction = Vector2(1, 4)
+emission_rect_extents = Vector2(3000, 1)
+direction = Vector2(1, 2)
 spread = 0.0
 gravity = Vector2(0, 0)
-initial_velocity_min = 2000.0
-initial_velocity_max = 2000.0
-angle_min = 10.0
-angle_max = 10.0
+initial_velocity_min = 1000.0
+initial_velocity_max = 1000.0
+angle_min = 22.5
+angle_max = 22.5
+scale_amount_min = 0.9
+scale_amount_max = 1.1
+color_ramp = SubResource("Gradient_7fsg7")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
