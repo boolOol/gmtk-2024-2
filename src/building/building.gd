@@ -406,7 +406,7 @@ func add_floor_by_coord(coord: Vector2):
 	add_floor(coord.x)
 
 func add_floor(horizontal_index:int):
-	GameState.expanded_this_phase = true
+	GameState.set_expanded_this_phase(true)
 	var floor_count = $Floors.get_child_count()
 	var floor = preload("res://src/floor/floor.tscn").instantiate()
 	floor.player_owned = true
@@ -470,7 +470,7 @@ func request_add_unit(coord: Vector2):
 		str("-", CONST.ROOM_UNIT_PRICE, "$"),
 		MapMath.coord_to_pos(coord) + Vector2(0.5 * CONST.FLOOR_UNIT_WIDTH, 0)
 	)
-	GameState.expanded_this_phase = true
+	GameState.set_expanded_this_phase(true)
 
 func _on_add_unit_button_place_room_at(coord: Vector2) -> void:
 	request_add_unit(coord)

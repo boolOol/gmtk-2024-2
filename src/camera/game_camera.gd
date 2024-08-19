@@ -33,6 +33,15 @@ func _physics_process(delta: float) -> void:
 	zoom = lerp(zoom, target_zoom, 0.2)
 
 func _process(delta):
+	var mouse_pos := get_local_mouse_position()
+	var rect := get_viewport_rect().size /zoom.x
+	rect *= 0.5
+	var dist_check := 20 * zoom.x
+	if rect.x - abs(mouse_pos.x) < dist_check:
+		position.x += (CONST.CAMERA_MOVE_STEP * delta / zoom.x) * sign(mouse_pos.x)
+	if rect.y - abs(mouse_pos.y) < dist_check:
+		position.y += (CONST.CAMERA_MOVE_STEP * delta / zoom.y) * sign(mouse_pos.y)
+	
 	if Input.is_action_pressed("ui_up"):
 		position.y -= CONST.CAMERA_MOVE_STEP * delta / zoom.x
 	if Input.is_action_pressed("ui_down"):

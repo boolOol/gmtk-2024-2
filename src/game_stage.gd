@@ -39,8 +39,11 @@ func _ready() -> void:
 	t3.timeout.connect(notify.bind(
 		"When you're done assimilating the other apartment complex,\npress the button on the bottom right!", 8.0
 	))
+	
+	GameState.set_expanded_this_phase(true)
 
 func on_state_changed(new_state:int):
+	#find_child("LivesWarningLabel").visible = not GameState.expanded_this_phase
 	var button = find_child("FinishStageButton")
 	match new_state:
 		GameState.State.Building:
@@ -50,6 +53,7 @@ func on_state_changed(new_state:int):
 		GameState.State.Managing:
 			button.text = "Next: Absorb Rival Building"
 			show_month_summary()
+			find_child("LivesWarningLabel").visible = false
 
 func show_month_summary():
 	Sound.sound("income")
@@ -242,16 +246,21 @@ func go_to_next_state():
 		return
 	if GameState.state == GameState.State.Managing:
 		if not GameState.expanded_this_phase:
+			notify("WARNING:\nEXPAND THE BUILDING OR ACQUIRE NEW ROOMS.")
+		find_child("LivesWarningLabel").visible = false
+		#print("expanded", GameState.expanded_this_phase)
+		GameState.set_state(GameState.State.Building)
+	elif GameState.state == GameState.State.Building:
+		GameState.set_state(GameState.State.PickingTenants)
+		find_child("LivesWarningLabel").visible = not GameState.expanded_this_phase
+		if not GameState.expanded_this_phase:
 			Data.change_by_int("idle_lives", -1)
 			if Data.of("idle_lives") <= 0:
 				find_child("OutOfLivesContainer").visible = true
 			notify(
 				"YOU DID NOT EXPAND.\nINVESTORS ARE DISPLEASED."
 			)
-		#print("expanded", GameState.expanded_this_phase)
-		GameState.set_state(GameState.State.Building)
-	elif GameState.state == GameState.State.Building:
-		GameState.set_state(GameState.State.PickingTenants)
+		
 		ignore_list.clear()
 		handle_empty_apartments()
 	elif GameState.state == GameState.State.PickingTenants:
@@ -298,10 +307,7 @@ func _on_permanent_reveal_check_box_toggled(toggled_on: bool) -> void:
 	Data.apply("global.permanent_reveal", not toggled_on)
 
 
-func _on_summary_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			find_child("SummaryContainer").visible = false
+
 
 var ignore_list := []
 
@@ -331,3 +337,9 @@ func _on_out_of_lives_container_gui_input(event: InputEvent) -> void:
 
 func _on_help_button_pressed() -> void:
 	find_child("HelpContainer").visible = true
+
+
+func _on_summary_container_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			find_child("SummaryContainer").visible = false

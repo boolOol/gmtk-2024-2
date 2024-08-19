@@ -221,15 +221,26 @@ offset_bottom = 39.0
 grow_horizontal = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer"]
+custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 
 [node name="CashLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 30
 
 [node name="LivesLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 24
+
+[node name="LivesWarningLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 24
+text = "Expand to please investors."
+horizontal_alignment = 2
 
 [node name="Notification" type="PanelContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -267,12 +278,14 @@ script = ExtResource("14_5vgpf")
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="Summary" type="RichTextLabel" parent="CanvasLayer/Control/SummaryContainer/CenterContainer"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 bbcode_enabled = true
 text = "fghfghfghfg
 fghfg"
@@ -360,7 +373,7 @@ fit_content = true
 [connection signal="toggled" from="CanvasLayer/Control/MarginContainer2/VBoxContainer/HBoxContainer/PermanentRevealCheckBox" to="." method="_on_permanent_reveal_check_box_toggled"]
 [connection signal="pressed" from="CanvasLayer/Control/MarginContainer2/VBoxContainer/HBoxContainer/HelpButton" to="." method="_on_help_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/MarginContainer2/VBoxContainer/FinishStageButton" to="." method="_on_finish_stage_button_pressed"]
+[connection signal="gui_input" from="CanvasLayer/Control/SummaryContainer" to="." method="_on_summary_container_gui_input"]
 [connection signal="visibility_changed" from="CanvasLayer/Control/SummaryContainer" to="." method="_on_summary_container_visibility_changed"]
-[connection signal="gui_input" from="CanvasLayer/Control/SummaryContainer/CenterContainer/Summary" to="." method="_on_summary_gui_input"]
 [connection signal="gui_input" from="CanvasLayer/Control/HelpContainer" to="." method="_on_help_container_gui_input"]
 [connection signal="gui_input" from="CanvasLayer/Control/OutOfLivesContainer" to="." method="_on_out_of_lives_container_gui_input"]
