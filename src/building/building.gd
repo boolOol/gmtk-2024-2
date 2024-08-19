@@ -102,7 +102,7 @@ func _process(delta: float) -> void:
 	add_unit_button.position = lerp(add_unit_button.position, target_pos, 0.2)
 	
 	var button_coord = add_unit_button.get_current_coord()
-	add_unit_button.visible = can_coord_be_added(button_coord) and GameState.is_state(GameState.State.Managing)
+	add_unit_button.visible = can_coord_be_added(button_coord) and (GameState.is_state(GameState.State.Managing) or GameState.is_state(GameState.State.Building))
 	$Ghost.visible = add_unit_button.visible
 	if add_unit_button.visible:
 		var mouse_coord = MapMath.pos_to_coord(get_global_mouse_position())
