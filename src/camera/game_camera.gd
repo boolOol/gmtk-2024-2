@@ -22,11 +22,11 @@ func random_offset() -> Vector2:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action("zoom_in"):
-		target_zoom.x = clamp(target_zoom.x + CONST.ZOOM_STEP, CONST.ZOOM_MIN, CONST.ZOOM_MAX)
-		target_zoom.y = clamp(target_zoom.y + CONST.ZOOM_STEP, CONST.ZOOM_MIN, CONST.ZOOM_MAX)
+		target_zoom.x = clamp(target_zoom.x + (zoom.x / 1.0) * CONST.ZOOM_STEP, CONST.ZOOM_MIN, CONST.ZOOM_MAX)
+		target_zoom.y = clamp(target_zoom.y + (zoom.x / 1.0) * CONST.ZOOM_STEP, CONST.ZOOM_MIN, CONST.ZOOM_MAX)
 	if event.is_action("zoom_out"):
-		target_zoom.x = clamp(target_zoom.x - CONST.ZOOM_STEP, CONST.ZOOM_MIN, CONST.ZOOM_MAX)
-		target_zoom.y = clamp(target_zoom.y - CONST.ZOOM_STEP, CONST.ZOOM_MIN, CONST.ZOOM_MAX)
+		target_zoom.x = clamp(target_zoom.x - (zoom.x / 1.0) * CONST.ZOOM_STEP, CONST.ZOOM_MIN, CONST.ZOOM_MAX)
+		target_zoom.y = clamp(target_zoom.y - (zoom.x / 1.0) * CONST.ZOOM_STEP, CONST.ZOOM_MIN, CONST.ZOOM_MAX)
 	
 
 func _physics_process(delta: float) -> void:

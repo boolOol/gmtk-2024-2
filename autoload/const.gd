@@ -141,7 +141,7 @@ const NEIGHBOR_OFFSETS := [
 ]
 
 const ZOOM_MIN := 0.25
-const ZOOM_MAX := 4.0
+const ZOOM_MAX := 8.0
 const ZOOM_STEP := 0.025
 const CAMERA_MOVE_STEP := 300
 
