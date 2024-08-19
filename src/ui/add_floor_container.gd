@@ -17,7 +17,7 @@ func show_menu(coord:Vector2):
 	if abs(coord.y) >= CONST.PRICE_PER_HEIGHT.size():
 		more_costs = CONST.PRICE_PER_HEIGHT.get(CONST.PRICE_PER_HEIGHT.size() - 1)
 	else:
-		more_costs = CONST.PRICE_PER_HEIGHT.get(abs(coord.y))
+		more_costs = CONST.PRICE_PER_HEIGHT.get(int(abs(coord.y)))
 	find_child("RichTextLabel").text = str("[center]Do you want to add floor ", abs(coord.y) + 1, "? This will increase maintenance fees by ", more_costs, ".")
 	find_child("ConfirmButton").grab_focus()
 	if popup_tween:
@@ -39,4 +39,5 @@ func _on_cancel_button_pressed() -> void:
 func _on_confirm_button_pressed() -> void:
 	emit_signal("confirm_add_floor", current_coord)
 	hide_menu()
+	GameState.building.update_walls()
 	

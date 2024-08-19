@@ -190,11 +190,20 @@ grow_vertical = 0
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer2"]
 layout_mode = 2
 
-[node name="PermanentRevealCheckBox" type="CheckBox" parent="CanvasLayer/Control/MarginContainer2/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="PermanentRevealCheckBox" type="CheckBox" parent="CanvasLayer/Control/MarginContainer2/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 focus_mode = 0
 text = "Seethrough"
+
+[node name="HelpButton" type="Button" parent="CanvasLayer/Control/MarginContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Help"
 
 [node name="FinishStageButton" type="Button" parent="CanvasLayer/Control/MarginContainer2/VBoxContainer"]
 layout_mode = 2
@@ -346,7 +355,8 @@ fit_content = true
 [connection signal="no_tenant_picked" from="CanvasLayer/Control/TenantPicker" to="." method="_on_tenant_picker_no_tenant_picked"]
 [connection signal="tenant_picked_for_apartment" from="CanvasLayer/Control/TenantPicker" to="." method="_on_tenant_picker_tenant_picked_for_apartment"]
 [connection signal="confirm_add_floor" from="CanvasLayer/Control/AddFloorContainer" to="Building" method="add_floor_by_coord"]
-[connection signal="toggled" from="CanvasLayer/Control/MarginContainer2/VBoxContainer/PermanentRevealCheckBox" to="." method="_on_permanent_reveal_check_box_toggled"]
+[connection signal="toggled" from="CanvasLayer/Control/MarginContainer2/VBoxContainer/HBoxContainer/PermanentRevealCheckBox" to="." method="_on_permanent_reveal_check_box_toggled"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer2/VBoxContainer/HBoxContainer/HelpButton" to="." method="_on_help_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/MarginContainer2/VBoxContainer/FinishStageButton" to="." method="_on_finish_stage_button_pressed"]
 [connection signal="visibility_changed" from="CanvasLayer/Control/SummaryContainer" to="." method="_on_summary_container_visibility_changed"]
 [connection signal="gui_input" from="CanvasLayer/Control/SummaryContainer/CenterContainer/Summary" to="." method="_on_summary_gui_input"]

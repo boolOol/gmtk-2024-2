@@ -326,3 +326,7 @@ func _on_out_of_lives_container_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			get_tree().reload_current_scene()
+
+
+func _on_help_button_pressed() -> void:
+	find_child("HelpContainer").visible = true
