@@ -15,7 +15,7 @@ func _ready() -> void:
 	
 	GameState.game_stage = self
 	Data.property_changed.connect(on_property_changed)
-	Data.apply("cash", 100000)
+	Data.apply("cash", 1000)
 	Data.apply("idle_lives", 3)
 	
 	find_child("SummaryContainer").visible = false

@@ -130,7 +130,6 @@ repeat_size = Vector2(1200, 0)
 repeat_times = 4
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="Node2D/Particles"]
-visible = false
 position = Vector2(6, -2919.49)
 amount = 48
 lifetime = 1.6
