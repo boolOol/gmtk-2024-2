@@ -34,10 +34,10 @@ const ROOM_SIZES := {
 	RoomType.PleasureRoom : 1,
 }
 const ROOM_VALUES := {
-	RoomType.Kitchen : 4,
+	RoomType.Kitchen : 3,
 	RoomType.Bathroom : 2,
 	RoomType.Livingroom : 4,
-	RoomType.Bedroom : 4,
+	RoomType.Bedroom : 3,
 	RoomType.Hallway : 1,
 	RoomType.Storeroom : 1,
 	RoomType.Office : 2,

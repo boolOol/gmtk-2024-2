@@ -51,7 +51,7 @@ inhabitants = Array[int]([0, 0, 0])
 happy_rooms = Array[int]([3, 0, 1])
 sad_rooms = Array[int]([6, 8])
 happy_neighbors = Array[int]([0, 13])
-sad_neighbors = Array[int]([10])
+sad_neighbors = Array[int]([10, 8])
 
 [sub_resource type="Resource" id="Resource_e8dsh"]
 script = SubResource("GDScript_ey6k7")
@@ -191,9 +191,9 @@ household_name = "Drug Dealer"
 popularity = 2
 max_rent_range = Vector2(1500, 2000)
 inhabitants = Array[int]([0])
-happy_rooms = Array[int]([6, 5])
+happy_rooms = Array[int]([6, 5, 0])
 sad_rooms = Array[int]([9])
-happy_neighbors = Array[int]([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
+happy_neighbors = Array[int]([0, 5, 6, 7, 9, 10])
 sad_neighbors = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_c45pl"]

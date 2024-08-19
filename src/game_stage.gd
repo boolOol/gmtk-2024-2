@@ -3,6 +3,10 @@ extends Node2D
 @onready var add_floor_container : CenterContainer = find_child("AddFloorContainer")
 @onready var noti : PanelContainer = find_child("Notification")
 
+@onready var build_label : Label = find_child("BuildLabel")
+@onready var manage_label : Label = find_child("ManageLabel")
+@onready var profit_label : Label = find_child("ProfitLabel")
+
 var notification_tween:Tween
 
 var is_broke := false
@@ -15,7 +19,7 @@ func _ready() -> void:
 	
 	GameState.game_stage = self
 	Data.property_changed.connect(on_property_changed)
-	Data.apply("cash", 1000)
+	Data.apply("cash", 1500)
 	Data.apply("idle_lives", 3)
 	Data.apply("global.permanent_reveal", true)
 	
@@ -49,11 +53,14 @@ func on_state_changed(new_state:int):
 	var button = find_child("FinishStageButton")
 	match new_state:
 		GameState.State.Building:
-			button.text = "Next: Collect Rent"
+			button.text = "NEXT PHASE"
+			#button.text = "Next: Collect Rent"
 		GameState.State.PickingTenants:
-			button.text = "Next: Fill Empty Flats"
+			button.text = "NEXT PHASE"
+			#button.text = "Next: Fill Empty Flats"
 		GameState.State.Managing:
-			button.text = "Next: Absorb Rival Building"
+			button.text = "NEXT PHASE"
+			#button.text = "Next: Absorb Rival Building"
 			show_month_summary()
 			find_child("LivesWarningLabel").visible = false
 
@@ -284,8 +291,14 @@ func go_to_next_state():
 		find_child("LivesWarningLabel").visible = false
 		#print("expanded", GameState.expanded_this_phase)
 		GameState.set_state(GameState.State.Building)
+		resetPhaseLabel(profit_label)
+		resetPhaseLabel(manage_label)
+		highlightPhaseLabel(build_label)
 	elif GameState.state == GameState.State.Building:
 		GameState.set_state(GameState.State.PickingTenants)
+		resetPhaseLabel(profit_label)
+		resetPhaseLabel(build_label)
+		highlightPhaseLabel(manage_label)
 		find_child("LivesWarningLabel").visible = not GameState.expanded_this_phase
 		if not GameState.expanded_this_phase:
 			Data.change_by_int("idle_lives", -1)
@@ -299,7 +312,18 @@ func go_to_next_state():
 		handle_empty_apartments()
 	elif GameState.state == GameState.State.PickingTenants:
 		GameState.set_state(GameState.State.Managing)
+		resetPhaseLabel(manage_label)
+		resetPhaseLabel(build_label)
+		highlightPhaseLabel(profit_label)
 	find_child("FinishStageButton").visible = not GameState.is_state(GameState.State.PickingTenants)
+	
+func resetPhaseLabel(label: Label):
+	label.remove_theme_color_override("font_color")
+	label.add_theme_font_size_override("font_size", 25)
+func highlightPhaseLabel(label: Label):
+	label.add_theme_color_override("font_color", Color("ffcf00"))
+	label.add_theme_font_size_override("font_size", 30)
+
 
 var flats_to_handle := []
 func handle_empty_apartments():
