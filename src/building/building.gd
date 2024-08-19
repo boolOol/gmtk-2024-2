@@ -262,6 +262,9 @@ func get_adjacent_household_archetypes(coord:Vector2) -> Array:
 	
 	return archetypes
 
+func get_household_archetype(id:int):
+	return  household_data_by_id.get(id).get("archetype")
+
 func get_room_types_of_flat(flat:Array) -> Array:
 	var rooms := []
 	var handled_rooms := []

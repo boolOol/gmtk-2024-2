@@ -122,6 +122,10 @@ func display_room_info(coord:Vector2):
 	#find_child("FlatInfo").position = MapMath.coord_to_pos(coord)# + $Building.position
 	#find_child("FlatInfo").position.x += CONST.FLOOR_UNIT_WIDTH * 2.5
 	
+	var opinions : Node2D = find_child("NeighborOpinions")
+	for child in opinions.get_children():
+		child.queue_free()
+	
 	var flat = GameState.building.get_flat(coord)
 	var flat_index = GameState.building.get_flat_index(coord)
 	
@@ -133,6 +137,8 @@ func display_room_info(coord:Vector2):
 	find_child("FlatInfo").set_flat_index(flat_index)
 	find_child("FlatInfo").handle_room_types_of_flat(rooms)
 	find_child("FlatInfo").handle_neighbor_archetypes(neighbors)
+	
+	
 	
 	var room_string := ""
 	var neighbor_string := ""
@@ -200,6 +206,27 @@ func display_room_info(coord:Vector2):
 			happy_neighbor_presences,
 			sad_neighbor_presences
 		)
+		
+		var neighbor_ids = GameState.building.get_adjacent_household_ids(coord)
+		for nid in neighbor_ids:
+			var c:Vector2
+			for coooord in GameState.building.household_id_by_coord:
+				var hid = GameState.building.household_id_by_coord.get(coooord)
+				if hid == nid:
+					c = coooord
+					break
+			var icon_pos = MapMath.coord_to_pos(c)
+			var icon = Sprite2D.new()
+			opinions.add_child(icon)
+			icon.global_position = icon_pos
+			icon.centered = false
+			var a = GameState.building.get_household_archetype(id)
+			if a in happy_neighbor_presences:
+				icon.texture = load("res://src/household/yay.png")
+			elif a in sad_neighbor_presences:
+				icon.texture = load("res://src/household/nah.png")
+			else:
+				icon.texture = load("res://src/household/eh.png")
 	else:
 		
 		for room in rooms:
@@ -371,3 +398,7 @@ func _on_new_story_button_pressed() -> void:
 		if coord.y < highest_y:
 			highest_coord = coord
 	building.add_floor(highest_coord.x)
+
+
+func _on_flat_info_visibility_changed() -> void:
+	find_child("NeighborOpinions").visible = find_child("FlatInfo").visible
