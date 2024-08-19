@@ -212,6 +212,15 @@ func handle_neighbor_archetypes(neighbors:Array):
 	# const.household
 	pass
 
+var present_happy_rooms := []
+var present_sad_rooms := []
+var present_happy_neighbors := []
+var present_sad_neighbors := []
+var pref_happy_rooms := []
+var pref_sad_rooms := []
+var pref_happy_neighbors := []
+var pref_sad_neighbors := []
+
 func set_happiness_affectors(
 	happy_room_presences : Array,
 	sad_room_presences : Array,
@@ -230,6 +239,12 @@ func set_happiness_affectors(
 	for n in sad_neighbor_presences:
 		neighbour_bonus -= 5
 	
+	present_happy_rooms = happy_room_presences
+	present_sad_rooms = sad_room_presences
+	present_happy_neighbors = happy_neighbor_presences
+	present_sad_neighbors = sad_neighbor_presences
+	
+	update_pref_tooltip()
 
 # theoretical preferences
 func set_happiness_preferences(
@@ -238,19 +253,28 @@ func set_happiness_preferences(
 	happy_neighbors : Array,
 	sad_neighbors : Array
 ):
+	
+	pref_happy_rooms = happy_rooms
+	pref_sad_rooms = sad_rooms
+	pref_happy_neighbors = happy_neighbors
+	pref_sad_neighbors = sad_neighbors
+	
+	update_pref_tooltip()
+
+func update_pref_tooltip():
 	# FILL PREFERENCES TOOLTIPS
 	var room_prefs:String = "Room Preferences\n"
-	for room in happy_rooms:
-		room_prefs += "[color=lawngreen]+ " + CONST.ROOM_NAMES.get(room) + "[/color]\n"
-	for room in sad_rooms:
-		room_prefs += "[color=orangered]- " + CONST.ROOM_NAMES.get(room) + "[/color]\n"
+	for room in pref_happy_rooms:
+		room_prefs += str("[color=lawngreen]+ ", CONST.ROOM_NAMES.get(room), " (", present_happy_rooms.count(room), ")[/color]\n")
+	for room in pref_sad_rooms:
+		room_prefs += str("[color=orangered]- ", CONST.ROOM_NAMES.get(room), " (", present_sad_rooms.count(room), ")[/color]\n")
 	tenant_room_pref_details.text = room_prefs
 	
 	var neighbour_prefs:String = "Neighbour Preferences\n"
-	for tenant in happy_neighbors:
-		neighbour_prefs += "[color=lawngreen]+ " + CONST.HOUSEHOLD_NAMES.get(tenant) + "[/color]\n"
-	for tenant in sad_neighbors:
-		neighbour_prefs += "[color=orangered]- " + CONST.HOUSEHOLD_NAMES.get(tenant) + "[/color]\n"
+	for tenant in pref_happy_neighbors:
+		neighbour_prefs += str("[color=lawngreen]+ ", CONST.HOUSEHOLD_NAMES.get(tenant), " (", present_happy_neighbors.count(tenant), ")[/color]\n")
+	for tenant in pref_sad_neighbors:
+		neighbour_prefs += str("[color=orangered]- ", CONST.HOUSEHOLD_NAMES.get(tenant), " (", present_sad_neighbors.count(tenant), ")[/color]\n")
 	tenant_neighbour_pref_details.text = neighbour_prefs
 
 

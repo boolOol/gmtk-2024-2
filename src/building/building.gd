@@ -239,6 +239,10 @@ func get_adjacent_household_ids(coord:Vector2) -> Array:
 		if not ids.has(id):
 			ids.append(id)
 	
+	var self_id = get_household_id_of(coord)
+	while ids.has(self_id):
+		ids.erase(self_id)
+	
 	return ids
 
 func get_adjacent_household_archetypes(coord:Vector2) -> Array:

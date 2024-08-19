@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://b34uijx7uwlgj"]
+[gd_scene load_steps=9 format=3 uid="uid://b34uijx7uwlgj"]
 
 [ext_resource type="Script" path="res://src/ui/flat_info.gd" id="1_nm4dv"]
 [ext_resource type="Theme" uid="uid://dxmarsh5uodsy" path="res://theme/fonts/new_theme.tres" id="1_nyiid"]
-[ext_resource type="FontFile" uid="uid://dabpaeltxr8u" path="res://theme/fonts/CraftPixNet Survival Kit.otf" id="2_8ann0"]
 [ext_resource type="Texture2D" uid="uid://c86o1b22rh703" path="res://sprites/ui/Icon_30.png" id="3_bq3sf"]
 [ext_resource type="Texture2D" uid="uid://n7hielngbbqe" path="res://sprites/ui/Bars/Cartoon RPG UI_Progress Bar - Background2.png" id="5_yj4wa"]
 [ext_resource type="Texture2D" uid="uid://df8ko6i7w8ew1" path="res://sprites/ui/Bars/Cartoon RPG UI_Progress Bar - Life.png" id="6_3e557"]
@@ -220,12 +219,8 @@ custom_minimum_size = Vector2(180, 7)
 layout_mode = 2
 
 [node name="ValueDetails" type="RichTextLabel" parent="HBoxContainer/MarginContainerDetails/MarginContainer/VBoxContainer"]
-visible = false
 clip_contents = false
 layout_mode = 2
-theme_override_constants/outline_size = 3
-theme_override_fonts/normal_font = ExtResource("2_8ann0")
-theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "Value: 1000 $
 + 100 $ Bathroom
@@ -242,9 +237,6 @@ scroll_active = false
 visible = false
 clip_contents = false
 layout_mode = 2
-theme_override_constants/outline_size = 3
-theme_override_fonts/normal_font = ExtResource("2_8ann0")
-theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "Happiness ( - 13 )
 [color=green]+ 4 (money left after rent)
@@ -260,9 +252,6 @@ scroll_active = false
 visible = false
 clip_contents = false
 layout_mode = 2
-theme_override_constants/outline_size = 3
-theme_override_fonts/normal_font = ExtResource("2_8ann0")
-theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "Room Preferences:
 [color=green]+ Kitchen
@@ -275,9 +264,6 @@ scroll_active = false
 visible = false
 clip_contents = false
 layout_mode = 2
-theme_override_constants/outline_size = 3
-theme_override_fonts/normal_font = ExtResource("2_8ann0")
-theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "Neighbour Preferences:
 [color=green]+ Big Family

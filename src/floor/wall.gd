@@ -19,6 +19,7 @@ var sprites := {
 
 func _ready() -> void:
 	Data.property_changed.connect(on_property_changed)
+	visible = Data.of("global.permanent_reveal")
 
 
 func on_property_changed(property_name:String, old_value, new_value):

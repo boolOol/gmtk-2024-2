@@ -104,7 +104,7 @@ zoom = Vector2(0.49, 0.49)
 position = Vector2(143, -29)
 
 [node name="HarvestableBuilding" parent="." instance=ExtResource("8_d4048")]
-position = Vector2(354, -7)
+position = Vector2(307, 0)
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(76, -181)
@@ -310,6 +310,7 @@ Zoom - Mouse Wheel or M/N
 Move Camera: WASD or Arrow Keys
 Drag rooms: Left Click
 Close menus: Left Click
+Go to next phase: Space or bottom-right button
 
 [b]HOW TO PLAY[/b]
 Steal rooms from other buildings.
