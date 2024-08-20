@@ -26,7 +26,8 @@ func _ready() -> void:
 	bgm_player.finished.connect(play_random_bgm)
 	play_random_bgm()
 	bgm_player.bus = "Music"
-	
+	AudioServer.set_bus_volume_db(1,-10)
+	AudioServer.set_bus_volume_db(2,-2.5)
 
 func play_random_bgm():
 	bgm_player.stream = load(music.pick_random())
