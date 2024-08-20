@@ -321,6 +321,8 @@ func get_random_tenants(count:int) -> Dictionary:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("advance"):
+		if GameState.dragged_room:
+			return
 		for child in find_child("Events").get_children():
 			if child.visible:
 				return
