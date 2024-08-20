@@ -84,9 +84,9 @@ func GetHappinessChange(tenantMoney:int):
 	tenant_happiness_detail.text = "Happiness\n"
 	var happyChange:int = 0
 	# Happiness from leftover money
-	var money_left = (1-(flat_value*rent_slider.value/tenantMoney))*50
+	var money_left = (1-(flat_value*rent_slider.value/tenantMoney))*30
 	if (money_left > 0): tenant_happiness_detail.text += "[color=lawngreen]+" + str(int(money_left)) + " for leftover money[/color]\n"
-	elif(money_left < 0): tenant_happiness_detail.text += "[color=orangered]" + str(int(money_left)) + " for missing money[/color]\n"
+	else: money_left = 0 #no deduction, unaffordability handles that
 	# Happiness from relative price of flat
 	var value_for_money = -(rent_slider.value-1)*50
 	if (value_for_money > 0): tenant_happiness_detail.text += "[color=lawngreen]+" + str(int(value_for_money)) + " for underpriced rent[/color]\n"

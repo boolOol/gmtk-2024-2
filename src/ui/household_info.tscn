@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b34uijx7uwlgj"]
+[gd_scene load_steps=11 format=3 uid="uid://b34uijx7uwlgj"]
 
 [ext_resource type="Script" path="res://src/ui/flat_info.gd" id="1_nm4dv"]
 [ext_resource type="Theme" uid="uid://dxmarsh5uodsy" path="res://theme/fonts/new_theme.tres" id="1_nyiid"]
@@ -13,6 +13,14 @@ colors = PackedColorArray(0.0999861, 0.0999859, 0.099986, 0.352941)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_jvxj5"]
 gradient = SubResource("Gradient_240po")
+height = 21
+
+[sub_resource type="Gradient" id="Gradient_3fd1j"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.0980392, 0.0980392, 0.0980392, 0.631373)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_12xwp"]
+gradient = SubResource("Gradient_3fd1j")
 height = 21
 
 [node name="FlatInfo" type="Control"]
@@ -73,9 +81,10 @@ horizontal_alignment = 1
 
 [node name="Info" type="TextureRect" parent="HBoxContainer/MarginContainer/VBoxContainer/Flat/FlatValue"]
 layout_mode = 0
-offset_left = 215.0
-offset_top = -31.0
-offset_right = 246.0
+offset_left = 223.0
+offset_top = -39.0
+offset_right = 254.0
+offset_bottom = -8.0
 scale = Vector2(0.655, 0.655)
 texture = ExtResource("3_bq3sf")
 
@@ -110,7 +119,7 @@ horizontal_alignment = 1
 
 [node name="Seperator" type="Label" parent="HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "_________________________________"
+text = "______________________________"
 
 [node name="Household" type="VBoxContainer" parent="HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -126,10 +135,10 @@ horizontal_alignment = 1
 
 [node name="Info" type="TextureRect" parent="HBoxContainer/MarginContainer/VBoxContainer/Household/HouseholdName"]
 layout_mode = 0
-offset_left = 215.0
-offset_top = 3.0
-offset_right = 246.0
-offset_bottom = 34.0
+offset_left = 223.0
+offset_top = 2.0
+offset_right = 254.0
+offset_bottom = 33.0
 scale = Vector2(0.655, 0.655)
 texture = ExtResource("3_bq3sf")
 
@@ -202,7 +211,7 @@ layout_mode = 2
 [node name="BG" type="TextureRect" parent="HBoxContainer/MarginContainerDetails"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-texture = SubResource("GradientTexture2D_jvxj5")
+texture = SubResource("GradientTexture2D_12xwp")
 expand_mode = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/MarginContainerDetails"]
