@@ -227,8 +227,8 @@ func _process(delta: float) -> void:
 	add_unit_button.visible = can_coord_be_added(button_coord) and (GameState.is_state(GameState.State.Managing) or GameState.is_state(GameState.State.Building))
 	$Ghost.visible = add_unit_button.visible
 	if add_unit_button.visible:
-		var mouse_coord = MapMath.pos_to_coord(get_global_mouse_position())
-		$Ghost.global_position = (mouse_coord * CONST.FLOOR_UNIT_HEIGHT)# - global_position
+		var mouse_coord = MapMath.pos_to_coord(get_global_mouse_position() + Vector2(0, 16))
+		$Ghost.global_position = (button_coord * CONST.FLOOR_UNIT_HEIGHT) + Vector2(CONST.FLOOR_UNIT_WIDTH, CONST.FLOOR_UNIT_HEIGHT)
 		$Ghost.global_position -= Vector2(CONST.FLOOR_UNIT_WIDTH, CONST.FLOOR_UNIT_HEIGHT) * 0.5
 
 func get_household_res_from_enum(value:CONST.HouseholdArchetype):
@@ -581,7 +581,19 @@ func is_coord_adjacent(coord: Vector2) -> bool:
 			break
 	return has_adjacent
 
+func get_highest(x:int) -> int:
+	var max = 0
+	
+	for coord in get_all_coords():
+		if coord.x == x:
+			if coord.y < max:
+				max = coord.y
+	
+	return max
+
 func can_coord_be_added(coord: Vector2):
+	if coord.y <= get_highest(coord.x) - 2:
+		return false
 	if get_building_width() >= (CONST.MAX_WIDTH - 1) and (coord.x >= get_right_most_x() or coord.x <= get_left_most_x()):
 		return false
 	if not is_coord_free(coord):
