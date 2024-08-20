@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://q1kckewr3vrn"]
+[gd_scene load_steps=3 format=3 uid="uid://q1kckewr3vrn"]
 
 [ext_resource type="Script" path="res://autoload/sound.gd" id="1_tadw6"]
+[ext_resource type="AudioStream" uid="uid://7jlwq0xujqfu" path="res://sounds/KT_Atmos_RainThunder.mp3" id="2_d3gk3"]
 
 [node name="Sound" type="Node"]
 script = ExtResource("1_tadw6")
+
+[node name="atmo" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_d3gk3")
+volume_db = -7.0
+autoplay = true
+bus = &"Music"

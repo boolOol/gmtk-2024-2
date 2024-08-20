@@ -9,7 +9,7 @@
 
 [sub_resource type="Gradient" id="Gradient_240po"]
 offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0.0999861, 0.0999859, 0.099986, 0.352941)
+colors = PackedColorArray(0.0980392, 0.0980392, 0.0980392, 0.631373)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_jvxj5"]
 gradient = SubResource("Gradient_240po")
@@ -154,16 +154,18 @@ custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 20
-text = "Happiness:"
+text = "
+Happiness:"
 horizontal_alignment = 1
 
 [node name="HappyChangeBar" type="TextureProgressBar" parent="HBoxContainer/MarginContainer/VBoxContainer/Household/Happiness"]
 layout_mode = 0
 offset_left = 15.0
-offset_top = 29.0
+offset_top = 46.0
 offset_right = 415.0
-offset_bottom = 129.0
+offset_bottom = 146.0
 scale = Vector2(0.5, 0.5)
+mouse_filter = 2
 max_value = 200.0
 value = 60.0
 texture_under = ExtResource("5_yj4wa")
@@ -180,7 +182,7 @@ texture_progress = ExtResource("7_34p1p")
 [node name="HappyValue" type="Label" parent="HBoxContainer/MarginContainer/VBoxContainer/Household/Happiness/HappyChangeBar/HappyBar"]
 layout_mode = 0
 offset_left = 18.0
-offset_top = -14.0
+offset_top = -2.0
 offset_right = 380.0
 offset_bottom = 112.0
 theme_override_colors/font_color = Color(1, 1, 1, 0.870588)
@@ -200,7 +202,7 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
 [node name="EvictButton" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer/Household"]
-self_modulate = Color(0.978428, 1.34766e-06, 0.515483, 1)
+self_modulate = Color(1, 0.367788, 0.300217, 1)
 layout_mode = 2
 text = " ! EVICT !"
 

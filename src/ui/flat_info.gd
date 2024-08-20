@@ -14,8 +14,10 @@ var tenant_income:int
 var tenant_name_label:Label
 var tenant_income_label:Label
 
-var room_bonus:int = 0
-var neighbour_bonus:int = 0
+var room_plus:int = 0
+var room_minus:int = 0
+var neighbour_plus:int = 0
+var neighbour_minus:int = 0
 
 var happiness_current:int
 var happy_bar:TextureProgressBar
@@ -96,19 +98,21 @@ func GetHappinessChange(tenantMoney:int):
 	if (flat_value*rent_slider.value > tenantMoney): unaffordable -= 50
 	if (unaffordable < 0): tenant_happiness_detail.text += "[color=orangered]" + str(int(unaffordable)) + " for unaffordability[/color]\n"
 	# Happiness from rooms
-	var r_bonus = room_bonus
-	if (r_bonus > 0): tenant_happiness_detail.text += "[color=lawngreen]+" + str(int(r_bonus)) + " for liked rooms[/color]\n"
-	if (r_bonus < 0): tenant_happiness_detail.text += "[color=orangered]" + str(int(r_bonus)) + " for disliked rooms[/color]\n"
+	var r_plus = room_plus
+	var r_minus = room_minus
+	if (r_plus > 0): tenant_happiness_detail.text += "[color=lawngreen]+" + str(int(r_plus)) + " for liked rooms[/color]\n"
+	if (r_minus < 0): tenant_happiness_detail.text += "[color=orangered]" + str(int(r_minus)) + " for disliked rooms[/color]\n"
 	# Happiness from neighbours
-	var n_bonus = neighbour_bonus
-	if (n_bonus > 0): tenant_happiness_detail.text += "[color=lawngreen]+" + str(int(n_bonus)) + " for liked neighbours[/color]\n"
-	if (n_bonus < 0): tenant_happiness_detail.text += "[color=orangered]" + str(int(n_bonus)) + " for disliked neighbours[/color]\n"
+	var n_plus = neighbour_plus
+	var n_minus = neighbour_minus
+	if (n_plus > 0): tenant_happiness_detail.text += "[color=lawngreen]+" + str(int(n_plus)) + " for liked neighbours[/color]\n"
+	if (n_minus < 0): tenant_happiness_detail.text += "[color=orangered]" + str(int(n_minus)) + " for disliked neighbours[/color]\n"
 	# QoL: Sort the boni in descending order and display it that way
 	happyChange += money_left
 	happyChange += value_for_money
 	happyChange += unaffordable
-	happyChange += r_bonus
-	happyChange += n_bonus
+	happyChange += r_plus + r_minus
+	happyChange += n_plus + n_minus
 	household.happiness_change = happyChange
 	return happyChange
 	
@@ -227,17 +231,19 @@ func set_happiness_affectors(
 	happy_neighbor_presences : Array,
 	sad_neighbor_presences : Array,
 ):
-	room_bonus = 0
-	neighbour_bonus = 0
+	room_plus = 0
+	room_minus = 0
+	neighbour_plus = 0
+	neighbour_minus = 0
 	# CALCULATE HAPPINESS MODIFIERS
 	for room in happy_room_presences:
-		room_bonus += 5
+		room_plus += 5
 	for room in sad_room_presences:
-		room_bonus -= 5
+		room_minus -= 5
 	for n in happy_neighbor_presences:
-		neighbour_bonus += 10
+		neighbour_plus += 10
 	for n in sad_neighbor_presences:
-		neighbour_bonus -= 10
+		neighbour_minus -= 10
 	
 	present_happy_rooms = happy_room_presences
 	present_sad_rooms = sad_room_presences
@@ -280,6 +286,7 @@ func update_pref_tooltip():
 
 
 func _on_evict_button_pressed() -> void:
+	visible=false
 	GameState.building.evict(id)
 
 
