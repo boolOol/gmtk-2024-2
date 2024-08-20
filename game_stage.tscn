@@ -369,6 +369,7 @@ text = "VOL"
 custom_minimum_size = Vector2(130.87, 0)
 layout_mode = 2
 size_flags_vertical = 4
+focus_mode = 0
 max_value = 1.0
 step = 0.01
 value = 1.0
