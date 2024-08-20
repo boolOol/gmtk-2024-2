@@ -16,7 +16,7 @@ enum RoomType {
 	PleasureRoom,
 }
 
-const EVENT_CHANCE := 0.33
+const EVENT_CHANCE := 0.1
 
 const ROOM_SIZES := {
 	RoomType.Kitchen : 2,
@@ -65,7 +65,7 @@ const ROOM_NAMES := {
 }
 
 const ROOM_PRICE_FACTOR := 200
-const ROOM_RENT_FACTOR := 50
+const ROOM_RENT_FACTOR := 100
 func get_price(room_type:int):
 	return ROOM_VALUES.get(room_type) * ROOM_PRICE_FACTOR
 func get_rent(room_type:int):
@@ -150,9 +150,9 @@ const CAMERA_MOVE_STEP := 300
 
 const PRICE_PER_HEIGHT := {
 	0: 50,
-	1: 100,
-	2: 200,
-	3: 250,
-	4: 250,
-	5: 275,
+	1: 150,
+	2: 250,
+	3: 400,
+	4: 500,
+	5: 600,
 }
