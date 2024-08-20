@@ -16,7 +16,7 @@ enum RoomType {
 	PleasureRoom,
 }
 
-const EVENT_CHANCE := 0.1
+const EVENT_CHANCE := 0.15
 
 const ROOM_SIZES := {
 	RoomType.Kitchen : 2,
@@ -133,7 +133,7 @@ const FLOOR_UNIT_HEIGHT := 32
 const BUILDING_ORIGIN_POS := Vector2(0, -FLOOR_UNIT_HEIGHT)
 const BUILDING_ORIGIN_COORD := Vector2.ZERO
 
-const ROOM_UNIT_PRICE := 20
+const ROOM_UNIT_PRICE := 50
 
 const NEIGHBOR_OFFSETS := [
 	Vector2.UP,
@@ -150,9 +150,9 @@ const CAMERA_MOVE_STEP := 300
 
 const PRICE_PER_HEIGHT := {
 	0: 150,
-	1: 250,
+	1: 350,
 	2: 500,
 	3: 750,
 	4: 1000,
-	5: 1500,
+	5: 1250,
 }

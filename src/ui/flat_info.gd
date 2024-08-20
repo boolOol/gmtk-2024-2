@@ -244,6 +244,7 @@ func set_happiness_affectors(
 	present_happy_neighbors = happy_neighbor_presences
 	present_sad_neighbors = sad_neighbor_presences
 	
+	ShowFutureHappiness(0)
 	update_pref_tooltip()
 
 # theoretical preferences
