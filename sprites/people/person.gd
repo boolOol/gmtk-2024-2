@@ -45,7 +45,7 @@ func stop_walking():
 	body.play("idle_body" + str(body_idx))
 	legs.play("idle_legs" + str(legs_idx))
 
-func changeDirection(newDir:Direction):
+func change_direction(newDir:Direction):
 	direction = newDir
 	if (newDir == Direction.right): 
 		skin.flip_h = false
@@ -57,6 +57,12 @@ func changeDirection(newDir:Direction):
 		hair.flip_h = true
 		body.flip_h = true
 		legs.flip_h = true
+
+func make_person_shadow():
+	skin.modulate = Color(Color.BLACK)
+	hair.modulate = Color(Color.BLACK)
+	body.modulate = Color(Color.BLACK)
+	legs.modulate = Color(Color.BLACK)
 
 func serialize() -> Dictionary:
 	return {
