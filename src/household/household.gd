@@ -67,7 +67,6 @@ func build_from_resource(res:Resource):
 		var person = preload("res://sprites/people/person.tscn").instantiate()
 		$People.add_child(person)
 		person.scale = Vector2(child_scale, child_scale)
-		person.scale.x = -1 if randf() <= 0.5 else 1
 		person.position.y += offset
 	stats = res
 	
