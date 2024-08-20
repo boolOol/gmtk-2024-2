@@ -72,11 +72,15 @@ func build_from_resource(res:Resource):
 	stats = res
 	
 	var value := 0
+	var handled_rooms := []
 	for coord in GameState.building.household_id_by_coord.keys():
 		var household_id = GameState.building.household_id_by_coord.get(coord)
 		if household_id != id:
 			continue
+		if handled_rooms.has(GameState.building.get_room(coord)):
+			continue
 		var room_type = GameState.building.get_room_type(coord)
+		handled_rooms.append(GameState.building.get_room(coord))
 		value += CONST.get_rent(room_type)
 	rentToPay = value
 
