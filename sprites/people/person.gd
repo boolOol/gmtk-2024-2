@@ -10,6 +10,10 @@ var hair_idx:=0
 var body_idx:=0
 var legs_idx:=0
 
+
+var move_range_min := 0.0
+var move_range_max := 0.0
+
 func _ready() -> void:
 	skin = get_node("Skin")
 	hair = get_node("Hair")
@@ -37,7 +41,10 @@ func serialize() -> Dictionary:
 		"legs_idx" : legs_idx,
 		"hair_idx" : hair_idx,
 		"skin_idx" : skin_idx,
-		"scale" : scale
+		"scale" : scale,
+		"move_range_min" : move_range_min,
+		"move_range_max" : move_range_max,
+		"global_position" : global_position
 	}
 
 func deserialize(data:Dictionary):
@@ -50,3 +57,6 @@ func deserialize(data:Dictionary):
 	legs_idx = data.get("legs_idx")
 	legs.play(str("idle_legs", legs_idx))
 	scale = data.get("scale")
+	global_position = data.get("global_position")
+	move_range_min = data.get("move_range_min")
+	move_range_max = data.get("move_range_max")
