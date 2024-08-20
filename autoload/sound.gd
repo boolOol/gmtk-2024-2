@@ -26,6 +26,7 @@ func _ready() -> void:
 	bgm_player.finished.connect(play_random_bgm)
 	play_random_bgm()
 	bgm_player.bus = "Music"
+	
 
 func play_random_bgm():
 	bgm_player.stream = load(music.pick_random())

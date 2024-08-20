@@ -354,7 +354,7 @@ func get_room_type(coord:Vector2):
 
 func get_adjacent_household_ids(coord:Vector2) -> Array:
 	var adjacent_coords = get_adjacent_coords_to_flat(get_flat(coord))
-	print("coords adjacent to ", coord, ": ", adjacent_coords)
+	#print("coords adjacent to ", coord, ": ", adjacent_coords)
 	var ids := []
 	for acoord in adjacent_coords:
 		var id = get_household_id_of(acoord)

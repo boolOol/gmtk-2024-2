@@ -10,6 +10,6 @@ func set_in_danger(value:bool):
 func _process(delta: float) -> void:
 	lifetime += delta
 	if in_danger:
-		modulate.v = sin((lifetime - floor(lifetime)))
+		modulate.v = 1.0 - sin((lifetime - floor(lifetime)))
 	else:
 		modulate.v = 1.0

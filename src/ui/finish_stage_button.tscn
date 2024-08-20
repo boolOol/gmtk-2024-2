@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://br3cb8c8whkg0"]
+
+[ext_resource type="Script" path="res://src/ui/finish_stage_button.gd" id="1_w3w3f"]
+
+[node name="FinishStageButton" type="Button"]
+offset_left = 976.0
+offset_top = 584.0
+offset_right = 1128.0
+offset_bottom = 622.0
+size_flags_horizontal = 8
+focus_mode = 0
+theme_override_colors/font_hover_color = Color(1, 0.811765, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.811765, 0, 1)
+theme_override_colors/font_color = Color(1, 0.893333, 0.571404, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+text = "NEXT PHASE"
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("1_w3w3f")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

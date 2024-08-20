@@ -12,6 +12,12 @@ var notification_tween:Tween
 var is_broke := false
 
 func _ready() -> void:
+	# shit gets loud yo	
+	AudioServer.set_bus_mute(AudioServer.get_bus_index("SFX"), true)
+	get_tree().create_timer(2.5).timeout.connect(AudioServer.set_bus_mute.bind(AudioServer.get_bus_index("SFX"), false))
+
+	await get_tree().process_frame
+	
 	is_broke = false
 	noti.modulate.a = 0.0
 	GameState.state_changed.connect(on_state_changed)
@@ -149,10 +155,13 @@ func on_property_changed(property_name:String, old_value, new_value):
 				
 
 var last_clicked_coord := Vector2(5342,-45654)
+var last_clicked_id := -1
 func display_room_info(coord:Vector2):
-	if last_clicked_coord == coord:
+	var clicked_id = GameState.building.household_id_by_coord.get(coord)
+	if last_clicked_id == clicked_id:
 		find_child("FlatInfo").visible = false
 		last_clicked_coord = Vector2(5342,-45654)
+		last_clicked_id = -1
 		return
 	find_child("FlatInfo").visible = true
 	#find_child("FlatInfo").position = MapMath.coord_to_pos(coord)# + $Building.position
@@ -263,6 +272,20 @@ func display_room_info(coord:Vector2):
 						icon.texture = load("res://src/household/spr_UI-sad.png")
 					else:
 						icon.texture = load("res://src/household/spr_UI-neutral.png")
+		
+		var flat_coords := []
+		for indexed_coord in GameState.building.household_id_by_coord:
+			if GameState.building.household_id_by_coord.get(indexed_coord) == id:
+				flat_coords.append(indexed_coord)
+		for flat_coord in flat_coords:
+			var icon_pos = MapMath.coord_to_pos(flat_coord)
+			var icon = Sprite2D.new()
+			opinions.add_child(icon)
+			icon.global_position = icon_pos
+			icon.centered = false
+			icon.texture = load("res://src/rooms/spr_UI-selectorSmallWhite.png")
+			icon.modulate = Color(Color.AQUA, 0.7)
+		
 	else:
 		
 		for room in rooms:
@@ -271,6 +294,7 @@ func display_room_info(coord:Vector2):
 		room_string = room_string.trim_suffix("\n")
 	
 	last_clicked_coord = coord
+	last_clicked_id = clicked_id
 
 func start_month():
 	pass
@@ -480,9 +504,6 @@ func _on_new_story_button_pressed() -> void:
 func _on_flat_info_visibility_changed() -> void:
 	find_child("NeighborOpinions").visible = find_child("FlatInfo").visible
 
-
-func _on_finish_stage_button_mouse_entered() -> void:
-	Sound.sound(Sound.button_hover)
 
 
 func _on_lives_warning_label_visibility_changed() -> void:
