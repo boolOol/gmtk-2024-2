@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://bk3nrnqrwiuyn"]
+[gd_scene load_steps=36 format=3 uid="uid://bk3nrnqrwiuyn"]
 
 [ext_resource type="Script" path="res://src/game_stage.gd" id="1_p5hh2"]
 [ext_resource type="PackedScene" uid="uid://dq2meide5oo8r" path="res://src/building/building.tscn" id="2_6ic3h"]
@@ -13,8 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://b80v1e1peqaia" path="res://sprites/background/enviroment/spr_enviroment-VG.png" id="7_v8uqo"]
 [ext_resource type="PackedScene" uid="uid://dk1v0umuvbrtu" path="res://src/building/harvestable_building.tscn" id="8_d4048"]
 [ext_resource type="PackedScene" uid="uid://ct4mnxgtkxsbr" path="res://src/ui/tenant_picker.tscn" id="10_77nrk"]
+[ext_resource type="Script" path="res://shadows.gd" id="11_33j7r"]
 [ext_resource type="Theme" uid="uid://dxmarsh5uodsy" path="res://theme/fonts/new_theme.tres" id="11_r0vxq"]
 [ext_resource type="Texture2D" uid="uid://nlep8dfhlqun" path="res://src/ui/move_left.png" id="12_ia6cw"]
+[ext_resource type="PackedScene" uid="uid://clhuj4x4c7f56" path="res://sprites/people/person.tscn" id="12_k87vs"]
 [ext_resource type="PackedScene" uid="uid://b34uijx7uwlgj" path="res://src/ui/household_info.tscn" id="13_m72j7"]
 [ext_resource type="Script" path="res://hover_camera_mover.gd" id="13_up62s"]
 [ext_resource type="Script" path="res://fade_in_screen.gd" id="14_5vgpf"]
@@ -140,36 +142,60 @@ position = Vector2(143, -29)
 [node name="HarvestableBuilding" parent="." instance=ExtResource("8_d4048")]
 position = Vector2(307, 0)
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="Foreground" type="Node2D" parent="."]
 position = Vector2(76, -181)
 
-[node name="Grass" type="Parallax2D" parent="Node2D"]
+[node name="Grass" type="Parallax2D" parent="Foreground"]
 repeat_size = Vector2(1024, 0)
 repeat_times = 7
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Grass"]
+[node name="Sprite2D" type="Sprite2D" parent="Foreground/Grass"]
 position = Vector2(0, 15)
 texture = ExtResource("6_57kyt")
 
-[node name="EndlessGround" type="Parallax2D" parent="Node2D"]
+[node name="Shadows" type="Node2D" parent="Foreground/Grass"]
+position = Vector2(0, 196)
+script = ExtResource("11_33j7r")
+
+[node name="Person" parent="Foreground/Grass/Shadows" instance=ExtResource("12_k87vs")]
+
+[node name="Person2" parent="Foreground/Grass/Shadows" instance=ExtResource("12_k87vs")]
+
+[node name="Person3" parent="Foreground/Grass/Shadows" instance=ExtResource("12_k87vs")]
+
+[node name="Person4" parent="Foreground/Grass/Shadows" instance=ExtResource("12_k87vs")]
+
+[node name="Person5" parent="Foreground/Grass/Shadows" instance=ExtResource("12_k87vs")]
+
+[node name="Person9" parent="Foreground/Grass/Shadows" instance=ExtResource("12_k87vs")]
+
+[node name="Person10" parent="Foreground/Grass/Shadows" instance=ExtResource("12_k87vs")]
+
+[node name="Person7" parent="Foreground/Grass/Shadows" instance=ExtResource("12_k87vs")]
+
+[node name="Person8" parent="Foreground/Grass/Shadows" instance=ExtResource("12_k87vs")]
+
+[node name="Person6" parent="Foreground/Grass/Shadows" instance=ExtResource("12_k87vs")]
+
+[node name="EndlessGround" type="Parallax2D" parent="Foreground"]
 scroll_scale = Vector2(0.1, 1)
 repeat_size = Vector2(1024, 0)
 repeat_times = 9
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/EndlessGround"]
+[node name="Sprite2D" type="Sprite2D" parent="Foreground/EndlessGround"]
 position = Vector2(-9, 1244)
 texture = SubResource("GradientTexture2D_gwuf7")
 
-[node name="Foreground" type="Parallax2D" parent="Node2D"]
+[node name="Foreground" type="Parallax2D" parent="Foreground"]
 scroll_scale = Vector2(1.2, 1)
 repeat_size = Vector2(1024, 0)
 repeat_times = 7
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Foreground"]
+[node name="Sprite2D" type="Sprite2D" parent="Foreground/Foreground"]
 position = Vector2(170, 5)
 texture = ExtResource("7_v8uqo")
 
-[node name="RainFG" type="CPUParticles2D" parent="Node2D"]
+[node name="RainFG" type="CPUParticles2D" parent="Foreground"]
 position = Vector2(-79, -1912)
 amount = 400
 lifetime = 2.8

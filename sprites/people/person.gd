@@ -21,7 +21,26 @@ func _ready() -> void:
 	body = get_node("Body")
 	legs = get_node("Legs")
 	randomizeLook()
+	stop_walking()
+	get_tree().create_timer(randf_range(0.5, 5.0)).timeout.connect(start_movement)
 
+var walk_speed := 10.0
+
+func start_movement():
+	var target_x = randf_range(move_range_min, move_range_max)
+	if target_x > global_position.x:
+		change_direction(Direction.left)
+	else:
+		change_direction(Direction.right)
+	var t = create_tween()
+	t.tween_property(self, "global_position:x", target_x, (abs(target_x - global_position.x))/ walk_speed)
+	t.finished.connect(start_idling)
+	start_walking()
+
+func start_idling():
+	stop_walking()
+	get_tree().create_timer(randf_range(0.5, 10.0)).timeout.connect(start_movement)
+	
 func randomizeLook():
 	skin_idx = randi_range(1,3)
 	hair_idx = randi_range(1,3)

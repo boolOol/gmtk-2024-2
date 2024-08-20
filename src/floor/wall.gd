@@ -92,5 +92,5 @@ func set_from_coord(coord:Vector2, rng:RandomNumberGenerator):
 
 
 func _process(delta: float) -> void:
-	modulate.a = MapMath.get_transparency(get_local_mouse_position().length(), 20, 40)
+	modulate.a = MapMath.get_transparency((get_local_mouse_position() - Vector2(16, 16)).length(), 20, 40)
 	

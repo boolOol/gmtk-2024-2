@@ -31,7 +31,7 @@ func _process(delta: float) -> void:
 		mouse_in_last_frame = false
 	
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and GameState.dragged_room:
-		$Construction.modulate.a = 1.0 - MapMath.get_transparency(get_local_mouse_position().length(), 75, 15)
+		$Construction.modulate.a = 1.0 - MapMath.get_transparency((get_local_mouse_position() - Vector2(16, 16)).length(), 75, 15)
 	else:
 		$Construction.modulate.a = lerp($Construction.modulate.a, 0.0, 0.05)
 

@@ -83,5 +83,5 @@ func build_from_resource(res:Resource):
 func set_global_move_range(x_min:float, x_max:float):
 	for person in $People.get_children():
 		person.global_position.x = randf_range(x_min + 0.25, x_max - 0.25 + 1) * CONST.FLOOR_UNIT_WIDTH
-		person.move_range_min = x_min
-		person.move_range_max = x_max
+		person.move_range_min = (x_min + 0.25) * CONST.FLOOR_UNIT_WIDTH
+		person.move_range_max = (x_max - 0.25 + 1) * CONST.FLOOR_UNIT_WIDTH
