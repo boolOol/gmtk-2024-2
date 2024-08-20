@@ -29,9 +29,9 @@ var walk_speed := 10.0
 func start_movement():
 	var target_x = randf_range(move_range_min, move_range_max)
 	if target_x > global_position.x:
-		change_direction(Direction.left)
-	else:
 		change_direction(Direction.right)
+	else:
+		change_direction(Direction.left)
 	var t = create_tween()
 	t.tween_property(self, "global_position:x", target_x, (abs(target_x - global_position.x))/ walk_speed)
 	t.finished.connect(start_idling)

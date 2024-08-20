@@ -7,12 +7,12 @@ var eviction := "res://sounds/sfx/sfx_tenantKickedOut.ogg"
 var income = "res://sounds/sfx/sfx_incomeNotice.ogg"
 var room_rip = "res://sounds/sfx/sfx_roomRippedOut.ogg"
 var place = "res://sounds/sfx/sfx_roomConnectedToSelf.ogg"
-var explosion = "res://src/building/explosion.png"
 var event = "res://sounds/sfx/sfx_capitalistNoises.ogg"
 var button_build = "res://sounds/sfx/sfx_ButtonBuildPhase.ogg"
 var button_profit = "res://sounds/sfx/sfx_ButtonProfitPhase.ogg"
 var button_manage = "res://sounds/sfx/sfx_ButtonManagePhase.ogg"
 var button_hover = "res://sounds/sfx/sfx_ButtonHover.ogg"
+var explosion = "res://sounds/sfx/sfx_explosion.ogg"
 
 var music := [
 	"res://sounds/music/DrumApocalypse.ogg",

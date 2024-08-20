@@ -85,7 +85,7 @@ func update_walls():
 		wall.queue_free()
 	
 	var all_coords := get_all_coords()
-	print(all_coords)
+	#print(all_coords)
 	for coord in all_coords:
 		if highest_point_by_x.has(coord.x):
 			if highest_point_by_x[coord.x] > coord.y:
@@ -144,8 +144,8 @@ func update_walls():
 		path += ".png"
 		wall.texture = load(path)
 	
-	prints("highest point by x", highest_point_by_x)
-	prints("rightest point by y", rightest_point_by_y)
+	#prints("highest point by x", highest_point_by_x)
+	#prints("rightest point by y", rightest_point_by_y)
 	
 	for coord in overhanging_coords:
 		var path := ""
@@ -510,7 +510,7 @@ func get_household(coord:Vector2):
 func get_adjacent_neighbors(coord_in_flat:Vector2):
 	var adjacents := []
 	var neighboring_coords = get_adjacent_coords_to_flat(get_flat(coord_in_flat))
-	prints("HIII WORK HERE", coord_in_flat, neighboring_coords, get_flat(coord_in_flat))
+	#prints("HIII WORK HERE", coord_in_flat, neighboring_coords, get_flat(coord_in_flat))
 
 func does_coord_exist(coord:Vector2):
 	var floor := get_floor(coord.y)

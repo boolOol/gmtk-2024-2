@@ -7,6 +7,5 @@ func _ready() -> void:
 		shadow.make_person_shadow()
 		shadow.move_range_min = -2000
 		shadow.move_range_max = 2000
-		shadow.scale.x = -1
 		shadow.position.y += randf_range(-3, 3)
 		shadow.position.x = randf_range(-2000, 2000)

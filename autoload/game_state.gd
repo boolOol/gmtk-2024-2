@@ -40,7 +40,7 @@ func can_drag_target_fit_room(room:Room) -> bool:
 	if Data.of("cash", 0) < CONST.get_price(room.room_type):
 		if not indicator_debounce:
 			build_indicator(
-				str("Not enough cash.\n", CONST.ROOM_NAMES.get(room.room_type), " costs ", CONST.get_price(room.room_type)),
+				str("Not enough funds.\n", CONST.ROOM_NAMES.get(room.room_type), " costs $", CONST.get_price(room.room_type)),
 				room.get_center(),
 				0.0,
 				Color.MEDIUM_VIOLET_RED
