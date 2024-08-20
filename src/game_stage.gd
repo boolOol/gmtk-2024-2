@@ -138,7 +138,7 @@ func show_month_summary():
 func on_property_changed(property_name:String, old_value, new_value):
 	match property_name:
 		"cash":
-			find_child("CashLabel").text = str("FUNDS: $", new_value)
+			find_child("CashLabel").text = str("$", new_value)
 		"idle_lives":
 			var container : HBoxContainer = find_child("LivesContainer")
 			for child in container.get_children():

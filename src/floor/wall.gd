@@ -27,6 +27,21 @@ func on_property_changed(property_name:String, old_value, new_value):
 		"global.permanent_reveal":
 			visible = new_value
 
+func build(y_name:String, x_name:String, is_depth:=false, roof_rng:RandomNumberGenerator=null):
+	var root := "res://src/building/sprites/spr_building-"
+	var tex_str := ""
+	
+	tex_str += y_name
+	tex_str += "Floor"
+	tex_str += x_name
+	
+	
+	if sprites.keys().has(tex_str):
+		tex_str += str("0", roof_rng.randi() % sprites.get(tex_str) + 1)
+	
+	if roof_rng:
+		tex_str = str("roofDetail0", roof_rng.randi_range(1, 5))
+
 func set_from_coord(coord:Vector2, rng:RandomNumberGenerator):
 	var highest : bool = coord.y == GameState.highest_coord
 	var left : bool = coord.x == GameState.left_most_coord

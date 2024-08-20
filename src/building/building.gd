@@ -37,6 +37,7 @@ var household_node_by_id := {} # filled with Household.tscn
 func _ready() -> void:
 	GameState.building = self
 	ground_floor.player_owned = true
+	ground_floor.unit_added.connect(update_walls)
 	for i in start_size.x:
 		ground_floor.add_unit_at(Vector2(i, 0))
 	for height in start_size.y - 1:
@@ -50,14 +51,41 @@ func get_all_coords() -> Array:
 		all_coords.append_array(floor.units_by_coord.keys())
 	return all_coords
 
+
+
+var wall_sprites := {
+	"emptySlot" : 3,
+	"groundFloorCenter" : 3,
+	"groundFloorLeft" : 1,
+	"groundFloorRight" : 1,
+	"middleFloorCenter" : 3,
+	"middleFloorLeft" : 1,
+	"middleFloorRight" : 1,
+	"roofDetail": 5,
+	"topFloorCenter":3,
+	"topFloorLeft":1,
+	"topFloorRight":1,
+}
+
 func update_walls():
 	var highest_point_by_x := {}
 	var rightest_point_by_y := {}
+	var leftest_point_by_y := {}
+	var top_right_corners := []
+	
+	var empty_on_right := []
+	var empty_on_top := []
+	
+	var placed_roofs := []
+	var placed_depths := []
+	
+	var overhanging_coords := []
 	
 	for wall in $FrontWall.get_children():
 		wall.queue_free()
 	
 	var all_coords := get_all_coords()
+	print(all_coords)
 	for coord in all_coords:
 		if highest_point_by_x.has(coord.x):
 			if highest_point_by_x[coord.x] > coord.y:
@@ -70,38 +98,126 @@ func update_walls():
 				rightest_point_by_y[coord.y] = coord.x
 		else:
 			rightest_point_by_y[coord.y] = coord.x
+		if leftest_point_by_y.has(coord.y):
+			if leftest_point_by_y[coord.y] > coord.x:
+				leftest_point_by_y[coord.y] = coord.x
+		else:
+			leftest_point_by_y[coord.y] = coord.x
 		
+		if not all_coords.has(coord + Vector2.DOWN):
+			overhanging_coords.append(coord)
+		if not all_coords.has(coord + Vector2.RIGHT):
+			empty_on_right.append(coord)
+		if not all_coords.has(coord + Vector2.UP):
+			empty_on_top.append(coord)
+		
+	for coord in all_coords:
 		var wall = preload("res://src/floor/wall.tscn").instantiate()
 		$FrontWall.add_child(wall)
 		wall.global_position.x = coord.x * CONST.FLOOR_UNIT_WIDTH
 		wall.global_position.y = coord.y * CONST.FLOOR_UNIT_HEIGHT
-		wall.set_from_coord(coord, roof_rng)
-	for x in highest_point_by_x:
-		var coord = Vector2(x, highest_point_by_x.get(x) - 1)
-		var wall = preload("res://src/floor/wall.tscn").instantiate()
-		$FrontWall.add_child(wall)
-		wall.global_position.x = coord.x * CONST.FLOOR_UNIT_WIDTH
-		wall.global_position.y = coord.y * CONST.FLOOR_UNIT_HEIGHT
-		wall.set_from_coord(coord, roof_rng)
+		#wall.set_from_coord(coord, roof_rng)
+		
+		var path := "res://src/building/sprites/spr_building-"
+		
+		var texName := ""
+		if coord.y == 0:
+			texName += "ground"
+		elif coord.y == highest_point_by_x.get(coord.x):
+			texName += "top"
+		else:
+			texName += "middle"
+		
+		texName += "Floor"
+		
+		if coord.x == leftest_point_by_y.get(coord.y):
+			texName += "Left"
+		elif coord.x == rightest_point_by_y.get(coord.y):
+			texName += "Right"
+		else:
+			texName += "Center"
+		
+		if wall_sprites.keys().has(texName):
+			texName += str("0", roof_rng.randi() % wall_sprites.get(texName) + 1)
+		
+		path += texName
+		path += ".png"
+		wall.texture = load(path)
 	
+	prints("highest point by x", highest_point_by_x)
+	prints("rightest point by y", rightest_point_by_y)
+	
+	for coord in overhanging_coords:
+		var path := ""
+		var support_coord:Vector2 = coord + Vector2.DOWN
+		if all_coords.has(coord + Vector2(1, 1)): # down right
+			path = "res://src/building/sprites/spr_building-supportLeft-2.png"
+			
+		elif all_coords.has(coord + Vector2(-1, 1)): # down left
+			path = "res://src/building/sprites/spr_building-supportRight-2.png"
+		if not path.is_empty():
+			var wall = preload("res://src/floor/wall.tscn").instantiate()
+			$FrontWall.add_child(wall)
+			wall.global_position.x = support_coord.x * CONST.FLOOR_UNIT_WIDTH
+			wall.global_position.y = support_coord.y * CONST.FLOOR_UNIT_HEIGHT
+			wall.texture = load(path)
+		
+	
+	for coord in empty_on_top:
+		var roof_coord = coord + Vector2.UP
+		#var coord = Vector2(x, highest_point_by_x.get(x) - 1)
+		var wall = preload("res://src/floor/wall.tscn").instantiate()
+		$FrontWall.add_child(wall)
+		wall.global_position.x = roof_coord.x * CONST.FLOOR_UNIT_WIDTH
+		wall.global_position.y = roof_coord.y * CONST.FLOOR_UNIT_HEIGHT
+		wall.texture = load(str("res://src/building/sprites/spr_building-roofDetail0", roof_rng.randi_range(1, 5), ".png"))
+		
+		placed_roofs.append(roof_coord)
+		
 	var highest := Vector2.ZERO
 	
 	for y in rightest_point_by_y:
 		if y < highest.y:
 			highest = Vector2(rightest_point_by_y.get(y) + 1, y - 1)
-		var coord = Vector2(rightest_point_by_y.get(y) + 1, y)
+	
+	for coord in empty_on_right:
+		var depth_coord = coord + Vector2.RIGHT
+		#var coord = Vector2(rightest_point_by_y.get(y) + 1, y)
 		var wall = preload("res://src/floor/wall.tscn").instantiate()
 		$FrontWall.add_child(wall)
-		wall.global_position.x = coord.x * CONST.FLOOR_UNIT_WIDTH
-		wall.global_position.y = coord.y * CONST.FLOOR_UNIT_HEIGHT
-		wall.set_from_coord(coord, roof_rng)
+		wall.global_position.x = depth_coord.x * CONST.FLOOR_UNIT_WIDTH
+		wall.global_position.y = depth_coord.y * CONST.FLOOR_UNIT_HEIGHT
+		
+		var word : String
+		if coord.y == 0:
+			word = "ground"
+		elif coord.y == highest.y:
+			word = "top"
+		else:
+			word = "middle"
+		
+		var depth_path := str("res://src/building/sprites/spr_building-", word, "FloorDepth.png")
+		wall.texture = load(depth_path)
+		wall.z_index = -1
+		
+		placed_depths.append(depth_coord)
+	
+	for roof_coord in placed_roofs:
+		var depth_coord : Vector2 = roof_coord + Vector2(1, 1)
+		if placed_depths.has(depth_coord):
+			var wall = preload("res://src/floor/wall.tscn").instantiate()
+			$FrontWall.add_child(wall)
+			wall.global_position.x = depth_coord.x * CONST.FLOOR_UNIT_WIDTH
+			wall.global_position.y = (depth_coord.y - 1) * CONST.FLOOR_UNIT_HEIGHT
+			wall.texture = load("res://src/building/sprites/spr_building-roofDepth.png")
+			wall.z_index = -1
 	
 	var wall = preload("res://src/floor/wall.tscn").instantiate()
 	$FrontWall.add_child(wall)
 	wall.global_position.x = highest.x * CONST.FLOOR_UNIT_WIDTH
 	wall.global_position.y = highest.y * CONST.FLOOR_UNIT_HEIGHT
-	wall.set_from_coord(highest, roof_rng)
-
+	wall.texture = load("res://src/building/sprites/spr_building-roofDepth.png")
+	wall.z_index = -1
 
 func _process(delta: float) -> void:
 	var target_pos = get_local_mouse_position() - (add_unit_button.size * 0.25)
