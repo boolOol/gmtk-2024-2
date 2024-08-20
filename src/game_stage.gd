@@ -257,11 +257,10 @@ func display_room_info(coord:Vector2):
 		
 		var neighbor_ids = GameState.building.get_adjacent_household_ids(coord)
 		for nid in neighbor_ids:
-			var c:Vector2
 			for coooord in GameState.building.household_id_by_coord:
 				var hid = GameState.building.household_id_by_coord.get(coooord)
 				if hid == nid:
-					var icon_pos = MapMath.coord_to_pos(c)
+					var icon_pos = MapMath.coord_to_pos(coooord)
 					var icon = Sprite2D.new()
 					opinions.add_child(icon)
 					icon.global_position = icon_pos
