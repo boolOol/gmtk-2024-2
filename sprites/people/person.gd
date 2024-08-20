@@ -10,6 +10,7 @@ var hair_idx:=0
 var body_idx:=0
 var legs_idx:=0
 
+var direction:Direction = Direction.right
 
 var move_range_min := 0.0
 var move_range_max := 0.0
@@ -23,17 +24,39 @@ func _ready() -> void:
 
 func randomizeLook():
 	skin_idx = randi_range(1,3)
-	var string = "idle_skin" + str(skin_idx)
-	skin.play(string)
 	hair_idx = randi_range(1,3)
-	string = "idle_hair" + str(hair_idx)
-	hair.play(string)
 	body_idx = randi_range(1,3)
-	string = "idle_body" + str(body_idx)
-	body.play(string)
 	legs_idx = randi_range(1,3)
-	string = "idle_legs" + str(legs_idx)
-	legs.play(string)
+	#start idling
+	skin.play("idle_skin" + str(skin_idx))
+	hair.play("idle_hair" + str(hair_idx))
+	body.play("idle_body" + str(body_idx))
+	legs.play("idle_legs" + str(legs_idx))
+
+func start_walking():
+	skin.play("walk_skin" + str(skin_idx))
+	hair.play("walk_hair" + str(hair_idx))
+	body.play("walk_body" + str(body_idx))
+	legs.play("walk_legs" + str(legs_idx))
+
+func stop_walking():
+	skin.play("idle_skin" + str(skin_idx))
+	hair.play("idle_hair" + str(hair_idx))
+	body.play("idle_body" + str(body_idx))
+	legs.play("idle_legs" + str(legs_idx))
+
+func changeDirection(newDir:Direction):
+	direction = newDir
+	if (newDir == Direction.right): 
+		skin.flip_h = false
+		hair.flip_h = false
+		body.flip_h = false
+		legs.flip_h = false
+	else:
+		skin.flip_h = true
+		hair.flip_h = true
+		body.flip_h = true
+		legs.flip_h = true
 
 func serialize() -> Dictionary:
 	return {
@@ -60,3 +83,5 @@ func deserialize(data:Dictionary):
 	global_position = data.get("global_position")
 	move_range_min = data.get("move_range_min")
 	move_range_max = data.get("move_range_max")
+	
+enum Direction {right, left}
