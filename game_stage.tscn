@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://bk3nrnqrwiuyn"]
+[gd_scene load_steps=33 format=3 uid="uid://bk3nrnqrwiuyn"]
 
 [ext_resource type="Script" path="res://src/game_stage.gd" id="1_p5hh2"]
 [ext_resource type="PackedScene" uid="uid://dq2meide5oo8r" path="res://src/building/building.tscn" id="2_6ic3h"]
@@ -23,6 +23,7 @@
 [ext_resource type="Script" path="res://event_accept_button.gd" id="16_2u351"]
 [ext_resource type="Texture2D" uid="uid://c86o1b22rh703" path="res://sprites/ui/Icon_30.png" id="16_txf3l"]
 [ext_resource type="Texture2D" uid="uid://bv4y3logvhf5m" path="res://src/ui/move_down.png" id="16_u0j6m"]
+[ext_resource type="PackedScene" uid="uid://br3cb8c8whkg0" path="res://src/ui/finish_stage_button.tscn" id="22_kfkug"]
 
 [sub_resource type="Gradient" id="Gradient_b53k7"]
 offsets = PackedFloat32Array(0)
@@ -322,22 +323,19 @@ icon = ExtResource("16_txf3l")
 flat = true
 expand_icon = true
 
-[node name="FinishStageButton" type="Button" parent="CanvasLayer/Control"]
-layout_mode = 2
-offset_left = 976.0
-offset_top = 584.0
-offset_right = 1128.0
-offset_bottom = 622.0
-size_flags_horizontal = 8
-focus_mode = 0
-theme_override_colors/font_hover_color = Color(1, 0.811765, 0, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.811765, 0, 1)
-theme_override_colors/font_color = Color(1, 0.893333, 0.571404, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
-text = "NEXT PHASE"
-icon_alignment = 1
-expand_icon = true
+[node name="FinishStageButton" parent="CanvasLayer/Control" instance=ExtResource("22_kfkug")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -199.0
+offset_top = -69.0
+offset_right = -47.0
+offset_bottom = -31.0
+grow_horizontal = 0
+grow_vertical = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -609,7 +607,6 @@ vertical_alignment = 1
 [connection signal="confirm_add_floor" from="CanvasLayer/Control/AddFloorContainer" to="Building" method="add_floor_by_coord"]
 [connection signal="toggled" from="CanvasLayer/Control/InfoHelp/PermanentRevealCheckBox" to="." method="_on_permanent_reveal_check_box_toggled"]
 [connection signal="pressed" from="CanvasLayer/Control/InfoHelp/HelpButton" to="." method="_on_help_button_pressed"]
-[connection signal="mouse_entered" from="CanvasLayer/Control/FinishStageButton" to="." method="_on_finish_stage_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/Control/FinishStageButton" to="." method="_on_finish_stage_button_pressed"]
 [connection signal="visibility_changed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/LivesWarningLabel" to="." method="_on_lives_warning_label_visibility_changed"]
 [connection signal="gui_input" from="CanvasLayer/Control/SummaryContainer" to="." method="_on_summary_container_gui_input"]
