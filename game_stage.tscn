@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://bk3nrnqrwiuyn"]
+[gd_scene load_steps=34 format=3 uid="uid://bk3nrnqrwiuyn"]
 
 [ext_resource type="Script" path="res://src/game_stage.gd" id="1_p5hh2"]
 [ext_resource type="PackedScene" uid="uid://dq2meide5oo8r" path="res://src/building/building.tscn" id="2_6ic3h"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://1qrspg4g0tjn" path="res://sprites/background/enviroment/spr_enviroment-HG3.png" id="3_n851i"]
 [ext_resource type="PackedScene" uid="uid://1tnfphburlo7" path="res://src/ui/add_floor_container.tscn" id="4_omg2c"]
 [ext_resource type="Texture2D" uid="uid://jyfcetcyslkp" path="res://sprites/background/enviroment/spr_enviroment-HG2.png" id="4_tgj48"]
+[ext_resource type="PackedScene" uid="uid://c6qew2urywrqp" path="res://vfx/bird_spawner.tscn" id="5_g8dnj"]
 [ext_resource type="Texture2D" uid="uid://ts16nkjdgn43" path="res://sprites/background/enviroment/spr_enviroment-HG1.png" id="5_lhhng"]
 [ext_resource type="Texture2D" uid="uid://ukk6w63jnray" path="res://sprites/background/enviroment/spr_enviroment-floor.png" id="6_57kyt"]
 [ext_resource type="Texture2D" uid="uid://b80v1e1peqaia" path="res://sprites/background/enviroment/spr_enviroment-VG.png" id="7_v8uqo"]
@@ -100,6 +101,9 @@ repeat_times = 7
 [node name="Sprite2D" type="Sprite2D" parent="Background/BG2"]
 position = Vector2(-83, -3)
 texture = ExtResource("4_tgj48")
+
+[node name="BirdSpawner" parent="Background" instance=ExtResource("5_g8dnj")]
+position = Vector2(3192, 29)
 
 [node name="BG1" type="Parallax2D" parent="Background"]
 scroll_scale = Vector2(0.9, 1)
@@ -336,6 +340,7 @@ offset_right = -47.0
 offset_bottom = -31.0
 grow_horizontal = 0
 grow_vertical = 0
+flat = true
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
 layout_mode = 1

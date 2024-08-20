@@ -1,0 +1,66 @@
+[gd_scene load_steps=10 format=3 uid="uid://cb3nuygx5mrn4"]
+
+[ext_resource type="Texture2D" uid="uid://cfkkc3nhclmog" path="res://vfx/birds/sheet_birds.png" id="1_ts321"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_njoag"]
+atlas = ExtResource("1_ts321")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i0ffj"]
+atlas = ExtResource("1_ts321")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fntb5"]
+atlas = ExtResource("1_ts321")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hkypm"]
+atlas = ExtResource("1_ts321")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_seu01"]
+atlas = ExtResource("1_ts321")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sgwdc"]
+atlas = ExtResource("1_ts321")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qc4et"]
+atlas = ExtResource("1_ts321")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_eyy8y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_njoag")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i0ffj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fntb5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hkypm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_seu01")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sgwdc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qc4et")
+}],
+"loop": true,
+"name": &"flying",
+"speed": 10.0
+}]
+
+[node name="Birds" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_eyy8y")
+animation = &"flying"
+autoplay = "flying"
+frame_progress = 0.840975

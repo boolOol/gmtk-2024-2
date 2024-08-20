@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6qew2urywrqp"]
+
+[ext_resource type="Script" path="res://bird_spawner.gd" id="1_lfooa"]
+
+[node name="BirdSpawner" type="Node2D"]
+position = Vector2(3792, -51)
+script = ExtResource("1_lfooa")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 15.0
+autostart = true
