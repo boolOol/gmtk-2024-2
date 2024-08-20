@@ -18,8 +18,8 @@ func reset():
 	$AnimatedSprite2D.stop()
 	$AnimatedSprite2D.frame = 0
 	$AnimatedSprite2D.play("default")
-	var width := randi_range(6, 12)
-	generate(randi_range(3, 14), width)
+	var width := randi_range(4, 8)
+	generate(randi_range(8, 34), width)
 	lifetime = 3
 	Sound.sound("explosion")
 	

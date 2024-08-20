@@ -150,11 +150,11 @@ repeat_size = Vector2(1024, 0)
 repeat_times = 7
 
 [node name="Sprite2D" type="Sprite2D" parent="Foreground/Grass"]
-position = Vector2(0, 15)
+position = Vector2(0, 20)
 texture = ExtResource("6_57kyt")
 
 [node name="Shadows" type="Node2D" parent="Foreground/Grass"]
-position = Vector2(0, 196)
+position = Vector2(0, 201)
 script = ExtResource("11_33j7r")
 
 [node name="Person" parent="Foreground/Grass/Shadows" instance=ExtResource("12_k87vs")]
