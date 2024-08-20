@@ -73,6 +73,12 @@ func show_month_summary():
 	var income := 0
 	var expenditures := 0
 	var handled_ids := []
+	
+	var leaving_households : Array[Household] = []
+	
+	items.append(str("[font_size=30][b]SUMMARY[/b][/font_size]\n"))
+	items.append(str("[b][color=lawngreen]Income:[/color][/b]"))
+	
 	for id in building.household_id_by_coord.values():
 		if handled_ids.has(id):
 			continue
@@ -82,14 +88,29 @@ func show_month_summary():
 			continue
 		hh.happiness += hh.happiness_change
 		hh.happiness_change = 0
+		# if households is too unhappy, they leave
+		if (hh.happiness <= 0): 
+			leaving_households.append(hh)
+			continue
 		var flat = building.get_flat_of_household(id)
 		
 		income += hh.rentToPay
 		var flat_index = building.get_flat_index(flat.front())
 		var flat_str = str("Floor ", flat_index.y, " - Flat ", flat_index.x)
-		items.append(str(hh.household_name, " @ ", flat_str, " \t+$", hh.rentToPay))
+		items.append(str("[color=lawngreen]+ $", hh.rentToPay, "[/color]\t\t", hh.household_name, " @ ", flat_str, ))
 	
-	items.append("--------")
+	
+	if (!leaving_households.is_empty()): 
+		items.append("------------------------------------")
+		items.append(str("[b][color=grey]Quitters:[/color][/b]"))
+	for household in leaving_households:
+		var flat = building.get_flat_of_household(household.id)
+		var flat_index = building.get_flat_index(flat.front())
+		building.evict(household.id)
+		items.append(str(household.household_name, " was too unhappy and left. (", "Floor ", flat_index.y, " - Flat ", flat_index.x,")"))
+	
+	items.append("------------------------------------")
+	items.append(str("[b][color=orangered]Expenses:[/color][/b]"))
 	var height_cost := 0
 	for i in abs(GameState.highest_coord):
 		if i >= CONST.PRICE_PER_HEIGHT.size():
@@ -97,14 +118,16 @@ func show_month_summary():
 		else:
 			height_cost += CONST.PRICE_PER_HEIGHT.get(i)
 	expenditures += height_cost
-	items.append(str(abs(GameState.highest_coord) + 1, " Floors", ": -$", height_cost))
+	items.append(str("[color=orangered]- $", height_cost, "[/color]\t\t", abs(GameState.highest_coord) + 1, " Floors"))
 	
-	items.append("========")
-	items.append(str("Total Income: $", income - expenditures))
+	items.append("==================")
+	if (income - expenditures >= 0):
+		items.append(str("Total Income: \t[b][color=lawngreen]$", income - expenditures, "[/color][/b]"))
+	else: items.append(str("Total Income: \t[b][color=orangered]$", income - expenditures, "[/color][/b]"))
 	
 	Data.change_by_int("cash", income - expenditures)
 	
-	items.append(str("Total Funds: $", Data.of("cash")))
+	items.append(str("Total Funds: \t[b]$", Data.of("cash"), "[/b]"))
 	
 	if Data.of("cash") < 0:
 		items.append("[font_size=60][color=red]\nYOU ARE BROKE. CLICK TO RESTART.[/color][/font_size]")
