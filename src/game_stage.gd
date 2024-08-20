@@ -517,3 +517,7 @@ func _on_lives_warning_label_visibility_changed() -> void:
 	else:
 		for child in find_child("LivesContainer").get_children():
 			child.set_in_danger(false)
+
+
+func _on_volume_slider_value_changed(value: float) -> void:
+	AudioServer.set_bus_volume_db(0, linear_to_db(value))
