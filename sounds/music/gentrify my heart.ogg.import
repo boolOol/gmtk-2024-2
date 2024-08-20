@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bbjaav5dyjygt"
+path="res://.godot/imported/gentrify my heart.ogg-be4ee3724ba2e53a269259f5b4836342.oggvorbisstr"
+
+[deps]
+
+source_file="res://sounds/music/gentrify my heart.ogg"
+dest_files=["res://.godot/imported/gentrify my heart.ogg-be4ee3724ba2e53a269259f5b4836342.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

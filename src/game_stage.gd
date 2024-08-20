@@ -39,17 +39,16 @@ func _ready() -> void:
 	))
 	var t2 = get_tree().create_timer(16)
 	t2.timeout.connect(notify.bind(
-		"Tear the other building apart\nto accomodate your residents :3", 6.0
+		"Tear the other building apart\nto accomodate your residents :3", 6.0, 5.0
 	))
 	var t3 = get_tree().create_timer(28)
 	t3.timeout.connect(notify.bind(
-		"When you're done assimilating the other apartment complex,\npress the button on the bottom right!", 8.0
+		"When you're done assimilating the other apartment complex,\ngo to the next phase by pressing\nthe button on the bottom right!", 8.0, 6.0
 	))
 	
 	GameState.set_expanded_this_phase(true)
 
 func on_state_changed(new_state:int):
-	#find_child("LivesWarningLabel").visible = not GameState.expanded_this_phase
 	var button = find_child("FinishStageButton")
 	match new_state:
 		GameState.State.Building:
@@ -63,6 +62,7 @@ func on_state_changed(new_state:int):
 			#button.text = "Next: Absorb Rival Building"
 			show_month_summary()
 			find_child("LivesWarningLabel").visible = false
+			
 
 func show_month_summary():
 	Sound.sound("income")
@@ -117,7 +117,13 @@ func on_property_changed(property_name:String, old_value, new_value):
 		"cash":
 			find_child("CashLabel").text = str("FUNDS: $", new_value)
 		"idle_lives":
-			find_child("LivesLabel").text = str("INVESTOR TOLERANCE: ", new_value)
+			var container : HBoxContainer = find_child("LivesContainer")
+			for child in container.get_children():
+				child.queue_free()
+			for i in new_value:
+				var life = preload("res://src/ui/life.tscn").instantiate()
+				container.add_child(life)
+				
 
 var last_clicked_coord := Vector2(5342,-45654)
 func display_room_info(coord:Vector2):
@@ -221,19 +227,19 @@ func display_room_info(coord:Vector2):
 				var hid = GameState.building.household_id_by_coord.get(coooord)
 				if hid == nid:
 					c = coooord
-					break
-			var icon_pos = MapMath.coord_to_pos(c)
-			var icon = Sprite2D.new()
-			opinions.add_child(icon)
-			icon.global_position = icon_pos
-			icon.centered = false
-			var a = GameState.building.get_household_archetype(id)
-			if a in happy_neighbor_presences:
-				icon.texture = load("res://src/household/yay.png")
-			elif a in sad_neighbor_presences:
-				icon.texture = load("res://src/household/nah.png")
-			else:
-				icon.texture = load("res://src/household/eh.png")
+					
+					var icon_pos = MapMath.coord_to_pos(c)
+					var icon = Sprite2D.new()
+					opinions.add_child(icon)
+					icon.global_position = icon_pos
+					icon.centered = false
+					var a = GameState.building.get_household_archetype(id)
+					if a in happy_neighbor_presences:
+						icon.texture = load("res://src/household/spr_UI-happy.png")
+					elif a in sad_neighbor_presences:
+						icon.texture = load("res://src/household/spr_UI-sad.png")
+					else:
+						icon.texture = load("res://src/household/spr_UI-neutral.png")
 	else:
 		
 		for room in rooms:
@@ -294,12 +300,15 @@ func go_to_next_state():
 		resetPhaseLabel(profit_label)
 		resetPhaseLabel(manage_label)
 		highlightPhaseLabel(build_label)
+		Sound.sound(Sound.button_build)
 	elif GameState.state == GameState.State.Building:
 		GameState.set_state(GameState.State.PickingTenants)
 		resetPhaseLabel(profit_label)
 		resetPhaseLabel(build_label)
 		highlightPhaseLabel(manage_label)
+		Sound.sound(Sound.button_manage)
 		find_child("LivesWarningLabel").visible = not GameState.expanded_this_phase
+		
 		if not GameState.expanded_this_phase:
 			Data.change_by_int("idle_lives", -1)
 			if Data.of("idle_lives") <= 0:
@@ -315,18 +324,27 @@ func go_to_next_state():
 		resetPhaseLabel(manage_label)
 		resetPhaseLabel(build_label)
 		highlightPhaseLabel(profit_label)
+		Sound.sound(Sound.button_profit)
 	find_child("FinishStageButton").visible = not GameState.is_state(GameState.State.PickingTenants)
 	
 func resetPhaseLabel(label: Label):
+	if not label or not is_instance_valid(label):
+		return
 	label.remove_theme_color_override("font_color")
 	label.add_theme_font_size_override("font_size", 25)
 func highlightPhaseLabel(label: Label):
+	if not label or not is_instance_valid(label):
+		return
 	label.add_theme_color_override("font_color", Color("ffcf00"))
 	label.add_theme_font_size_override("font_size", 30)
 
 
 var flats_to_handle := []
 func handle_empty_apartments():
+	highlightPhaseLabel(manage_label)
+	resetPhaseLabel(build_label)
+	resetPhaseLabel(profit_label)
+	GameState.set_state(GameState.State.PickingTenants)
 	flats_to_handle = GameState.building.get_empty_flats()
 	var actually := []
 	for flat in flats_to_handle:
@@ -384,12 +402,24 @@ func _on_summary_container_visibility_changed() -> void:
 			return
 		roll_event()
 		
+		
+		highlightPhaseLabel(manage_label)
+		resetPhaseLabel(build_label)
+		resetPhaseLabel(profit_label)
+		Sound.sound(Sound.button_manage)
+	else:
+		resetPhaseLabel(manage_label)
+		resetPhaseLabel(build_label)
+		highlightPhaseLabel(profit_label)
+		Sound.sound(Sound.button_profit)
+	
 	if is_broke and not find_child("SummaryContainer").visible:
 		get_tree().reload_current_scene()
 
 func roll_event():
 	if randf() > CONST.EVENT_CHANCE:
 		return
+	Sound.sound("event")
 	find_child("Events").get_children().pick_random().visible = true
 
 func _on_help_container_gui_input(event: InputEvent) -> void:
@@ -426,3 +456,16 @@ func _on_new_story_button_pressed() -> void:
 
 func _on_flat_info_visibility_changed() -> void:
 	find_child("NeighborOpinions").visible = find_child("FlatInfo").visible
+
+
+func _on_finish_stage_button_mouse_entered() -> void:
+	Sound.sound(Sound.button_hover)
+
+
+func _on_lives_warning_label_visibility_changed() -> void:
+	if find_child("LivesWarningLabel").visible:
+		if find_child("LivesContainer").get_child_count() > 0:
+			find_child("LivesContainer").get_child(0).set_in_danger(true)
+	else:
+		for child in find_child("LivesContainer").get_children():
+			child.set_in_danger(false)

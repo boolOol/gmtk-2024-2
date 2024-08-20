@@ -23,7 +23,7 @@ var expanded_this_phase := true # start with true to make the first round more f
 
 func set_expanded_this_phase(value:bool):
 	expanded_this_phase = value
-	if game_stage:
+	if game_stage and is_instance_valid(game_stage):
 		game_stage.find_child("LivesWarningLabel").visible = not expanded_this_phase
 
 func set_drag_target(target: FloorUnit):

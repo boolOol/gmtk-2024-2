@@ -186,7 +186,7 @@ func set_id(id:int):
 	self.id = id
 	set_occupied(id != -1)
 	var hh : Household = GameState.building.get_household_from_id(id)
-	prints("hot id ", id, " hh is ", hh)
+	#prints("hot id ", id, " hh is ", hh)
 	if hh:
 		household = hh
 		SetupTenant(household)

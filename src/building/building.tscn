@@ -224,6 +224,7 @@ influencer_couple = SubResource("Resource_44ynh")
 kevin = SubResource("Resource_q8igv")
 drug_dealer = SubResource("Resource_atxko")
 marathon_couple = SubResource("Resource_c45pl")
+start_size = Vector2(4, 2)
 
 [node name="Floors" type="Node2D" parent="."]
 

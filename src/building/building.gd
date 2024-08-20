@@ -31,17 +31,18 @@ var household_id_by_coord := {}
 var household_data_by_id := {} # filled with tenant data
 var household_node_by_id := {} # filled with Household.tscn
 
+## X > 0, Y > 0
+@export var start_size := Vector2(6, 3)
+
 func _ready() -> void:
 	GameState.building = self
 	ground_floor.player_owned = true
-	for i in 6:
+	for i in start_size.x:
 		ground_floor.add_unit_at(Vector2(i, 0))
-	add_floor(0)
-	for i in 5:
-		get_floor(1).add_unit_at(Vector2(i + 1, -1))
-	add_floor(0)
-	for i in 5:
-		get_floor(2).add_unit_at(Vector2(i + 1, -2))
+	for height in start_size.y - 1:
+		add_floor(0)
+		for i in start_size.x - 1:
+			get_floor(height + 1).add_unit_at(Vector2(i + 1, -(height + 1)))
 
 func get_all_coords() -> Array:
 	var all_coords := []
@@ -55,6 +56,7 @@ func update_walls():
 	
 	for wall in $FrontWall.get_children():
 		wall.queue_free()
+	
 	var all_coords := get_all_coords()
 	for coord in all_coords:
 		if highest_point_by_x.has(coord.x):
@@ -86,7 +88,7 @@ func update_walls():
 	
 	for y in rightest_point_by_y:
 		if y < highest.y:
-			highest = Vector2(rightest_point_by_y.get(y) + 1, y - 2)
+			highest = Vector2(rightest_point_by_y.get(y) + 1, y - 1)
 		var coord = Vector2(rightest_point_by_y.get(y) + 1, y)
 		var wall = preload("res://src/floor/wall.tscn").instantiate()
 		$FrontWall.add_child(wall)
@@ -184,7 +186,7 @@ func get_flats() -> Array:
 			#handled_rooms.append(get_room(coord))
 		if not flat_sequence.is_empty():
 			flats.append(get_sorted_coords(flat_sequence.duplicate()))
-	prints("returning flats", flats)
+	#prints("returning flats", flats)
 	return flats
 
 func occupy_flat(flat_amalgam:Array, tenant_data:Dictionary):
@@ -246,7 +248,7 @@ func get_adjacent_household_ids(coord:Vector2) -> Array:
 	var self_id = get_household_id_of(coord)
 	while ids.has(self_id):
 		ids.erase(self_id)
-	
+	ids.erase(-1)
 	return ids
 
 func get_adjacent_household_archetypes(coord:Vector2) -> Array:
@@ -425,6 +427,7 @@ func add_floor(horizontal_index:int):
 	GameState.camera.apply_shake(10)
 	
 	GameState.highest_coord = -floor_count
+	Sound.sound(Sound.room_rip)
 
 func get_height_px() -> float:
 	return $Floors.get_child_count() * CONST.FLOOR_UNIT_HEIGHT + global_position.y

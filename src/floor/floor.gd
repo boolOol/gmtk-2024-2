@@ -81,6 +81,8 @@ func add_unit_at(coord:Vector2):
 			GameState.left_most_coord = coord.x
 		if coord.x > GameState.right_most_coord:
 			GameState.right_most_coord = coord.x
+	
+	Sound.sound(Sound.room_rip)
 
 func get_min_unit_x(start:=999) -> float:
 	var min_x = start

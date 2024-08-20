@@ -2,7 +2,10 @@ extends Area2D
 class_name FloorUnit
 
 var h_index := 0
-var player_owned : bool
+var player_owned : bool:
+	set(value):
+		player_owned = value
+		$Construction.visible = player_owned and GameState.is_state(GameState.State.Building)
 var floor := 0
 
 var mouse_in_last_frame := false
@@ -36,7 +39,7 @@ func _process(delta: float) -> void:
 func _ready() -> void:
 	$Sprite.texture = load(sprite_paths.pick_random())
 	GameState.state_changed.connect(on_state_changed)
-	$Construction.visible = false
+	$Construction.visible = player_owned and GameState.is_state(GameState.State.Building)
 
 
 func on_state_changed(new_state:GameState.State):

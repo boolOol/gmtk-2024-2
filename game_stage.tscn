@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bk3nrnqrwiuyn"]
+[gd_scene load_steps=32 format=3 uid="uid://bk3nrnqrwiuyn"]
 
 [ext_resource type="Script" path="res://src/game_stage.gd" id="1_p5hh2"]
 [ext_resource type="PackedScene" uid="uid://dq2meide5oo8r" path="res://src/building/building.tscn" id="2_6ic3h"]
@@ -13,11 +13,16 @@
 [ext_resource type="PackedScene" uid="uid://dk1v0umuvbrtu" path="res://src/building/harvestable_building.tscn" id="8_d4048"]
 [ext_resource type="PackedScene" uid="uid://ct4mnxgtkxsbr" path="res://src/ui/tenant_picker.tscn" id="10_77nrk"]
 [ext_resource type="Theme" uid="uid://dxmarsh5uodsy" path="res://theme/fonts/new_theme.tres" id="11_r0vxq"]
+[ext_resource type="Texture2D" uid="uid://nlep8dfhlqun" path="res://src/ui/move_left.png" id="12_ia6cw"]
 [ext_resource type="PackedScene" uid="uid://b34uijx7uwlgj" path="res://src/ui/household_info.tscn" id="13_m72j7"]
+[ext_resource type="Script" path="res://hover_camera_mover.gd" id="13_up62s"]
 [ext_resource type="Script" path="res://fade_in_screen.gd" id="14_5vgpf"]
+[ext_resource type="Texture2D" uid="uid://li04gqu6qtaf" path="res://src/ui/move_right.png" id="14_a6f3v"]
 [ext_resource type="Texture2D" uid="uid://vu62rkt7qf6h" path="res://sprites/ui/Icon_15.png" id="15_sjs8p"]
+[ext_resource type="Texture2D" uid="uid://erf3cxqx321k" path="res://src/ui/move_up.png" id="15_syue4"]
 [ext_resource type="Script" path="res://event_accept_button.gd" id="16_2u351"]
 [ext_resource type="Texture2D" uid="uid://c86o1b22rh703" path="res://sprites/ui/Icon_30.png" id="16_txf3l"]
+[ext_resource type="Texture2D" uid="uid://bv4y3logvhf5m" path="res://src/ui/move_down.png" id="16_u0j6m"]
 
 [sub_resource type="Gradient" id="Gradient_b53k7"]
 offsets = PackedFloat32Array(0)
@@ -188,6 +193,73 @@ offset_top = -197.0
 offset_bottom = -174.0
 grow_horizontal = 1
 
+[node name="CameraHoverIndicators" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Left" type="TextureRect" parent="CanvasLayer/CameraHoverIndicators"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+texture = ExtResource("12_ia6cw")
+script = ExtResource("13_up62s")
+direction = Vector2(-1, 0)
+
+[node name="Right" type="TextureRect" parent="CanvasLayer/CameraHoverIndicators"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("14_a6f3v")
+script = ExtResource("13_up62s")
+direction = Vector2(1, 0)
+
+[node name="Up" type="TextureRect" parent="CanvasLayer/CameraHoverIndicators"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+texture = ExtResource("15_syue4")
+script = ExtResource("13_up62s")
+direction = Vector2(0, -1)
+
+[node name="Down" type="TextureRect" parent="CanvasLayer/CameraHoverIndicators"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("16_u0j6m")
+script = ExtResource("13_up62s")
+direction = Vector2(0, 1)
+
 [node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
@@ -232,7 +304,7 @@ size_flags_horizontal = 8
 focus_mode = 0
 theme_override_colors/icon_normal_color = Color(1, 1, 1, 0.443137)
 theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_hover_color = Color(1, 1, 1, 0.443137)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 0.827451)
 icon = ExtResource("15_sjs8p")
 expand_icon = true
 
@@ -244,7 +316,7 @@ offset_bottom = 80.0
 focus_mode = 0
 theme_override_colors/icon_normal_color = Color(1, 1, 1, 0.443137)
 theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_hover_color = Color(1, 1, 1, 0.443137)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 0.827451)
 icon = ExtResource("16_txf3l")
 flat = true
 expand_icon = true
@@ -284,13 +356,13 @@ layout_mode = 2
 size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 30
 
-[node name="LivesLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/VBoxContainer"]
+[node name="LivesContainer" type="HBoxContainer" parent="CanvasLayer/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
-theme_override_font_sizes/font_size = 24
 
 [node name="LivesWarningLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/VBoxContainer"]
 visible = false
+modulate = Color(0.94, 0.141, 0.473917, 1)
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 24
@@ -309,6 +381,8 @@ grow_horizontal = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Notification"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="NotificationLabel" type="Label" parent="CanvasLayer/Control/Notification/MarginContainer"]
 layout_mode = 2
@@ -466,17 +540,39 @@ text = "[center][color=red][b]YOU STALLED INVESTMENT GROWTH TOO MUCH. NEXT TIME,
 Click to restart."
 fit_content = true
 
-[node name="Phases" type="Control" parent="CanvasLayer/Control"]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Phases" type="HBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -183.5
+offset_top = -67.0
+offset_right = 183.5
+offset_bottom = -27.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 26
+
+[node name="ManageLabel" type="Label" parent="CanvasLayer/Control/Phases"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 25
+text = "MANAGE"
+vertical_alignment = 1
+
+[node name="_arrow1" type="Label" parent="CanvasLayer/Control/Phases"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 30
+text = ">>>"
+vertical_alignment = 1
 
 [node name="BuildLabel" type="Label" parent="CanvasLayer/Control/Phases"]
-layout_mode = 0
-offset_left = 256.0
-offset_top = 584.0
-offset_right = 384.0
-offset_bottom = 624.0
+layout_mode = 2
 size_flags_horizontal = 8
 theme_override_colors/font_color = Color(1, 0.811765, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -485,47 +581,15 @@ theme_override_font_sizes/font_size = 25
 text = "BUILD"
 vertical_alignment = 1
 
-[node name="_arrow1" type="Label" parent="CanvasLayer/Control/Phases"]
-layout_mode = 0
-offset_left = 392.0
-offset_top = 584.0
-offset_right = 456.0
-offset_bottom = 624.0
-size_flags_horizontal = 8
-theme_override_font_sizes/font_size = 30
-text = ">>>"
-vertical_alignment = 1
-
-[node name="ManageLabel" type="Label" parent="CanvasLayer/Control/Phases"]
-layout_mode = 0
-offset_left = 512.0
-offset_top = 584.0
-offset_right = 640.0
-offset_bottom = 624.0
-size_flags_horizontal = 8
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 25
-text = "MANAGE"
-vertical_alignment = 1
-
 [node name="_arrow2" type="Label" parent="CanvasLayer/Control/Phases"]
-layout_mode = 0
-offset_left = 672.0
-offset_top = 584.0
-offset_right = 736.0
-offset_bottom = 624.0
+layout_mode = 2
 size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 30
 text = ">>>"
 vertical_alignment = 1
 
 [node name="ProfitLabel" type="Label" parent="CanvasLayer/Control/Phases"]
-layout_mode = 0
-offset_left = 792.0
-offset_top = 584.0
-offset_right = 920.0
-offset_bottom = 624.0
+layout_mode = 2
 size_flags_horizontal = 8
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
@@ -544,7 +608,9 @@ vertical_alignment = 1
 [connection signal="confirm_add_floor" from="CanvasLayer/Control/AddFloorContainer" to="Building" method="add_floor_by_coord"]
 [connection signal="toggled" from="CanvasLayer/Control/InfoHelp/PermanentRevealCheckBox" to="." method="_on_permanent_reveal_check_box_toggled"]
 [connection signal="pressed" from="CanvasLayer/Control/InfoHelp/HelpButton" to="." method="_on_help_button_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Control/FinishStageButton" to="." method="_on_finish_stage_button_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/Control/FinishStageButton" to="." method="_on_finish_stage_button_pressed"]
+[connection signal="visibility_changed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/LivesWarningLabel" to="." method="_on_lives_warning_label_visibility_changed"]
 [connection signal="gui_input" from="CanvasLayer/Control/SummaryContainer" to="." method="_on_summary_container_gui_input"]
 [connection signal="visibility_changed" from="CanvasLayer/Control/SummaryContainer" to="." method="_on_summary_container_visibility_changed"]
 [connection signal="pressed" from="CanvasLayer/Control/Events/NewStory/PanelContainer/VBoxContainer/NewStoryButton" to="." method="_on_new_story_button_pressed"]
