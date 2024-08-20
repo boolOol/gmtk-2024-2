@@ -293,7 +293,8 @@ func display_room_info(coord:Vector2):
 		room_string = room_string.trim_suffix("\n")
 	
 	last_clicked_coord = coord
-	last_clicked_id = clicked_id
+	if (clicked_id != null): last_clicked_id = clicked_id
+	else: last_clicked_id = -1
 
 func start_month():
 	pass
