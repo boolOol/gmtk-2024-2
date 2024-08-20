@@ -349,9 +349,9 @@ func go_to_next_state():
 		Sound.sound(Sound.button_build)
 	elif GameState.state == GameState.State.Building:
 		GameState.set_state(GameState.State.PickingTenants)
-		resetPhaseLabel(profit_label)
-		resetPhaseLabel(build_label)
-		highlightPhaseLabel(manage_label)
+		#resetPhaseLabel(profit_label)
+		#resetPhaseLabel(build_label)
+		#highlightPhaseLabel(manage_label)
 		Sound.sound(Sound.button_manage)
 		find_child("LivesWarningLabel").visible = not GameState.expanded_this_phase
 		
@@ -387,9 +387,9 @@ func highlightPhaseLabel(label: Label):
 
 var flats_to_handle := []
 func handle_empty_apartments():
-	highlightPhaseLabel(manage_label)
-	resetPhaseLabel(build_label)
-	resetPhaseLabel(profit_label)
+	#highlightPhaseLabel(manage_label)
+	#resetPhaseLabel(build_label)
+	#resetPhaseLabel(profit_label)
 	GameState.set_state(GameState.State.PickingTenants)
 	flats_to_handle = GameState.building.get_empty_flats()
 	var actually := []
