@@ -48,6 +48,10 @@ func _ready() -> void:
 	))
 	var t3 = get_tree().create_timer(28)
 	t3.timeout.connect(notify.bind(
+		"Just drag any room into your building on the left!", 6.0, 3.0
+	))
+	var t4 = get_tree().create_timer(37)
+	t4.timeout.connect(notify.bind(
 		"When you're done assimilating the other apartment complex,\ngo to the next phase by pressing\nthe button on the bottom right!", 8.0, 6.0
 	))
 	
