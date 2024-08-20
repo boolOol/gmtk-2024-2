@@ -16,7 +16,6 @@ func _ready() -> void:
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("SFX"), true)
 	get_tree().create_timer(2.5).timeout.connect(AudioServer.set_bus_mute.bind(AudioServer.get_bus_index("SFX"), false))
 
-	await get_tree().process_frame
 	
 	is_broke = false
 	noti.modulate.a = 0.0
