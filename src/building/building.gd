@@ -335,6 +335,25 @@ func get_flat_of_household(id:int) -> Array:
 			break
 	return flat_amalgam
 
+func get_building_width():
+	return get_right_most_x() - get_left_most_x()
+
+func get_left_most_x():
+	var all_cords := get_all_coords()
+	var n = all_cords.front().x
+	for coord in all_cords:
+		if coord.x < n:
+			n = coord.x
+	return n
+func get_right_most_x():
+	var all_cords := get_all_coords()
+	var n = all_cords.front().x
+	for coord in all_cords:
+		if coord.x > n:
+			n = coord.x
+	return n
+		
+
 func update_flat_extents(household_id:int):
 	var flat_amalgam: = get_flat_of_household(household_id)
 	
@@ -563,6 +582,8 @@ func is_coord_adjacent(coord: Vector2) -> bool:
 	return has_adjacent
 
 func can_coord_be_added(coord: Vector2):
+	if get_building_width() >= (CONST.MAX_WIDTH - 1) and (coord.x >= get_right_most_x() or coord.x <= get_left_most_x()):
+		return false
 	if not is_coord_free(coord):
 		return false
 	if not is_coord_adjacent(coord):
