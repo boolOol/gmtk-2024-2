@@ -384,6 +384,7 @@ func get_adjacent_household_ids(coord:Vector2) -> Array:
 	while ids.has(self_id):
 		ids.erase(self_id)
 	ids.erase(-1)
+	ids.erase(0)
 	return ids
 
 func get_adjacent_household_archetypes(coord:Vector2) -> Array:
@@ -400,7 +401,8 @@ func get_adjacent_household_archetypes(coord:Vector2) -> Array:
 	return archetypes
 
 func get_household_archetype(id:int):
-	return  household_data_by_id.get(id).get("archetype")
+	prints("archetype of ", id , " is ", household_data_by_id.get(id).get("archetype"), CONST.HOUSEHOLD_NAMES.get(household_data_by_id.get(id).get("archetype")))
+	return household_data_by_id.get(id).get("archetype")
 
 func get_room_types_of_flat(flat:Array) -> Array:
 	var rooms := []
@@ -440,8 +442,6 @@ func is_coord_in_flat_index_occupied(index:Vector2) -> bool:
 func get_empty_flats() -> Array:
 	var flats = get_flats()
 	var result := []
-	prints("emoty got flats", flats)
-	#prints("occupy", occupation_by_flat)
 	var occupations_with_indices := []
 	for flat in flats:
 		var occupied := false

@@ -261,17 +261,15 @@ func display_room_info(coord:Vector2):
 			for coooord in GameState.building.household_id_by_coord:
 				var hid = GameState.building.household_id_by_coord.get(coooord)
 				if hid == nid:
-					c = coooord
-					
 					var icon_pos = MapMath.coord_to_pos(c)
 					var icon = Sprite2D.new()
 					opinions.add_child(icon)
 					icon.global_position = icon_pos
 					icon.centered = false
 					var a = GameState.building.get_household_archetype(id)
-					if a in happy_neighbor_presences:
+					if a in happy_neighbors:
 						icon.texture = load("res://src/household/spr_UI-happy.png")
-					elif a in sad_neighbor_presences:
+					elif a in sad_neighbors:
 						icon.texture = load("res://src/household/spr_UI-sad.png")
 					else:
 						icon.texture = load("res://src/household/spr_UI-neutral.png")
